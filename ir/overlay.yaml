@@ -1,0 +1,153 @@
+# Anotaciones que la especificación de Resend no trae (vault/CONTRACT.md, sección 4).
+# Todo lo demás de ir/ir.json se deriva de spec/resend.yaml.
+
+project:
+  repository: https://github.com/CesarManzoCode/paridad
+  go_module: github.com/CesarManzoCode/paridad/sdks/go
+
+# Política común de reintentos e idempotencia (sección 5.3).
+# Una regla de respuesta sin `name` vale para cualquier `name`; `name: null`
+# es una respuesta cuyo cuerpo no trae `name`.
+policy:
+  max_attempts: 3
+  # Segura para reintentar: uno de estos métodos o una petición con Idempotency-Key.
+  safe_methods: [DELETE, GET, PUT]
+  safe_with_idempotency_key: true
+  retry_always:
+    responses:
+      - { status: 429, name: rate_limit_exceeded }
+      - { status: 429, name: null }
+    transport: [connection_error_before_send]
+  retry_if_safe:
+    responses:
+      - { status: 409, name: concurrent_idempotent_requests }
+      - { status: 500 }
+      - { status: 502 }
+      - { status: 503 }
+      - { status: 504 }
+    transport: [timeout, connection_error_after_send]
+  backoff:
+    # Con retry-after entero: retry-after × 1000 ms + U[0, retry_after_jitter_ms).
+    retry_after_jitter_ms: 250
+    # Si retry-after supera este valor no se reintenta.
+    retry_after_max_seconds: 60
+    # Sin retry-after, reintento n: min(cap_ms, base_ms × 2^(n−1)) × (0.5 + 0.5·U[0,1)).
+    base_ms: 500
+    cap_ms: 8000
+  idempotency_key:
+    header: Idempotency-Key
+    min_length: 1
+    max_length: 256
+    error_code: invalid_idempotency_key
+    error_message: Idempotency key must be between 1 and 256 characters.
+
+# Catálogo de errores de la API (sección 5.2). `retryable` se deriva de `policy`.
+errors:
+  source: https://resend.com/docs/api-reference/errors.md
+  catalog:
+    - { status: 400, name: validation_error }
+    - { status: 400, name: invalid_idempotency_key }
+    - { status: 401, name: missing_api_key }
+    - { status: 401, name: restricted_api_key }
+    - { status: 403, name: invalid_permission }
+    - { status: 403, name: restricted_api_key }
+    - { status: 403, name: suspended_api_key }
+    - { status: 403, name: email_above_quota }
+    - { status: 404, name: not_found }
+    - { status: 405, name: method_not_allowed }
+    - { status: 409, name: concurrent_idempotent_requests }
+    - { status: 409, name: invalid_idempotent_request }
+    - { status: 409, name: resource_locked }
+    - { status: 409, name: forge_not_enabled }
+    - { status: 422, name: invalid_parameter }
+    - { status: 422, name: invalid_attachment }
+    - { status: 422, name: missing_required_field }
+    - { status: 422, name: missing_required_parameter }
+    - { status: 422, name: forge_unavailable }
+    - { status: 422, name: return_path_unavailable }
+    - { status: 429, name: rate_limit_exceeded }
+    - { status: 429, name: daily_quota_exceeded }
+    - { status: 429, name: monthly_quota_exceeded }
+    - { status: 500, name: application_error }
+    - { status: 503, name: service_unavailable }
+    - { status: 503, name: dns_lookup_failed }
+
+# Excepciones por operationId: solo lo que la regla no deriva bien.
+operations:
+  # Go escribe las siglas en mayúsculas (APIKeys, OAuth); la regla daría ApiKeys y Oauth.
+  api-keys/create:
+    names: { go: APIKeys.Create }
+  api-keys/list:
+    names: { go: APIKeys.List }
+  api-keys/remove:
+    names: { go: APIKeys.Remove }
+  api-keys/update:
+    names: { go: APIKeys.Update }
+  oauth/list-grants:
+    names: { go: OAuth.ListGrants }
+  oauth/revoke-grant:
+    names: { go: OAuth.RevokeGrant }
+
+  # Operaciones no DELETE que cancelan, detienen, quitan o revocan.
+  automations/cancel-run:
+    destructive: true
+  automations/stop:
+    destructive: true
+  broadcasts/cancel:
+    destructive: true
+  emails/cancel:
+    destructive: true
+  suppressions/batch-remove:
+    destructive: true
+  # El secreto anterior deja de verificar a las 24 horas.
+  webhooks/rotate-signing-secret:
+    destructive: true
+
+  # Ejemplos donde la síntesis da "example" en un campo que es una dirección,
+  # un dominio, una duración, una fecha o el ID de otro recurso. Las direcciones @resend.dev son las de
+  # prueba que documenta Resend.
+  broadcasts/create:
+    examples:
+      - body:
+          from: Acme <onboarding@resend.dev>
+          segment_id: 78261eea-8f8b-4381-83c6-79fa7120f1cf
+          subject: Hello World
+          html: <p>Hello World</p>
+  broadcasts/send:
+    examples:
+      - path: { id: 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 }
+        body: { scheduled_at: in 1 min }
+  contacts/update-topics:
+    examples:
+      - path: { contact_id: 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 }
+        body:
+          topics:
+            - { id: b6d24b8e-af0b-4c3c-be0c-359bbd97381e, subscription: opt_in }
+  domains/create:
+    examples:
+      - body: { name: example.com }
+  domains/create-claim:
+    examples:
+      - body: { name: example.com }
+  emails/send:
+    examples:
+      - body:
+          from: Acme <onboarding@resend.dev>
+          to: [delivered@resend.dev]
+          subject: Hello World
+          html: <p>It works!</p>
+  emails/send-batch:
+    examples:
+      - body:
+          - from: Acme <onboarding@resend.dev>
+            to: [delivered@resend.dev]
+            subject: Hello World
+            html: <p>It works!</p>
+          - from: Acme <onboarding@resend.dev>
+            to: [delivered@resend.dev]
+            subject: World Hello
+            html: <p>It works too!</p>
+  emails/share:
+    examples:
+      - path: { email_id: 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 }
+        body: { expires_in: 1 day }

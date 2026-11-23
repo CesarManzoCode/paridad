@@ -8,6 +8,12 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - La especificación fijada no define respuestas de error. El catálogo de errores sale de la página oficial de errores de Resend y el proxy de fallos los reproduce; si el servidor real responde distinto de lo documentado, paridad no lo detecta.
 - `/emails/batch` se trata como todo o nada porque ni la especificación ni la referencia de la API documentan aceptación parcial; el modo `permissive` del CLI oficial no se modela.
 
+## Especificación fijada
+
+- `emails/update` (`PATCH /emails/{email_id}`) no declara cuerpo de petición en la especificación fijada: `UpdateEmailOptions` aparece como esquema de su respuesta. La IR sigue a la especificación, así que las superficies propias no envían cuerpo en esa operación.
+- `webhooks/list-events` y `webhooks/list-event-attempts` aceptan `limit` y `after` pero no `before`. La regla de paginación exige los tres parámetros, así que esas dos operaciones no tienen `pagination` en la IR ni iterador en las superficies; se paginan pasando `after` a mano.
+- Los valores que la síntesis no puede sacar del esquema (`example`, `default`, `enum`, `format`) son genéricos: la cadena `example` y, en parámetros de ruta, un UUID fijo. Solo las operaciones con ejemplo en `ir/overlay.yaml` llevan valores elegidos a mano.
+
 ## Oráculo
 
 - La equivalencia con los SDKs oficiales solo cubre las operaciones que cada SDK oficial expone en su versión fijada. Las demás solo se comparan entre superficies propias y contra la especificación con Prism.

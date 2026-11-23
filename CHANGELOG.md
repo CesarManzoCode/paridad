@@ -6,6 +6,8 @@ Formato basado en Keep a Changelog. Las versiones siguen semver una vez que exis
 
 ### Agregado
 - Fundación del proyecto: contrato con las decisiones cerradas, investigación con fuentes y versiones verificadas, interfaz de verificación (`make check`, y desde K1 `make bootstrap`, `make generate`, `make verify`, `make battery`), CI que corre `make check` y licencia MIT.
+- Generador `generator/` (spec → IR): carga OpenAPI 3.0.x y 3.1.x con `yaml`, resuelve `$ref` internos y convierte los esquemas a JSON Schema 2020-12; construye `ir/ir.json` (`paridad-ir/1`) con las 144 operaciones de la spec fijada, deriva idempotencia, paginación, solo lectura, destructivas y nombres por superficie, aplica `ir/overlay.yaml` y valida cada ejemplo con `ajv` 2020-12. `make generate` lo ejecuta.
+- `ir/overlay.yaml` con proyecto, política de reintentos, catálogo de errores y las excepciones por operación (nombres Go con siglas, operaciones destructivas no DELETE y ejemplos realistas).
 - Workspace pnpm con toolchain fijado (`package.json`, `pnpm-lock.yaml`, `tsconfig.base.json`, `requirements-dev.txt`, `tools/go.mod`), especificación copiada en `spec/resend.yaml` con `spec/PIN`, y los comandos `make bootstrap`, `make generate`, `make check`, `make verify` y `make battery`.
 
 ### Decisiones
