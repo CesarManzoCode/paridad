@@ -1,0 +1,4 @@
+repository: https://github.com/resend/resend-openapi
+commit: 8c6f120b3b8a72b749d68c0153a69cf0ca9f5cce
+path: resend.yaml
+sha256: 084209d12f51f42f1fe71946fee4bce08c0eaf0b07a214c5e87560495d58ef7b

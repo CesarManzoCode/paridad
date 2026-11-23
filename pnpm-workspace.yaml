@@ -1,0 +1,9 @@
+packages:
+  - generator
+  - sdks/typescript
+  - cli
+  - mcp
+  - compat
+  - release
+  - harness
+  - verify
