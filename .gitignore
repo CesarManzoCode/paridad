@@ -1,0 +1,9 @@
+/vault/private/
+/AGENTS.md
+/CLAUDE.md
+/.claude/
+/.paridad/
+node_modules/
+/.venv/
+__pycache__/
+*.pyc
