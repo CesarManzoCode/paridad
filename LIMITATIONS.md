@@ -1,0 +1,29 @@
+# Límites
+
+Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos límites.
+
+## Sin el servidor real de Resend
+
+- Las pruebas nunca tocan la API real. No se prueba la deduplicación real con claves de idempotencia, los límites de tasa reales por equipo, los permisos reales de una clave restringida, la entrega de emails ni la latencia real. En local solo se prueba que el cliente emite lo correcto según el contrato y que reacciona igual ante las respuestas que el contrato y la documentación describen.
+- La especificación fijada no define respuestas de error. El catálogo de errores sale de la página oficial de errores de Resend y el proxy de fallos los reproduce; si el servidor real responde distinto de lo documentado, paridad no lo detecta.
+- `/emails/batch` se trata como todo o nada porque ni la especificación ni la referencia de la API documentan aceptación parcial; el modo `permissive` del CLI oficial no se modela.
+
+## Oráculo
+
+- La equivalencia con los SDKs oficiales solo cubre las operaciones que cada SDK oficial expone en su versión fijada. Las demás solo se comparan entre superficies propias y contra la especificación con Prism.
+- Los SDKs oficiales no reintentan solos, así que el comportamiento ante fallos se compara entre las superficies propias y contra la política declarada, no contra los oficiales.
+- Para el CLI oficial se usa una variable de entorno de URL base presente en su código pero no documentada. Si una versión futura la quita, la comparación con el CLI oficial deja de ser posible.
+
+## Medición
+
+- La conformidad MCP sobre stdio pasa por un puente que reenvía los mensajes a Streamable HTTP, porque el marco oficial solo prueba servidores por URL.
+- Los fallos de red a nivel de kernel (`tc netem`) necesitan sudo; sin él, ese criterio se omite (código 77) y solo quedan los fallos en espacio de usuario.
+- La memoria pico se mide con `memory.peak` del cgroup, que incluye caché de páginas: es una cota superior de la memoria residente, no la memoria residente exacta.
+- La tolerancia temporal de los reintentos ante 429 es de −25 ms a +1000 ms sobre `retry-after`, medida en el proxy de fallos.
+- Para TypeScript no existe un clasificador estándar de cambios de API; el salto semver se contrasta con la diferencia entre reportes de api-extractor, que es una aproximación.
+- Solo se verifica en x86-64 con Arch Linux.
+
+## Lo que no es mecánico
+
+- La atención real de issues y pull requests de contribuidores externos.
+- La calidad del registro de decisiones (problema ambiguo, alternativas, solución acotada y seguimiento después del primer release): solo se comprueba que existe con sus secciones.
