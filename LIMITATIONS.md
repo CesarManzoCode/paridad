@@ -14,6 +14,12 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - `webhooks/list-events` y `webhooks/list-event-attempts` aceptan `limit` y `after` pero no `before`. La regla de paginación exige los tres parámetros, así que esas dos operaciones no tienen `pagination` en la IR ni iterador en las superficies; se paginan pasando `after` a mano.
 - Los valores que la síntesis no puede sacar del esquema (`example`, `default`, `enum`, `format`) son genéricos: la cadena `example` y, en parámetros de ruta, un UUID fijo. Solo las operaciones con ejemplo en `ir/overlay.yaml` llevan valores elegidos a mano.
 
+## SDK Python
+
+- Los `TypedDict` no expresan `additionalProperties` junto a `properties`, ni restricciones como `minLength`, `maxItems` o un `anyOf` que solo exige `required`: esas claves y reglas no se comprueban en el tipo. Un `allOf` sin miembros de objeto toma el primer miembro con tipo, o `Any` si no hay ninguno.
+- Los archivos de `multipart/form-data` (`contacts/create-import`) se pasan como `bytes`, y su nombre de archivo es el nombre del campo.
+- El tiempo máximo por intento se aplica como plazo del socket, recalculado antes de la conexión, del envío y de cada bloque leído; dentro de un mismo bloque el socket puede recibir varias veces, así que una respuesta que llega a pedazos muy lentos puede pasarse del plazo. No se midió cuánto.
+
 ## Oráculo
 
 - La equivalencia con los SDKs oficiales solo cubre las operaciones que cada SDK oficial expone en su versión fijada. Las demás solo se comparan entre superficies propias y contra la especificación con Prism.
