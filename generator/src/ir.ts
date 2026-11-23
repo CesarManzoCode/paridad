@@ -409,9 +409,9 @@ function requestSchemaOf(op: IROperation): JsonObject {
   };
 }
 
-type Validate = (schema: JsonSchema, value: unknown) => string | null;
+export type Validate = (schema: JsonSchema, value: unknown) => string | null;
 
-function createValidator(schemas: Record<string, JsonSchema>, built: IROperation[]): Validate {
+export function createValidator(schemas: Record<string, JsonSchema>, built: IROperation[]): Validate {
   const formats: Record<string, RegExp | true> = {};
   collectFormats([schemas, built], formats);
   const ajv = new Ajv2020({
@@ -483,7 +483,7 @@ function synthesizeExample(op: IROperation, synthesize: (schema: JsonSchema) => 
 // `default`, the first branch of oneOf/anyOf that validates, merged allOf, and
 // otherwise a value built from type and format. Objects carry their required
 // properties, or their first property when none is required.
-function createSynthesizer(schemas: Record<string, JsonSchema>, validate: Validate): (schema: JsonSchema) => unknown {
+export function createSynthesizer(schemas: Record<string, JsonSchema>, validate: Validate): (schema: JsonSchema) => unknown {
   const deref = (schema: JsonSchema): JsonSchema => {
     let current = schema;
     for (let depth = 0; isObject(current) && typeof current["$ref"] === "string"; depth++) {
