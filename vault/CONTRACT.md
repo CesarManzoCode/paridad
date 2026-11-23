@@ -50,7 +50,7 @@ Reglas:
 - El código generado no se edita a mano. Todo cambio pasa por `ir/overlay.yaml`, `generator/` o sus plantillas. `make generate` reescribe por completo `ir/ir.json`, `sdks/`, `cli/`, `mcp/`, `skill/` y `docs/`.
 - Cada superficie generada contiene el `operationId` literal de cada operación (en un comentario de documentación, una tabla o un atributo), para que la cobertura sea comprobable en el texto.
 - Las pruebas viven junto al código: `generator/**/*.test.ts`, `compat/**/*.test.ts`, `release/**/*.test.ts`, `harness/**/*.test.ts`, y las suites generadas de cada SDK. Las de TS corren con `node --test` (sin framework de pruebas), las de Python con `pytest` y las de Go con `go test`.
-- Los paquetes y su versión exacta están en la sección 11 (D37).
+- Las versiones exactas de herramientas y dependencias están en `vault/RESEARCH.md` y en D33.
 
 ## 4. Representación intermedia
 
@@ -73,7 +73,8 @@ Cada operación: `id` (el `operationId`), `resource` y `action` (las dos mitades
 Qué se deriva y qué se anota:
 - Se deriva de la especificación: todo lo estructural; `idempotency` = la operación declara la cabecera `Idempotency-Key`; `pagination` = la operación es GET y usa los parámetros `limit`/`after`/`before` y su respuesta tiene `data` y `has_more`; `readOnly` = método GET; `destructive` = método DELETE; los nombres idiomáticos por regla (TS y Go en camelCase/PascalCase, Python en snake_case, CLI `paridad <resource> <action>`, MCP `<resource>_<action>`).
 - `ir/overlay.yaml` solo guarda lo que la especificación no dice: `project` (repositorio y módulo Go, campos obligatorios), `policy` (sección 5.3), `errors` (catálogo de la sección 5.2 con la URL de su fuente), y por `operationId` las excepciones: nombres idiomáticos que la regla haría feos o ambiguos, `destructive: true` en operaciones no DELETE que destruyen o cancelan (por ejemplo `emails/cancel`), y `examples`.
-- El generador falla si el overlay nombra un `operationId` que no existe en la especificación fijada, y si una operación queda sin ejemplo. Con `--spec <archivo>` (corpus de compatibilidad) ignora las entradas de operaciones ausentes y usa ejemplos sintetizados del esquema.
+- Ejemplos: los del overlay si existen; si no, se sintetizan de forma determinista del esquema de petición usando sus `example`, `default`, `enum` y `format`. Cada ejemplo se valida con `ajv` (dialecto 2020-12) contra el esquema de petición de la spec.
+- El generador falla si el overlay nombra un `operationId` que no existe en la especificación fijada, o si el ejemplo de una operación no valida. Con `--spec <archivo>` (corpus de compatibilidad) ignora las entradas del overlay de operaciones ausentes.
 - La IR se regenera siempre desde cero; las anotaciones no se pierden porque viven en el overlay, nunca en la salida.
 
 ## 5. Comportamiento común de las superficies
@@ -83,6 +84,7 @@ Qué se deriva y qué se anota:
 - Clave: opción explícita o variable `RESEND_API_KEY`. URL base: opción o `RESEND_BASE_URL` (por defecto `https://api.resend.com`). Tiempo máximo por intento: opción o `RESEND_TIMEOUT_MS` (por defecto 30000). Son los mismos nombres de variable que usan los SDKs oficiales de Node y Go, para que cambiar de SDK no cambie la configuración.
 - Cabecera `Authorization: Bearer <clave>` en cada petición; `Content-Type: application/json` solo si hay cuerpo.
 - `User-Agent: paridad-<lenguaje>/<versión>` (`paridad-ts`, `paridad-python`, `paridad-go`; CLI y MCP usan el del SDK TS con sufijo ` cli` o ` mcp`).
+- `PARIDAD_DEBUG=1` hace que cada superficie escriba en stderr una línea por intento (operación, método, ruta, intento, estado o error, espera antes del siguiente) y la configuración efectiva al arrancar, con la clave enmascarada. Es el modo que usa C7.
 - La clave nunca aparece en stdout, stderr, logs, mensajes de error ni trazas. Donde se muestre, va enmascarada como `re_...` seguido de sus 4 últimos caracteres. `paridad config show` imprime la configuración efectiva con la clave enmascarada.
 
 ### 5.2 Errores
@@ -115,14 +117,14 @@ Las operaciones con `pagination` aceptan `limit`, `after` y `before` como cualqu
 
 ### 5.6 React Email
 
-El SDK TS acepta `react` (un elemento React) en `emails/send` y lo renderiza con `render` de `@react-email/render` antes de enviar, como `resend-node`; `@react-email/render` es dependencia opcional (peer). El CLI acepta `--react <archivo.tsx>` y `--react-props <json>` y usa la misma función. El HTML enviado debe ser byte a byte el que produce `render` para la misma plantilla y props.
+El SDK TS acepta `react` (un elemento React) en `emails/send` y lo renderiza con `render` de `@react-email/render` antes de enviar, como `resend-node`; `@react-email/render` es dependencia opcional (peer). El CLI acepta `--react <archivo.tsx>` y `--react-props <json>`: transforma la plantilla con `esbuild` 0.28.2 (`bundle`, `jsx: automatic`, paquetes externos), la importa y usa la misma función `render`. Node no ejecuta JSX al quitar tipos, por eso hace falta ese paso. El HTML enviado debe ser byte a byte el que produce `render` para la misma plantilla y props.
 
 ## 6. Superficies
 
 - **SDK TS** (`sdks/typescript`, npm `paridad-resend`): sin dependencias de ejecución (usa `fetch` global); `new Resend(key?, options?)`, recursos como propiedades (`resend.emails.send(...)`).
 - **SDK Python** (`sdks/python`, PyPI `paridad-resend`, módulo `paridad_resend`): solo biblioteca estándar; tipado completo (`py.typed`); construido con hatchling; `requires-python >=3.10`.
 - **SDK Go** (`sdks/go`, módulo `<project.go_module>`, paquete `resend`): solo biblioteca estándar; `context.Context` en cada llamada; `go 1.23` en `go.mod`.
-- **CLI** (`cli/`, binario `paridad`, se ejecuta como `node cli/src/main.ts`): un comando por operación, `paridad <resource> <action>`, con banderas derivadas de parámetros y cuerpo (`--body <json>` acepta el cuerpo completo). JSON en stdout cuando stdout no es TTY, hay `CI` en el entorno o se pasa `--json`; salida 0 en éxito y 1 en error; `--idempotency-key`, `--timeout-ms`, `--all`, `--react`, `paridad config show`.
+- **CLI** (`cli/`, binario `paridad`, se ejecuta como `node cli/src/main.ts`): un comando por operación, `paridad <resource> <action>`, con banderas derivadas de parámetros y cuerpo (`--body <json>` acepta el cuerpo completo). JSON en stdout cuando stdout no es TTY, hay `CI` en el entorno o se pasa `--json`; salida 0 en éxito y 1 en error; `--idempotency-key`, `--timeout-ms`, `--all`, `--react`, `paridad config show`, y el subcomando `paridad contract-check`, que la plantilla del CLI delega en `compat/`.
 - **MCP** (`mcp/`, `node mcp/src/main.ts --transport stdio|http [--port N]`): construido con `@modelcontextprotocol/sdk`, protocolo `2025-11-25`, transportes stdio y Streamable HTTP (ruta `/mcp`, con validación de `Host`/`Origin` contra DNS rebinding). Una herramienta por operación, nombre `<resource>_<action>` con caracteres `[a-z0-9_-]`; `inputSchema` JSON Schema 2020-12 que une parámetros de ruta, query, cabeceras admitidas y cuerpo; anotaciones `readOnlyHint: true` en GET, `destructiveHint: true` en DELETE y en las marcadas en el overlay, `idempotentHint` según 5.3. La clave sale de `RESEND_API_KEY` del proceso, nunca de los argumentos de la herramienta.
 - **Skill** (`skill/paridad-resend/SKILL.md`): formato Agent Skills (frontmatter `name: paridad-resend` igual al directorio, `description` de 1 a 1024 caracteres); enseña el CLI; cada comando del CLI aparece al menos una vez en un bloque de código `bash` con valores concretos ejecutables.
 - **Documentación** (`docs/`): HTML estático generado por el propio generador, una página por recurso más índice; cada operación en un elemento con `data-operation-id="<operationId>"` y ejemplos en `<pre><code class="language-typescript|language-python|language-go|language-bash" data-operation-id="…">` ejecutables sin edición contra el servidor de captura.
@@ -141,7 +143,7 @@ Una petición normalizada es el objeto `{method, path, query, headers, body}`:
 - `method` en mayúsculas.
 - `path`: la parte del request-target antes de `?`, decodificada de porcentajes.
 - `query`: lista de pares `[clave, valor]` decodificados (`application/x-www-form-urlencoded`), ordenada por clave y luego valor.
-- `headers`: solo `authorization`, `content-type` (solo el tipo de medio, en minúsculas, sin parámetros) e `idempotency-key`; nombres en minúsculas, valores sin espacios en los extremos. No cuentan `user-agent`, `accept`, `accept-encoding`, `content-length`, `host`, `connection` ni ninguna otra.
+- `headers`: solo `authorization`, `content-type` (solo el tipo de medio, en minúsculas, sin parámetros, y solo si hay cuerpo: `resend-node` la envía también sin cuerpo) e `idempotency-key`; nombres en minúsculas, valores sin espacios en los extremos. No cuentan `user-agent`, `accept`, `accept-encoding`, `content-length`, `host`, `connection` ni ninguna otra.
 - `body`: vacío → `null`; si `content-type` es JSON, el JSON parseado y reserializado con claves ordenadas, sin espacios, y los números con parte fraccionaria cero escritos como enteros; si no, `sha256:` más el hash hex de los bytes.
 
 Campos de diferencia: `method`, `path`, `query`, `header:<nombre>`, `body`.
@@ -160,7 +162,7 @@ Todo se corre desde la raíz del repositorio:
 | `make generate` | Regenera la IR y todas las superficies |
 | `make check` | Comando único de chequeo: formato, tipos y pruebas de todo lo que exista (incluye `bootstrap`); es el que corre la CI |
 | `make verify C=cN [SURFACES=ts,python,go]` | Corre la batería del criterio N; borra y reescribe `.paridad/runs/cN/`; sale 0 si pasa, 1 si falla, 77 si se omite |
-| `make battery` | Corre `verify` de C1 a C26 en orden, sigue aunque uno falle, escribe `.paridad/runs/battery.json` (`{"c1": código, …}`) y sale 0 solo si todos salen 0 o 77 |
+| `make battery` | Corre `verify` de C1 a C26 en orden, sigue aunque uno falle, escribe `.paridad/runs/battery.json` (`{"c1": código, …}`) y sale 0 solo si todos salen 0 (C12 puede salir 77) |
 
 Formatos de artefacto (JSON Lines, un objeto por línea):
 - `captures.jsonl` (servidor de captura): `{"case","surface","seq","method","target","headers":[[nombre, valor]…],"body_b64"}`; `headers` en el orden y con los nombres tal como llegaron.
@@ -168,7 +170,22 @@ Formatos de artefacto (JSON Lines, un objeto por línea):
 - `results.jsonl` (drivers): `{"case","surface","outcome":"ok"|"error","error":{"code","message","statusCode"}|null,"items":[…]|null,"exit_code":int|null}`.
 - `out/`: stdout y stderr crudos de cada proceso de superficie (`out/<caso>.<superficie>.stdout|stderr`) y la respuesta JSON-RPC cruda del MCP (`out/<caso>.mcp.json`). `#` y `/` del id de caso se escriben como `_`.
 
-Identificadores de superficie: `ts`, `python`, `go`, `cli`, `mcp`, `official-node`, `official-python`, `official-go`, `official-cli`. Identificador de caso: `<operationId>#<etiqueta>`, salvo los casos con nombre de C9 a C11.
+Identificadores de superficie: `ts`, `python`, `go`, `cli`, `mcp`, `official-node`, `official-python`, `official-go`, `official-cli`. Identificador de caso: `<operationId>#<etiqueta>`, salvo los casos con nombre de 9.1, 9.2 y 9.4. Todo `operationId` tiene el caso `<operationId>#example`, que usa `examples[0]` de la IR; la documentación muestra esa misma entrada.
+
+Artefactos propios de algunos criterios:
+- `c13/exit.json`: `{"http": código, "stdio": código}` del marco de conformidad.
+- `c14/corpus.jsonl`: `{"tool","operation","example","spec_valid","tool_valid"}`.
+- `c15/results.jsonl`: `{"command","exit_code"}`; `c15/validate.json`: `{"exit_code"}` de `agentskills validate`.
+- `c16/results.jsonl`: `{"id","surface","argv","exit_code","stdout_file"}`; `id` empareja un comando propio con su equivalente oficial según `verify/official-cli-map.json`.
+- `c17/results.jsonl`: `{"operation","language","exit_code"}`; `c17/captures.jsonl` con caso `docs:<operationId>#<lenguaje>`; `language` es `typescript`, `python`, `go` o `bash`, igual que la clase `language-…` del ejemplo.
+- `c18/matrix.jsonl`: `{"pair","kind":"history"|"synthetic","ours":"breaking"|"compatible","base","revision"}` con rutas a los dos archivos materializados en `.paridad/corpus/<pair>/`.
+- `c19/matrix.jsonl`: `{"pair","kind","proposed":"major"|"minor"|"patch","raw_dir"}`; `raw_dir` contiene `oasdiff-changelog.json` (`oasdiff changelog -f json`), `ts-old.api.md`, `ts-new.api.md`, `griffe.txt`, `griffe.exit` y `apidiff.txt`.
+- `c20/results.jsonl`: `{"pair","language","bump","exit_code"}`.
+- `c21/smoke.jsonl`: `{"language","version","exit_code"}`.
+- `c23/metrics.txt` (respuesta cruda de `/metrics`) y `c23/queue.sqlite` (copia de la cola).
+- `c24/reference/<plantilla>.html` (salida de `render`) y `c24/captures.jsonl` con caso `react-email:<plantilla>`.
+- `c25/matrix.jsonl`: `{"pair","exit_code","operations":["MÉTODO /ruta"…],"surfaces":[…]}`.
+- `c29/memory.peak` y `battery.json`.
 
 ## 9. Criterios y cómo se miden
 
@@ -180,17 +197,17 @@ Identificadores de superficie: `ts`, `python`, `go`, `cli`, `mcp`, `official-nod
 | C4 | comandos directos | `tsc --strict --noEmit -p sdks/typescript`, `.venv/bin/mypy --strict sdks/python/src/paridad_resend`, `go vet ./...` en `sdks/go` y las tres suites de pruebas salen 0 |
 | C5 | `c5/captures.jsonl` | por caso, las peticiones normalizadas de las superficies pedidas son idénticas, y hay al menos un caso por operación; imprime `distintas=0` |
 | C6 | `c6/results.jsonl`, `c6/out/` | para cada error de la tabla de 9.1, las cinco superficies exponen el mismo `code` y `message` (los forzados); el CLI sale 1 con `error.message` en stdout; el MCP devuelve `isError: true` con el mismo `code` |
-| C7 | `c7/out/` con la batería de errores y paridad en modo depuración | la clave de prueba aparece 0 veces en todo `out/`; `paridad config show` muestra `re_...` y los 4 últimos caracteres |
+| C7 | `c7/out/` con la batería de errores y paridad en modo depuración | la clave de prueba aparece 0 veces en todo `out/`; `paridad config show` (salida en `c7/out/config-show.cli.stdout`) muestra `re_...` y los 4 últimos caracteres |
 | C8 | `c8/prism.log`, `c8/captures.jsonl` | la batería de C5 de las cinco superficies pasa por `prism proxy --errors spec/resend.yaml <captura>`; 0 líneas de violación (`✖`, `UNPROCESSABLE_ENTITY`, `Violation: request`) y todas las peticiones reenviadas |
 | C9 | `c9/traces.jsonl` | el proxy responde 429 con `ratelimit-limit`, `ratelimit-remaining`, `ratelimit-reset` y `retry-after: 1`; entre el fin de esa respuesta y el siguiente intento pasan al menos `retry-after × 1000 − 25 ms` y como mucho `retry-after × 1000 + 1000 ms`; nunca más de 3 intentos; las secuencias de estados son iguales en las cinco superficies |
 | C10 | `c10/traces.jsonl`, `c10/results.jsonl` | todo reintento de una escritura con clave lleva la misma `Idempotency-Key` y el mismo `body_sha256`; claves de 0 y 257 caracteres no generan ninguna petición y dan `invalid_idempotency_key` con el mismo mensaje en las cinco superficies |
 | C11 | `c11/results.jsonl`, `c11/traces.jsonl` | cada caso de 9.2 da el resultado esperado en las cinco superficies, sin escrituras repetidas sin clave ni elementos duplicados |
 | C12 | `c12/` | si `sudo -n true` falla, sale 77 (omitido); si no, los casos de 9.2 con pérdida, latencia y reordenamiento de `tc netem` en un network namespace dan los mismos resultados que C11 |
-| C13 | `c13/http/`, `c13/stdio/`, `c13/exit.json` | el marco oficial sale 0 en ambos transportes con `verify/mcp-conformance-baseline.yml`; ese archivo solo lista escenarios que dependen de herramientas, prompts o recursos de prueba del propio marco (`test_*`), cada uno con su razón en un comentario, y nunca `server-initialize`, `ping` ni `dns-rebinding-protection` |
+| C13 | `c13/http/` y `c13/stdio/` (`-o` del marco), `c13/exit.json` | el marco oficial sale 0 en ambos transportes con `verify/mcp-conformance-baseline.yml`; ese archivo solo lista escenarios que dependen de herramientas, prompts o recursos de prueba del propio marco (`test_*`), cada uno con su razón en un comentario, y nunca `server-initialize`, `ping` ni `dns-rebinding-protection` |
 | C14 | `tools/list` por stdio, `c14/corpus.jsonl` | biyección herramientas ↔ operaciones; cada `inputSchema` es JSON Schema 2020-12 válido y acepta y rechaza el mismo corpus que el esquema de petición de la spec; DELETE con `destructiveHint: true`, GET con `readOnlyHint: true` |
 | C15 | `c15/results.jsonl`, `c15/validate.json` | cada invocación `paridad …` de los bloques de código de la skill sale 0 contra el servidor de captura, cada comando del CLI aparece en la skill, y `agentskills validate skill/paridad-resend` sale 0 |
 | C16 | `c16/results.jsonl`, `c16/out/` | con stdout a archivo, cada comando escribe JSON válido (éxito) o JSON con `error.message` (error) y sale 0 o 1; para los comandos de `verify/official-cli-map.json` (al menos 20), coinciden con el CLI oficial el código de salida y las claves de primer nivel |
-| C17 | `docs/`, `c17/results.jsonl` | cada ejemplo de la documentación se ejecuta y produce la petición normalizada de su operación; `vnu --errors-only` sobre `docs/` sale 0; 0 enlaces internos rotos |
+| C17 | `docs/`, `c17/results.jsonl`, `c17/captures.jsonl` | cada ejemplo de la documentación se ejecuta, sale 0 y produce la petición normalizada de su operación, igual a la del caso `<operationId>#example` de C5 en `ts`; `vnu --errors-only` sobre `docs/` sale 0; 0 enlaces internos rotos |
 | C18 | `verify/corpus/`, `c18/matrix.jsonl` | la clasificación propia (rompe o no) coincide con la salida de `oasdiff breaking --fail-on ERR` en todos los pares incluidos (al menos 85 históricos y 24 sintéticos) |
 | C19 | `c19/matrix.jsonl`, `c19/raw/` | el salto propuesto nunca es menor que el que exigen `oasdiff`, `api-extractor` (TS), `griffe check` (Python) y `apidiff` (Go), en al menos 30 pares históricos y los 24 sintéticos |
 | C20 | `c20/results.jsonl` | los proyectos de `verify/examples/{typescript,python,go}` compilados contra N pasan sus pruebas sin cambios contra N+1 en cada par cuyo salto no es mayor |
@@ -198,7 +215,7 @@ Identificadores de superficie: `ts`, `python`, `go`, `cli`, `mcp`, `official-nod
 | C22 | `c22/reference/`, `c22/<punto>/` | tras SIGKILL en cada punto de 9.3 y reinicio, el estado de los registros (paquete, versión, sha256 de cada artefacto) es igual al de la corrida de referencia, sin duplicados ni archivos a medias |
 | C23 | `c23/metrics.txt`, `c23/queue.sqlite` | `promtool check metrics` sale 0 y `paridad_release_jobs_enqueued_total`, `_completed_total` y `_failed_total` cuadran con la tabla `jobs` |
 | C24 | `c24/reference/`, `c24/captures.jsonl` | el campo `html` que envían el CLI y el SDK TS es byte a byte igual al de `render` para cada plantilla de `verify/react-email/` |
-| C25 | `c25/matrix.jsonl` | `paridad contract-check <base> <revisión>` sale 0 en pares compatibles y 1 en incompatibles, y en estos las operaciones afectadas coinciden con las de `oasdiff`; además lista las superficies afectadas |
+| C25 | `c25/matrix.jsonl` | `paridad contract-check <base> <revisión>` sale 0 en pares compatibles y 1 en incompatibles, y en estos las operaciones afectadas (`MÉTODO /ruta`) coinciden con las entradas de nivel 3 (ERR) de `oasdiff breaking -f json`; además lista las superficies afectadas |
 | C26 | clon local nuevo | desde un clon, `make bootstrap && make check` sale 0; tras `git apply verify/c26/add-operation.patch`, `make generate && make check` sale 0 y el nuevo `operationId` aparece en las cinco superficies y la documentación |
 | C27 | archivos | existen `LICENSE`, `CONTRIBUTING.md`, plantillas en `.github/ISSUE_TEMPLATE/` y `.github/pull_request_template.md`, y la CI corre `make check` |
 | C28 | `vault/DECISION-LOG.md` | tiene las secciones Problema ambiguo, Alternativas descartadas, Solución acotada y Seguimiento después del primer release; su calidad requiere juicio humano |
@@ -230,13 +247,27 @@ Timeout del cliente en la batería: `RESEND_TIMEOUT_MS=1000`; `delay` retrasa 20
 
 El servicio acepta `PARIDAD_RELEASE_PAUSE_AT=<punto>`: al llegar al punto confirma su estado en disco, escribe `paused <punto>` en stderr y se bloquea; el arnés lo mata con SIGKILL y lo reinicia sin la variable. Puntos, en orden: `enqueued`, `claimed`, `versioned`, `built`, `npm_published`, `pypi_published`, `go_published`, `before_complete`.
 
+### 9.4 Casos de C9 y C10
+
+| Caso | Operación | Escenario | Resultado esperado |
+| --- | --- | --- | --- |
+| `ratelimit-get` | `domains/list` | 429 de tasa, luego `pass` | éxito, 2 intentos |
+| `ratelimit-post-nokey` | `emails/send` sin clave | 429 de tasa, luego `pass` | éxito, 2 intentos (el 429 se reintenta siempre) |
+| `ratelimit-exhausted` | `domains/list` | 429 de tasa en los 3 intentos | error `rate_limit_exceeded`, 3 intentos |
+| `idem-retry-send` | `emails/send` con clave | 503, luego `pass` | éxito, 2 intentos, misma clave y cuerpo |
+| `idem-retry-batch` | `emails/send-batch` con clave | `cut`, luego `pass` | éxito, 2 intentos, misma clave y cuerpo |
+| `idem-invalid-empty` | `emails/send` con clave de 0 caracteres | ninguno | error `invalid_idempotency_key`, 0 peticiones |
+| `idem-invalid-257` | `emails/send` con clave de 257 caracteres | ninguno | error `invalid_idempotency_key`, 0 peticiones |
+
 ## 10. Compatibilidad y releases
 
 - **Herramienta compartida** (`compat/`, comando `paridad contract-check <base.yaml> <revision.yaml> [--json]`): clasifica cada cambio como `breaking` o `compatible`, lista las operaciones afectadas (por método y ruta, y por `operationId` si existe) y las superficies afectadas (las cinco más la documentación), propone el salto semver del contrato y sale 0 si es compatible o 1 si rompe. No envuelve `oasdiff`: es una implementación propia que se compara contra él.
 - **Corpus** (`verify/corpus/`): `resend-openapi.bundle` (historial completo hasta el commit fijado, licencia MIT de Resend), `history.json` (cada par consecutivo de commits que tocan `resend.yaml`, con `included` o `excluded` y la razón; se excluye un par si un lado no parsea), `synthetic.json` y `synthetic/<id>.json` (parches RFC 6902 sobre la spec fijada). Mutaciones sintéticas, 24 como mínimo: agregar y quitar operación; agregar propiedad de petición opcional y requerida; quitar propiedad de petición; volver requerida u opcional una propiedad; cambiar el tipo de una propiedad de petición y de respuesta; agregar y quitar propiedad de respuesta; agregar y quitar valor de enum en petición; agregar valor de enum en respuesta; agregar parámetro de query opcional y requerido; quitar parámetro de query; cambiar una ruta; quitar la respuesta de éxito; agregar cabecera opcional; quitar la cabecera `Idempotency-Key`; reducir y ampliar `maxLength`.
 - **Semver del release**: el salto es el máximo entre el del contrato (herramienta propia) y el de la API pública de cada SDK generado (comparada por la propia herramienta y validada contra `api-extractor`, `griffe` y `apidiff`). Mayor si algo rompe; menor si algo se agrega; parche si no cambia la superficie.
+- **Versiones**: los manifiestos generados (`package.json`, `pyproject.toml`) llevan `0.0.0-dev`; el servicio de releases calcula la versión (la primera es `0.1.0`; las siguientes, la última publicada más el salto semver) y la escribe solo en su copia de construcción. En Go la versión es el nombre de archivo del GOPROXY (`v0.1.0`).
 - **Servicio de releases** (`release/`): proceso Node con cola persistente en SQLite (`node:sqlite`, archivo `.paridad/release/queue.sqlite`, tabla `jobs(id, state, version, created_at, updated_at, step, error)` con `state` en `queued|running|done|failed`). Cada trabajo avanza por los pasos de 9.3; cada paso es idempotente: antes de publicar consulta el registro y, si la versión ya existe con el mismo sha256, sigue; si existe con otro, falla el trabajo. Publica con el protocolo de cada registro: `npm publish --registry` a Verdaccio, `twine upload` a pypiserver, y escritura atómica (archivo temporal y `rename`) de `list`, `.info`, `.mod` y `.zip` en el GOPROXY por archivos. Expone `/metrics` en formato de texto de Prometheus, con contadores derivados de la tabla `jobs` al arrancar.
 - **Registros locales**: Verdaccio 7.1.2 (almacenamiento en `.paridad/registries/verdaccio/storage`), pypiserver 2.4.3 (`.paridad/registries/pypi/packages`, subida anónima permitida solo en `127.0.0.1`), GOPROXY por archivos en `.paridad/registries/goproxy`.
+- **Forma de un directorio de registros** (`.paridad/registries/` en C21; `.paridad/runs/c22/reference/registries/` y `.paridad/runs/c22/<punto>/registries/` en C22): `verdaccio/storage/paridad-resend/package.json` y `paridad-resend-<versión>.tgz`; `pypi/packages/paridad_resend-<versión>.tar.gz` y `paridad_resend-<versión>-py3-none-any.whl`; `goproxy/<módulo con mayúsculas escapadas>/@v/list`, `v<versión>.info`, `v<versión>.mod` y `v<versión>.zip`. Ningún archivo temporal (`*.tmp`, `*.partial`, `.tmp*`) queda en el árbol al terminar.
 
 ## 11. Decisiones cerradas
 
@@ -295,8 +326,8 @@ Decisión: memoria pico de C29 bajo 8 GiB medida como `memory.peak` del cgroup v
 Razón: 8 GiB deja la mitad de la máquina al sistema y `memory.peak` es una medida del kernel que incluye a todos los procesos hijos; los tiempos no se estiman a ojo antes de medirlos.
 
 **D14. Plantillas y versión de React Email.**
-Decisión: tres plantillas propias en `verify/react-email/` (`welcome.tsx`, `reset-password.tsx`, `receipt.tsx` con tabla e imagen) con `@react-email/components` 1.0.12, `@react-email/render` 2.3.1, `react` y `react-dom` 19.3.1.
-Razón: cubren texto, botón, enlaces, tabla e imagen con versiones actuales que se ejecutaron en esta máquina; plantillas propias evitan depender de ejemplos que cambien.
+Decisión: tres plantillas propias en `verify/react-email/` (`welcome.tsx`, `reset-password.tsx`, `receipt.tsx` con tabla e imagen) con `@react-email/components` 1.0.12, `@react-email/render` 2.3.1, `react` y `react-dom` 19.3.1; las `.tsx` se cargan con `esbuild` 0.28.2.
+Razón: cubren texto, botón, enlaces, tabla e imagen con versiones actuales que se ejecutaron en esta máquina (incluida la carga de una `.tsx` con esbuild y su `render`); plantillas propias evitan depender de ejemplos que cambien.
 
 **D15. `/emails/batch` ante errores por elemento.**
 Decisión: todo o nada; sin manejo por elemento y sin cabecera de modo de validación.
