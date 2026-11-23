@@ -20,6 +20,15 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - Los archivos de `multipart/form-data` (`contacts/create-import`) se pasan como `bytes`, y su nombre de archivo es el nombre del campo.
 - El tiempo máximo por intento se aplica como plazo del socket, recalculado antes de la conexión, del envío y de cada bloque leído; dentro de un mismo bloque el socket puede recibir varias veces, así que una respuesta que llega a pedazos muy lentos puede pasarse del plazo. No se midió cuánto.
 
+## SDK Go
+
+- Los campos opcionales son punteros (o slices, mapas e `any` en `nil`) con `omitempty`: un opcional no puede enviarse como `null` explícito, y un slice o mapa opcional vacío no se envía. Un `PATCH` que necesite poner un campo opcional en `null` no se puede expresar con los tipos generados.
+- `oneOf`, `anyOf` sin propiedades propias y los `enum` de tipos mezclados se tipan como `any`; las ramas de `oneOf`/`anyOf` con propiedades se unen como campos opcionales del mismo struct, y las restricciones (`required` de una rama, `minLength`, `maxItems`) no se comprueban en el tipo. Las claves extra que admite `additionalProperties` junto a `properties` no tienen campo y se pierden al decodificar.
+- Los campos `format: binary` son `[]byte`: en un cuerpo JSON `encoding/json` los envía en base64 (como `resend-go`), mientras que el SDK TS y el Python envían la cadena tal como se les da. En `multipart/form-data` (`contacts/create-import`) se envían como archivo con el nombre del campo como nombre de archivo.
+- Las respuestas no se validan contra su tipo: un valor cuyo tipo JSON no coincide con el del campo Go queda en su valor cero, sin error.
+- `StatusCode` vale 0 cuando no hubo respuesta (`invalid_idempotency_key`, `timeout`, `connection_error`), en lugar del nulo de las otras superficies. Si el `context.Context` del llamador termina antes, la llamada devuelve `ctx.Err()` y no un `*resend.Error`.
+- Cada intento abre una conexión nueva (sin keep-alive), para que `net/http` no repita por su cuenta peticiones fallidas sobre una conexión reutilizada. No se midió el costo en latencia.
+
 ## Oráculo
 
 - La equivalencia con los SDKs oficiales solo cubre las operaciones que cada SDK oficial expone en su versión fijada. Las demás solo se comparan entre superficies propias y contra la especificación con Prism.
