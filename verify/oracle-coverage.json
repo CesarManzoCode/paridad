@@ -1,0 +1,3501 @@
+{
+  "format": "paridad-oracle-coverage/1",
+  "ts": {
+    "sdk": "npm resend@6.39.0",
+    "enumerated_by": "node harness/oracle/official_node.ts --methods",
+    "methods": [
+      {
+        "method": "apiKeys.create",
+        "operation": "api-keys/create",
+        "reason": null
+      },
+      {
+        "method": "apiKeys.list",
+        "operation": "api-keys/list",
+        "reason": null
+      },
+      {
+        "method": "apiKeys.remove",
+        "operation": "api-keys/remove",
+        "reason": null
+      },
+      {
+        "method": "apiKeys.update",
+        "operation": "api-keys/update",
+        "reason": null
+      },
+      {
+        "method": "audiences.create",
+        "operation": "segments/create",
+        "reason": "resend.audiences es el mismo objeto que resend.segments: envía POST /segments, no POST /audiences; lo compara el caso de segments/create."
+      },
+      {
+        "method": "audiences.get",
+        "operation": "segments/get",
+        "reason": "resend.audiences es el mismo objeto que resend.segments: envía GET /segments/{id}; lo compara el caso de segments/get."
+      },
+      {
+        "method": "audiences.list",
+        "operation": "segments/list",
+        "reason": "resend.audiences es el mismo objeto que resend.segments: envía GET /segments; lo compara el caso de segments/list."
+      },
+      {
+        "method": "audiences.remove",
+        "operation": "segments/remove",
+        "reason": "resend.audiences es el mismo objeto que resend.segments: envía DELETE /segments/{id}; lo compara el caso de segments/remove."
+      },
+      {
+        "method": "audiences.update",
+        "operation": "segments/update",
+        "reason": "resend.audiences es el mismo objeto que resend.segments: envía PATCH /segments/{id}; lo compara el caso de segments/update."
+      },
+      {
+        "method": "automations.create",
+        "operation": "automations/create",
+        "reason": null
+      },
+      {
+        "method": "automations.duplicate",
+        "operation": "automations/duplicate",
+        "reason": null
+      },
+      {
+        "method": "automations.get",
+        "operation": "automations/get",
+        "reason": null
+      },
+      {
+        "method": "automations.list",
+        "operation": "automations/list",
+        "reason": null
+      },
+      {
+        "method": "automations.remove",
+        "operation": "automations/remove",
+        "reason": null
+      },
+      {
+        "method": "automations.runs.cancel",
+        "operation": "automations/cancel-run",
+        "reason": null
+      },
+      {
+        "method": "automations.runs.get",
+        "operation": "automations/get-run",
+        "reason": null
+      },
+      {
+        "method": "automations.runs.list",
+        "operation": "automations/list-runs",
+        "reason": null
+      },
+      {
+        "method": "automations.stop",
+        "operation": "automations/stop",
+        "reason": null
+      },
+      {
+        "method": "automations.update",
+        "operation": "automations/update",
+        "reason": null
+      },
+      {
+        "method": "batch.create",
+        "operation": "emails/send-batch",
+        "reason": "Alias de batch.send (send llama a create); el caso usa batch.send."
+      },
+      {
+        "method": "batch.send",
+        "operation": "emails/send-batch",
+        "reason": null
+      },
+      {
+        "method": "broadcasts.cancel",
+        "operation": "broadcasts/cancel",
+        "reason": null
+      },
+      {
+        "method": "broadcasts.clickedLinks",
+        "operation": "broadcasts/list-clicked-links",
+        "reason": null
+      },
+      {
+        "method": "broadcasts.create",
+        "operation": "broadcasts/create",
+        "reason": null
+      },
+      {
+        "method": "broadcasts.duplicate",
+        "operation": "broadcasts/duplicate",
+        "reason": null
+      },
+      {
+        "method": "broadcasts.get",
+        "operation": "broadcasts/get",
+        "reason": null
+      },
+      {
+        "method": "broadcasts.list",
+        "operation": "broadcasts/list",
+        "reason": null
+      },
+      {
+        "method": "broadcasts.recipients",
+        "operation": "broadcasts/recipients",
+        "reason": null
+      },
+      {
+        "method": "broadcasts.remove",
+        "operation": "broadcasts/remove",
+        "reason": null
+      },
+      {
+        "method": "broadcasts.send",
+        "operation": "broadcasts/send",
+        "reason": null
+      },
+      {
+        "method": "broadcasts.update",
+        "operation": "broadcasts/update",
+        "reason": null
+      },
+      {
+        "method": "contactProperties.create",
+        "operation": "contact-properties/create",
+        "reason": null
+      },
+      {
+        "method": "contactProperties.get",
+        "operation": "contact-properties/get",
+        "reason": null
+      },
+      {
+        "method": "contactProperties.list",
+        "operation": "contact-properties/list",
+        "reason": null
+      },
+      {
+        "method": "contactProperties.remove",
+        "operation": "contact-properties/remove",
+        "reason": null
+      },
+      {
+        "method": "contactProperties.update",
+        "operation": "contact-properties/update",
+        "reason": null
+      },
+      {
+        "method": "contacts.create",
+        "operation": "contacts/create",
+        "reason": null
+      },
+      {
+        "method": "contacts.get",
+        "operation": "contacts/get",
+        "reason": null
+      },
+      {
+        "method": "contacts.imports.appendField",
+        "operation": null,
+        "reason": "Ayuda local para armar el FormData de contacts.imports.create; no envía peticiones."
+      },
+      {
+        "method": "contacts.imports.buildColumnMap",
+        "operation": null,
+        "reason": "Ayuda local que traduce columnMap a column_map; no envía peticiones."
+      },
+      {
+        "method": "contacts.imports.buildCreateFormData",
+        "operation": null,
+        "reason": "Ayuda local que arma el FormData de contacts.imports.create; no envía peticiones."
+      },
+      {
+        "method": "contacts.imports.create",
+        "operation": "contacts/create-import",
+        "reason": "Cuerpo multipart/form-data con frontera aleatoria por petición: el cuerpo normalizado (§7.1) es el sha256 de los bytes y nunca coincide entre dos clientes, así que la comparación no es posible."
+      },
+      {
+        "method": "contacts.imports.get",
+        "operation": "contacts/get-import",
+        "reason": null
+      },
+      {
+        "method": "contacts.imports.list",
+        "operation": "contacts/list-imports",
+        "reason": null
+      },
+      {
+        "method": "contacts.list",
+        "operation": "segments/list-contacts",
+        "reason": null
+      },
+      {
+        "method": "contacts.remove",
+        "operation": "contacts/remove",
+        "reason": null
+      },
+      {
+        "method": "contacts.segments.add",
+        "operation": "contacts/add-segment",
+        "reason": null
+      },
+      {
+        "method": "contacts.segments.list",
+        "operation": "contacts/list-segments",
+        "reason": null
+      },
+      {
+        "method": "contacts.segments.remove",
+        "operation": "contacts/remove-segment",
+        "reason": null
+      },
+      {
+        "method": "contacts.topics.list",
+        "operation": "contacts/list-topics",
+        "reason": null
+      },
+      {
+        "method": "contacts.topics.update",
+        "operation": "contacts/update-topics",
+        "reason": null
+      },
+      {
+        "method": "contacts.update",
+        "operation": "contacts/update",
+        "reason": null
+      },
+      {
+        "method": "delete",
+        "operation": null,
+        "reason": "Petición DELETE genérica del cliente por ruta; no corresponde a una operación."
+      },
+      {
+        "method": "domains.claims.create",
+        "operation": "domains/create-claim",
+        "reason": null
+      },
+      {
+        "method": "domains.claims.get",
+        "operation": "domains/get-claim",
+        "reason": null
+      },
+      {
+        "method": "domains.claims.verify",
+        "operation": "domains/verify-claim",
+        "reason": null
+      },
+      {
+        "method": "domains.create",
+        "operation": "domains/create",
+        "reason": null
+      },
+      {
+        "method": "domains.forge.enable",
+        "operation": "domains/enable-forge",
+        "reason": null
+      },
+      {
+        "method": "domains.get",
+        "operation": "domains/get",
+        "reason": null
+      },
+      {
+        "method": "domains.list",
+        "operation": "domains/list",
+        "reason": null
+      },
+      {
+        "method": "domains.remove",
+        "operation": "domains/remove",
+        "reason": null
+      },
+      {
+        "method": "domains.update",
+        "operation": "domains/update",
+        "reason": null
+      },
+      {
+        "method": "domains.verify",
+        "operation": "domains/verify",
+        "reason": null
+      },
+      {
+        "method": "emails.attachments.get",
+        "operation": "emails/get-attachment",
+        "reason": null
+      },
+      {
+        "method": "emails.attachments.list",
+        "operation": "emails/list-attachments",
+        "reason": null
+      },
+      {
+        "method": "emails.cancel",
+        "operation": "emails/cancel",
+        "reason": null
+      },
+      {
+        "method": "emails.create",
+        "operation": "emails/send",
+        "reason": "Alias de emails.send (send llama a create); el caso usa emails.send."
+      },
+      {
+        "method": "emails.get",
+        "operation": "emails/get",
+        "reason": null
+      },
+      {
+        "method": "emails.list",
+        "operation": "emails/list",
+        "reason": null
+      },
+      {
+        "method": "emails.metrics",
+        "operation": "emails/metrics",
+        "reason": null
+      },
+      {
+        "method": "emails.receiving.attachments.get",
+        "operation": "emails/get-receiving-attachment",
+        "reason": null
+      },
+      {
+        "method": "emails.receiving.attachments.list",
+        "operation": "emails/list-receiving-attachments",
+        "reason": null
+      },
+      {
+        "method": "emails.receiving.downloadRaw",
+        "operation": null,
+        "reason": "Descarga la URL firmada del correo crudo que devolvió la API (fuera de la API de Resend); no corresponde a ninguna operación."
+      },
+      {
+        "method": "emails.receiving.forward",
+        "operation": null,
+        "reason": "Composición: GET /emails/receiving/{email_id}, descarga del correo crudo y POST /emails con el contenido; no corresponde a una sola operación y la descarga depende de una URL externa."
+      },
+      {
+        "method": "emails.receiving.forwardPassthrough",
+        "operation": null,
+        "reason": "Segunda mitad de emails.receiving.forward: descarga el correo crudo y lo reenvía con POST /emails; depende de una URL externa."
+      },
+      {
+        "method": "emails.receiving.forwardWrapped",
+        "operation": null,
+        "reason": "Segunda mitad de emails.receiving.forward: descarga el correo crudo y lo adjunta en POST /emails; depende de una URL externa."
+      },
+      {
+        "method": "emails.receiving.get",
+        "operation": "emails/get-receiving",
+        "reason": null
+      },
+      {
+        "method": "emails.receiving.list",
+        "operation": "emails/list-receiving",
+        "reason": null
+      },
+      {
+        "method": "emails.send",
+        "operation": "emails/send",
+        "reason": null
+      },
+      {
+        "method": "emails.share",
+        "operation": "emails/share",
+        "reason": null
+      },
+      {
+        "method": "emails.update",
+        "operation": "emails/update",
+        "reason": null
+      },
+      {
+        "method": "events.create",
+        "operation": "events/create",
+        "reason": null
+      },
+      {
+        "method": "events.get",
+        "operation": "events/get",
+        "reason": null
+      },
+      {
+        "method": "events.list",
+        "operation": "events/list",
+        "reason": null
+      },
+      {
+        "method": "events.remove",
+        "operation": "events/remove",
+        "reason": null
+      },
+      {
+        "method": "events.send",
+        "operation": "events/send",
+        "reason": null
+      },
+      {
+        "method": "events.update",
+        "operation": "events/update",
+        "reason": null
+      },
+      {
+        "method": "fetchRequest",
+        "operation": null,
+        "reason": "Transporte HTTP genérico del cliente, que usan todos los métodos de recurso; no corresponde a una operación."
+      },
+      {
+        "method": "get",
+        "operation": null,
+        "reason": "Petición GET genérica del cliente por ruta; no corresponde a una operación."
+      },
+      {
+        "method": "inboxes.agent.get",
+        "operation": "inboxes/get-agent",
+        "reason": null
+      },
+      {
+        "method": "inboxes.agent.update",
+        "operation": "inboxes/update-agent",
+        "reason": null
+      },
+      {
+        "method": "inboxes.create",
+        "operation": "inboxes/create",
+        "reason": null
+      },
+      {
+        "method": "inboxes.drafts.create",
+        "operation": "inboxes/create-draft",
+        "reason": null
+      },
+      {
+        "method": "inboxes.drafts.get",
+        "operation": "inboxes/get-draft",
+        "reason": null
+      },
+      {
+        "method": "inboxes.drafts.list",
+        "operation": "inboxes/list-drafts",
+        "reason": null
+      },
+      {
+        "method": "inboxes.drafts.remove",
+        "operation": "inboxes/remove-draft",
+        "reason": null
+      },
+      {
+        "method": "inboxes.drafts.send",
+        "operation": "inboxes/send-draft",
+        "reason": null
+      },
+      {
+        "method": "inboxes.drafts.update",
+        "operation": "inboxes/update-draft",
+        "reason": null
+      },
+      {
+        "method": "inboxes.get",
+        "operation": "inboxes/get",
+        "reason": null
+      },
+      {
+        "method": "inboxes.labels.create",
+        "operation": "inboxes/create-label",
+        "reason": null
+      },
+      {
+        "method": "inboxes.labels.list",
+        "operation": "inboxes/list-labels",
+        "reason": null
+      },
+      {
+        "method": "inboxes.labels.remove",
+        "operation": "inboxes/remove-label",
+        "reason": null
+      },
+      {
+        "method": "inboxes.labels.update",
+        "operation": "inboxes/update-label",
+        "reason": null
+      },
+      {
+        "method": "inboxes.list",
+        "operation": "inboxes/list",
+        "reason": null
+      },
+      {
+        "method": "inboxes.remove",
+        "operation": "inboxes/remove",
+        "reason": null
+      },
+      {
+        "method": "inboxes.threads.emails.forward",
+        "operation": "inboxes/forward-thread-email",
+        "reason": null
+      },
+      {
+        "method": "inboxes.threads.emails.get",
+        "operation": "inboxes/get-thread-email",
+        "reason": null
+      },
+      {
+        "method": "inboxes.threads.emails.list",
+        "operation": "inboxes/list-thread-emails",
+        "reason": null
+      },
+      {
+        "method": "inboxes.threads.emails.reply",
+        "operation": "inboxes/reply-thread-email",
+        "reason": null
+      },
+      {
+        "method": "inboxes.threads.get",
+        "operation": "inboxes/get-thread",
+        "reason": null
+      },
+      {
+        "method": "inboxes.threads.labels.add",
+        "operation": "inboxes/add-thread-labels",
+        "reason": null
+      },
+      {
+        "method": "inboxes.threads.labels.remove",
+        "operation": "inboxes/remove-thread-label",
+        "reason": null
+      },
+      {
+        "method": "inboxes.threads.labels.set",
+        "operation": "inboxes/set-thread-labels",
+        "reason": null
+      },
+      {
+        "method": "inboxes.threads.list",
+        "operation": "inboxes/list-threads",
+        "reason": null
+      },
+      {
+        "method": "inboxes.threads.remove",
+        "operation": "inboxes/remove-thread",
+        "reason": null
+      },
+      {
+        "method": "inboxes.threads.search",
+        "operation": "inboxes/search-threads",
+        "reason": null
+      },
+      {
+        "method": "inboxes.threads.update",
+        "operation": "inboxes/update-thread",
+        "reason": null
+      },
+      {
+        "method": "inboxes.update",
+        "operation": "inboxes/update",
+        "reason": null
+      },
+      {
+        "method": "logError",
+        "operation": null,
+        "reason": "Escribe un error en stderr con RESEND_DEBUG=true; no envía peticiones."
+      },
+      {
+        "method": "logs.get",
+        "operation": "logs/get",
+        "reason": null
+      },
+      {
+        "method": "logs.list",
+        "operation": "logs/list",
+        "reason": null
+      },
+      {
+        "method": "oauthGrants.list",
+        "operation": "oauth/list-grants",
+        "reason": null
+      },
+      {
+        "method": "oauthGrants.revoke",
+        "operation": "oauth/revoke-grant",
+        "reason": null
+      },
+      {
+        "method": "patch",
+        "operation": null,
+        "reason": "Petición PATCH genérica del cliente por ruta; no corresponde a una operación."
+      },
+      {
+        "method": "post",
+        "operation": null,
+        "reason": "Petición POST genérica del cliente por ruta; no corresponde a una operación."
+      },
+      {
+        "method": "put",
+        "operation": null,
+        "reason": "Petición PUT genérica del cliente por ruta; no corresponde a una operación."
+      },
+      {
+        "method": "segments.create",
+        "operation": "segments/create",
+        "reason": null
+      },
+      {
+        "method": "segments.get",
+        "operation": "segments/get",
+        "reason": null
+      },
+      {
+        "method": "segments.list",
+        "operation": "segments/list",
+        "reason": null
+      },
+      {
+        "method": "segments.remove",
+        "operation": "segments/remove",
+        "reason": null
+      },
+      {
+        "method": "segments.update",
+        "operation": "segments/update",
+        "reason": null
+      },
+      {
+        "method": "suppressions.add",
+        "operation": "suppressions/add",
+        "reason": null
+      },
+      {
+        "method": "suppressions.batch.add",
+        "operation": "suppressions/batch-add",
+        "reason": null
+      },
+      {
+        "method": "suppressions.batch.remove",
+        "operation": "suppressions/batch-remove",
+        "reason": null
+      },
+      {
+        "method": "suppressions.get",
+        "operation": "suppressions/get",
+        "reason": null
+      },
+      {
+        "method": "suppressions.list",
+        "operation": "suppressions/list",
+        "reason": null
+      },
+      {
+        "method": "suppressions.remove",
+        "operation": "suppressions/remove",
+        "reason": null
+      },
+      {
+        "method": "templates.create",
+        "operation": "templates/create",
+        "reason": null
+      },
+      {
+        "method": "templates.duplicate",
+        "operation": "templates/duplicate",
+        "reason": null
+      },
+      {
+        "method": "templates.get",
+        "operation": "templates/get",
+        "reason": null
+      },
+      {
+        "method": "templates.list",
+        "operation": "templates/list",
+        "reason": null
+      },
+      {
+        "method": "templates.performCreate",
+        "operation": "templates/create",
+        "reason": "Paso interno de templates.create, que lo envuelve en un resultado encadenable; el caso usa templates.create."
+      },
+      {
+        "method": "templates.publish",
+        "operation": "templates/publish",
+        "reason": null
+      },
+      {
+        "method": "templates.remove",
+        "operation": "templates/remove",
+        "reason": null
+      },
+      {
+        "method": "templates.update",
+        "operation": "templates/update",
+        "reason": null
+      },
+      {
+        "method": "topics.create",
+        "operation": "topics/create",
+        "reason": null
+      },
+      {
+        "method": "topics.get",
+        "operation": "topics/get",
+        "reason": null
+      },
+      {
+        "method": "topics.list",
+        "operation": "topics/list",
+        "reason": null
+      },
+      {
+        "method": "topics.remove",
+        "operation": "topics/remove",
+        "reason": null
+      },
+      {
+        "method": "topics.update",
+        "operation": "topics/update",
+        "reason": null
+      },
+      {
+        "method": "usage.get",
+        "operation": "usage/get",
+        "reason": null
+      },
+      {
+        "method": "webhooks.create",
+        "operation": "webhooks/create",
+        "reason": null
+      },
+      {
+        "method": "webhooks.events.attempts.list",
+        "operation": "webhooks/list-event-attempts",
+        "reason": null
+      },
+      {
+        "method": "webhooks.events.get",
+        "operation": "webhooks/get-event",
+        "reason": null
+      },
+      {
+        "method": "webhooks.events.list",
+        "operation": "webhooks/list-events",
+        "reason": null
+      },
+      {
+        "method": "webhooks.events.replay",
+        "operation": "webhooks/replay-event",
+        "reason": null
+      },
+      {
+        "method": "webhooks.get",
+        "operation": "webhooks/get",
+        "reason": null
+      },
+      {
+        "method": "webhooks.list",
+        "operation": "webhooks/list",
+        "reason": null
+      },
+      {
+        "method": "webhooks.remove",
+        "operation": "webhooks/remove",
+        "reason": null
+      },
+      {
+        "method": "webhooks.rotateSigningSecret",
+        "operation": "webhooks/rotate-signing-secret",
+        "reason": null
+      },
+      {
+        "method": "webhooks.update",
+        "operation": "webhooks/update",
+        "reason": null
+      },
+      {
+        "method": "webhooks.verify",
+        "operation": null,
+        "reason": "Verifica localmente la firma de un webhook (standardwebhooks); no envía peticiones."
+      }
+    ]
+  },
+  "python": {
+    "sdk": "PyPI resend==2.55.0",
+    "enumerated_by": ".venv/bin/python -I harness/oracle/official_python.py --methods",
+    "methods": [
+      {
+        "method": "ApiKeys.create",
+        "operation": "api-keys/create",
+        "reason": null
+      },
+      {
+        "method": "ApiKeys.create_async",
+        "operation": "api-keys/create",
+        "reason": "Variante asíncrona de ApiKeys.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre ApiKeys.create."
+      },
+      {
+        "method": "ApiKeys.list",
+        "operation": "api-keys/list",
+        "reason": null
+      },
+      {
+        "method": "ApiKeys.list_async",
+        "operation": "api-keys/list",
+        "reason": "Variante asíncrona de ApiKeys.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre ApiKeys.list."
+      },
+      {
+        "method": "ApiKeys.remove",
+        "operation": "api-keys/remove",
+        "reason": null
+      },
+      {
+        "method": "ApiKeys.remove_async",
+        "operation": "api-keys/remove",
+        "reason": "Variante asíncrona de ApiKeys.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre ApiKeys.remove."
+      },
+      {
+        "method": "ApiKeys.update",
+        "operation": "api-keys/update",
+        "reason": null
+      },
+      {
+        "method": "ApiKeys.update_async",
+        "operation": "api-keys/update",
+        "reason": "Variante asíncrona de ApiKeys.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre ApiKeys.update."
+      },
+      {
+        "method": "Audiences.create",
+        "operation": "segments/create",
+        "reason": "Obsoleto: llama a Segments.create y envía POST /segments, no POST /audiences; lo compara el caso de segments/create."
+      },
+      {
+        "method": "Audiences.create_async",
+        "operation": "segments/create",
+        "reason": "Variante asíncrona de Audiences.create. Obsoleto: llama a Segments.create y envía POST /segments, no POST /audiences; lo compara el caso de segments/create."
+      },
+      {
+        "method": "Audiences.get",
+        "operation": "segments/get",
+        "reason": "Obsoleto: llama a Segments.get y envía GET /segments/{id}; lo compara el caso de segments/get."
+      },
+      {
+        "method": "Audiences.get_async",
+        "operation": "segments/get",
+        "reason": "Variante asíncrona de Audiences.get. Obsoleto: llama a Segments.get y envía GET /segments/{id}; lo compara el caso de segments/get."
+      },
+      {
+        "method": "Audiences.list",
+        "operation": "segments/list",
+        "reason": "Obsoleto: llama a Segments.list y envía GET /segments; lo compara el caso de segments/list."
+      },
+      {
+        "method": "Audiences.list_async",
+        "operation": "segments/list",
+        "reason": "Variante asíncrona de Audiences.list. Obsoleto: llama a Segments.list y envía GET /segments; lo compara el caso de segments/list."
+      },
+      {
+        "method": "Audiences.remove",
+        "operation": "segments/remove",
+        "reason": "Obsoleto: llama a Segments.remove y envía DELETE /segments/{id}; lo compara el caso de segments/remove."
+      },
+      {
+        "method": "Audiences.remove_async",
+        "operation": "segments/remove",
+        "reason": "Variante asíncrona de Audiences.remove. Obsoleto: llama a Segments.remove y envía DELETE /segments/{id}; lo compara el caso de segments/remove."
+      },
+      {
+        "method": "Automations.Runs.get",
+        "operation": "automations/get-run",
+        "reason": null
+      },
+      {
+        "method": "Automations.Runs.get_async",
+        "operation": "automations/get-run",
+        "reason": "Variante asíncrona de Automations.Runs.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Automations.Runs.get."
+      },
+      {
+        "method": "Automations.Runs.list",
+        "operation": "automations/list-runs",
+        "reason": null
+      },
+      {
+        "method": "Automations.Runs.list_async",
+        "operation": "automations/list-runs",
+        "reason": "Variante asíncrona de Automations.Runs.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Automations.Runs.list."
+      },
+      {
+        "method": "Automations.create",
+        "operation": "automations/create",
+        "reason": null
+      },
+      {
+        "method": "Automations.create_async",
+        "operation": "automations/create",
+        "reason": "Variante asíncrona de Automations.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre Automations.create."
+      },
+      {
+        "method": "Automations.duplicate",
+        "operation": "automations/duplicate",
+        "reason": null
+      },
+      {
+        "method": "Automations.duplicate_async",
+        "operation": "automations/duplicate",
+        "reason": "Variante asíncrona de Automations.duplicate: arma la misma petición con el cliente HTTP asíncrono; el caso corre Automations.duplicate."
+      },
+      {
+        "method": "Automations.get",
+        "operation": "automations/get",
+        "reason": null
+      },
+      {
+        "method": "Automations.get_async",
+        "operation": "automations/get",
+        "reason": "Variante asíncrona de Automations.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Automations.get."
+      },
+      {
+        "method": "Automations.list",
+        "operation": "automations/list",
+        "reason": null
+      },
+      {
+        "method": "Automations.list_async",
+        "operation": "automations/list",
+        "reason": "Variante asíncrona de Automations.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Automations.list."
+      },
+      {
+        "method": "Automations.remove",
+        "operation": "automations/remove",
+        "reason": null
+      },
+      {
+        "method": "Automations.remove_async",
+        "operation": "automations/remove",
+        "reason": "Variante asíncrona de Automations.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre Automations.remove."
+      },
+      {
+        "method": "Automations.stop",
+        "operation": "automations/stop",
+        "reason": null
+      },
+      {
+        "method": "Automations.stop_async",
+        "operation": "automations/stop",
+        "reason": "Variante asíncrona de Automations.stop: arma la misma petición con el cliente HTTP asíncrono; el caso corre Automations.stop."
+      },
+      {
+        "method": "Automations.update",
+        "operation": "automations/update",
+        "reason": null
+      },
+      {
+        "method": "Automations.update_async",
+        "operation": "automations/update",
+        "reason": "Variante asíncrona de Automations.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre Automations.update."
+      },
+      {
+        "method": "Batch.send",
+        "operation": "emails/send-batch",
+        "reason": null
+      },
+      {
+        "method": "Batch.send_async",
+        "operation": "emails/send-batch",
+        "reason": "Variante asíncrona de Batch.send: arma la misma petición con el cliente HTTP asíncrono; el caso corre Batch.send."
+      },
+      {
+        "method": "Broadcasts.cancel",
+        "operation": "broadcasts/cancel",
+        "reason": null
+      },
+      {
+        "method": "Broadcasts.cancel_async",
+        "operation": "broadcasts/cancel",
+        "reason": "Variante asíncrona de Broadcasts.cancel: arma la misma petición con el cliente HTTP asíncrono; el caso corre Broadcasts.cancel."
+      },
+      {
+        "method": "Broadcasts.clicked_links",
+        "operation": "broadcasts/list-clicked-links",
+        "reason": null
+      },
+      {
+        "method": "Broadcasts.clicked_links_async",
+        "operation": "broadcasts/list-clicked-links",
+        "reason": "Variante asíncrona de Broadcasts.clicked_links: arma la misma petición con el cliente HTTP asíncrono; el caso corre Broadcasts.clicked_links."
+      },
+      {
+        "method": "Broadcasts.create",
+        "operation": "broadcasts/create",
+        "reason": null
+      },
+      {
+        "method": "Broadcasts.create_async",
+        "operation": "broadcasts/create",
+        "reason": "Variante asíncrona de Broadcasts.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre Broadcasts.create."
+      },
+      {
+        "method": "Broadcasts.duplicate",
+        "operation": "broadcasts/duplicate",
+        "reason": null
+      },
+      {
+        "method": "Broadcasts.duplicate_async",
+        "operation": "broadcasts/duplicate",
+        "reason": "Variante asíncrona de Broadcasts.duplicate: arma la misma petición con el cliente HTTP asíncrono; el caso corre Broadcasts.duplicate."
+      },
+      {
+        "method": "Broadcasts.get",
+        "operation": "broadcasts/get",
+        "reason": null
+      },
+      {
+        "method": "Broadcasts.get_async",
+        "operation": "broadcasts/get",
+        "reason": "Variante asíncrona de Broadcasts.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Broadcasts.get."
+      },
+      {
+        "method": "Broadcasts.list",
+        "operation": "broadcasts/list",
+        "reason": null
+      },
+      {
+        "method": "Broadcasts.list_async",
+        "operation": "broadcasts/list",
+        "reason": "Variante asíncrona de Broadcasts.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Broadcasts.list."
+      },
+      {
+        "method": "Broadcasts.recipients",
+        "operation": "broadcasts/recipients",
+        "reason": null
+      },
+      {
+        "method": "Broadcasts.recipients_async",
+        "operation": "broadcasts/recipients",
+        "reason": "Variante asíncrona de Broadcasts.recipients: arma la misma petición con el cliente HTTP asíncrono; el caso corre Broadcasts.recipients."
+      },
+      {
+        "method": "Broadcasts.remove",
+        "operation": "broadcasts/remove",
+        "reason": null
+      },
+      {
+        "method": "Broadcasts.remove_async",
+        "operation": "broadcasts/remove",
+        "reason": "Variante asíncrona de Broadcasts.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre Broadcasts.remove."
+      },
+      {
+        "method": "Broadcasts.send",
+        "operation": "broadcasts/send",
+        "reason": null
+      },
+      {
+        "method": "Broadcasts.send_async",
+        "operation": "broadcasts/send",
+        "reason": "Variante asíncrona de Broadcasts.send: arma la misma petición con el cliente HTTP asíncrono; el caso corre Broadcasts.send."
+      },
+      {
+        "method": "Broadcasts.update",
+        "operation": "broadcasts/update",
+        "reason": null
+      },
+      {
+        "method": "Broadcasts.update_async",
+        "operation": "broadcasts/update",
+        "reason": "Variante asíncrona de Broadcasts.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre Broadcasts.update."
+      },
+      {
+        "method": "ContactImports.create",
+        "operation": "contacts/create-import",
+        "reason": "Cuerpo multipart/form-data con frontera aleatoria por petición: el cuerpo normalizado (§7.1) es el sha256 de los bytes y nunca coincide entre dos clientes, así que la comparación no es posible."
+      },
+      {
+        "method": "ContactImports.create_async",
+        "operation": "contacts/create-import",
+        "reason": "Variante asíncrona de ContactImports.create. Cuerpo multipart/form-data con frontera aleatoria por petición: el cuerpo normalizado (§7.1) es el sha256 de los bytes y nunca coincide entre dos clientes, así que la comparación no es posible."
+      },
+      {
+        "method": "ContactImports.get",
+        "operation": "contacts/get-import",
+        "reason": null
+      },
+      {
+        "method": "ContactImports.get_async",
+        "operation": "contacts/get-import",
+        "reason": "Variante asíncrona de ContactImports.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre ContactImports.get."
+      },
+      {
+        "method": "ContactImports.list",
+        "operation": "contacts/list-imports",
+        "reason": null
+      },
+      {
+        "method": "ContactImports.list_async",
+        "operation": "contacts/list-imports",
+        "reason": "Variante asíncrona de ContactImports.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre ContactImports.list."
+      },
+      {
+        "method": "ContactProperties.create",
+        "operation": "contact-properties/create",
+        "reason": null
+      },
+      {
+        "method": "ContactProperties.create_async",
+        "operation": "contact-properties/create",
+        "reason": "Variante asíncrona de ContactProperties.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre ContactProperties.create."
+      },
+      {
+        "method": "ContactProperties.get",
+        "operation": "contact-properties/get",
+        "reason": null
+      },
+      {
+        "method": "ContactProperties.get_async",
+        "operation": "contact-properties/get",
+        "reason": "Variante asíncrona de ContactProperties.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre ContactProperties.get."
+      },
+      {
+        "method": "ContactProperties.list",
+        "operation": "contact-properties/list",
+        "reason": null
+      },
+      {
+        "method": "ContactProperties.list_async",
+        "operation": "contact-properties/list",
+        "reason": "Variante asíncrona de ContactProperties.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre ContactProperties.list."
+      },
+      {
+        "method": "ContactProperties.remove",
+        "operation": "contact-properties/remove",
+        "reason": null
+      },
+      {
+        "method": "ContactProperties.remove_async",
+        "operation": "contact-properties/remove",
+        "reason": "Variante asíncrona de ContactProperties.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre ContactProperties.remove."
+      },
+      {
+        "method": "ContactProperties.update",
+        "operation": "contact-properties/update",
+        "reason": null
+      },
+      {
+        "method": "ContactProperties.update_async",
+        "operation": "contact-properties/update",
+        "reason": "Variante asíncrona de ContactProperties.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre ContactProperties.update."
+      },
+      {
+        "method": "ContactSegments.add",
+        "operation": "contacts/add-segment",
+        "reason": null
+      },
+      {
+        "method": "ContactSegments.add_async",
+        "operation": "contacts/add-segment",
+        "reason": "Variante asíncrona de ContactSegments.add: arma la misma petición con el cliente HTTP asíncrono; el caso corre ContactSegments.add."
+      },
+      {
+        "method": "ContactSegments.list",
+        "operation": "contacts/list-segments",
+        "reason": null
+      },
+      {
+        "method": "ContactSegments.list_async",
+        "operation": "contacts/list-segments",
+        "reason": "Variante asíncrona de ContactSegments.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre ContactSegments.list."
+      },
+      {
+        "method": "ContactSegments.remove",
+        "operation": "contacts/remove-segment",
+        "reason": null
+      },
+      {
+        "method": "ContactSegments.remove_async",
+        "operation": "contacts/remove-segment",
+        "reason": "Variante asíncrona de ContactSegments.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre ContactSegments.remove."
+      },
+      {
+        "method": "Contacts.Topics.list",
+        "operation": "contacts/list-topics",
+        "reason": null
+      },
+      {
+        "method": "Contacts.Topics.list_async",
+        "operation": "contacts/list-topics",
+        "reason": "Variante asíncrona de Contacts.Topics.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Contacts.Topics.list."
+      },
+      {
+        "method": "Contacts.Topics.update",
+        "operation": "contacts/update-topics",
+        "reason": null
+      },
+      {
+        "method": "Contacts.Topics.update_async",
+        "operation": "contacts/update-topics",
+        "reason": "Variante asíncrona de Contacts.Topics.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre Contacts.Topics.update."
+      },
+      {
+        "method": "Contacts.create",
+        "operation": "contacts/create",
+        "reason": null
+      },
+      {
+        "method": "Contacts.create_async",
+        "operation": "contacts/create",
+        "reason": "Variante asíncrona de Contacts.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre Contacts.create."
+      },
+      {
+        "method": "Contacts.get",
+        "operation": "contacts/get",
+        "reason": null
+      },
+      {
+        "method": "Contacts.get_async",
+        "operation": "contacts/get",
+        "reason": "Variante asíncrona de Contacts.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Contacts.get."
+      },
+      {
+        "method": "Contacts.list",
+        "operation": "segments/list-contacts",
+        "reason": null
+      },
+      {
+        "method": "Contacts.list_async",
+        "operation": "segments/list-contacts",
+        "reason": "Variante asíncrona de Contacts.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Contacts.list."
+      },
+      {
+        "method": "Contacts.remove",
+        "operation": "contacts/remove",
+        "reason": null
+      },
+      {
+        "method": "Contacts.remove_async",
+        "operation": "contacts/remove",
+        "reason": "Variante asíncrona de Contacts.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre Contacts.remove."
+      },
+      {
+        "method": "Contacts.update",
+        "operation": "contacts/update",
+        "reason": null
+      },
+      {
+        "method": "Contacts.update_async",
+        "operation": "contacts/update",
+        "reason": "Variante asíncrona de Contacts.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre Contacts.update."
+      },
+      {
+        "method": "DomainClaims.create",
+        "operation": "domains/create-claim",
+        "reason": null
+      },
+      {
+        "method": "DomainClaims.create_async",
+        "operation": "domains/create-claim",
+        "reason": "Variante asíncrona de DomainClaims.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre DomainClaims.create."
+      },
+      {
+        "method": "DomainClaims.get",
+        "operation": "domains/get-claim",
+        "reason": null
+      },
+      {
+        "method": "DomainClaims.get_async",
+        "operation": "domains/get-claim",
+        "reason": "Variante asíncrona de DomainClaims.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre DomainClaims.get."
+      },
+      {
+        "method": "DomainClaims.verify",
+        "operation": "domains/verify-claim",
+        "reason": null
+      },
+      {
+        "method": "DomainClaims.verify_async",
+        "operation": "domains/verify-claim",
+        "reason": "Variante asíncrona de DomainClaims.verify: arma la misma petición con el cliente HTTP asíncrono; el caso corre DomainClaims.verify."
+      },
+      {
+        "method": "DomainForge.enable",
+        "operation": "domains/enable-forge",
+        "reason": null
+      },
+      {
+        "method": "DomainForge.enable_async",
+        "operation": "domains/enable-forge",
+        "reason": "Variante asíncrona de DomainForge.enable: arma la misma petición con el cliente HTTP asíncrono; el caso corre DomainForge.enable."
+      },
+      {
+        "method": "Domains.create",
+        "operation": "domains/create",
+        "reason": null
+      },
+      {
+        "method": "Domains.create_async",
+        "operation": "domains/create",
+        "reason": "Variante asíncrona de Domains.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre Domains.create."
+      },
+      {
+        "method": "Domains.get",
+        "operation": "domains/get",
+        "reason": null
+      },
+      {
+        "method": "Domains.get_async",
+        "operation": "domains/get",
+        "reason": "Variante asíncrona de Domains.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Domains.get."
+      },
+      {
+        "method": "Domains.list",
+        "operation": "domains/list",
+        "reason": null
+      },
+      {
+        "method": "Domains.list_async",
+        "operation": "domains/list",
+        "reason": "Variante asíncrona de Domains.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Domains.list."
+      },
+      {
+        "method": "Domains.remove",
+        "operation": "domains/remove",
+        "reason": null
+      },
+      {
+        "method": "Domains.remove_async",
+        "operation": "domains/remove",
+        "reason": "Variante asíncrona de Domains.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre Domains.remove."
+      },
+      {
+        "method": "Domains.update",
+        "operation": "domains/update",
+        "reason": null
+      },
+      {
+        "method": "Domains.update_async",
+        "operation": "domains/update",
+        "reason": "Variante asíncrona de Domains.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre Domains.update."
+      },
+      {
+        "method": "Domains.verify",
+        "operation": "domains/verify",
+        "reason": null
+      },
+      {
+        "method": "Domains.verify_async",
+        "operation": "domains/verify",
+        "reason": "Variante asíncrona de Domains.verify: arma la misma petición con el cliente HTTP asíncrono; el caso corre Domains.verify."
+      },
+      {
+        "method": "EmailAttachments.get",
+        "operation": "emails/get-attachment",
+        "reason": null
+      },
+      {
+        "method": "EmailAttachments.get_async",
+        "operation": "emails/get-attachment",
+        "reason": "Variante asíncrona de EmailAttachments.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre EmailAttachments.get."
+      },
+      {
+        "method": "EmailAttachments.list",
+        "operation": "emails/list-attachments",
+        "reason": null
+      },
+      {
+        "method": "EmailAttachments.list_async",
+        "operation": "emails/list-attachments",
+        "reason": "Variante asíncrona de EmailAttachments.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre EmailAttachments.list."
+      },
+      {
+        "method": "Emails.Receiving.Attachments.get",
+        "operation": "emails/get-receiving-attachment",
+        "reason": null
+      },
+      {
+        "method": "Emails.Receiving.Attachments.get_async",
+        "operation": "emails/get-receiving-attachment",
+        "reason": "Variante asíncrona de Emails.Receiving.Attachments.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Emails.Receiving.Attachments.get."
+      },
+      {
+        "method": "Emails.Receiving.Attachments.list",
+        "operation": "emails/list-receiving-attachments",
+        "reason": null
+      },
+      {
+        "method": "Emails.Receiving.Attachments.list_async",
+        "operation": "emails/list-receiving-attachments",
+        "reason": "Variante asíncrona de Emails.Receiving.Attachments.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Emails.Receiving.Attachments.list."
+      },
+      {
+        "method": "Emails.Receiving.get",
+        "operation": "emails/get-receiving",
+        "reason": null
+      },
+      {
+        "method": "Emails.Receiving.get_async",
+        "operation": "emails/get-receiving",
+        "reason": "Variante asíncrona de Emails.Receiving.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Emails.Receiving.get."
+      },
+      {
+        "method": "Emails.Receiving.list",
+        "operation": "emails/list-receiving",
+        "reason": null
+      },
+      {
+        "method": "Emails.Receiving.list_async",
+        "operation": "emails/list-receiving",
+        "reason": "Variante asíncrona de Emails.Receiving.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Emails.Receiving.list."
+      },
+      {
+        "method": "Emails.cancel",
+        "operation": "emails/cancel",
+        "reason": null
+      },
+      {
+        "method": "Emails.cancel_async",
+        "operation": "emails/cancel",
+        "reason": "Variante asíncrona de Emails.cancel: arma la misma petición con el cliente HTTP asíncrono; el caso corre Emails.cancel."
+      },
+      {
+        "method": "Emails.get",
+        "operation": "emails/get",
+        "reason": null
+      },
+      {
+        "method": "Emails.get_async",
+        "operation": "emails/get",
+        "reason": "Variante asíncrona de Emails.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Emails.get."
+      },
+      {
+        "method": "Emails.list",
+        "operation": "emails/list",
+        "reason": null
+      },
+      {
+        "method": "Emails.list_async",
+        "operation": "emails/list",
+        "reason": "Variante asíncrona de Emails.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Emails.list."
+      },
+      {
+        "method": "Emails.metrics",
+        "operation": "emails/metrics",
+        "reason": null
+      },
+      {
+        "method": "Emails.metrics_async",
+        "operation": "emails/metrics",
+        "reason": "Variante asíncrona de Emails.metrics: arma la misma petición con el cliente HTTP asíncrono; el caso corre Emails.metrics."
+      },
+      {
+        "method": "Emails.send",
+        "operation": "emails/send",
+        "reason": null
+      },
+      {
+        "method": "Emails.send_async",
+        "operation": "emails/send",
+        "reason": "Variante asíncrona de Emails.send: arma la misma petición con el cliente HTTP asíncrono; el caso corre Emails.send."
+      },
+      {
+        "method": "Emails.share",
+        "operation": "emails/share",
+        "reason": null
+      },
+      {
+        "method": "Emails.share_async",
+        "operation": "emails/share",
+        "reason": "Variante asíncrona de Emails.share: arma la misma petición con el cliente HTTP asíncrono; el caso corre Emails.share."
+      },
+      {
+        "method": "Emails.update",
+        "operation": "emails/update",
+        "reason": null
+      },
+      {
+        "method": "Emails.update_async",
+        "operation": "emails/update",
+        "reason": "Variante asíncrona de Emails.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre Emails.update."
+      },
+      {
+        "method": "Events.create",
+        "operation": "events/create",
+        "reason": null
+      },
+      {
+        "method": "Events.create_async",
+        "operation": "events/create",
+        "reason": "Variante asíncrona de Events.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre Events.create."
+      },
+      {
+        "method": "Events.get",
+        "operation": "events/get",
+        "reason": null
+      },
+      {
+        "method": "Events.get_async",
+        "operation": "events/get",
+        "reason": "Variante asíncrona de Events.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Events.get."
+      },
+      {
+        "method": "Events.list",
+        "operation": "events/list",
+        "reason": null
+      },
+      {
+        "method": "Events.list_async",
+        "operation": "events/list",
+        "reason": "Variante asíncrona de Events.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Events.list."
+      },
+      {
+        "method": "Events.remove",
+        "operation": "events/remove",
+        "reason": null
+      },
+      {
+        "method": "Events.remove_async",
+        "operation": "events/remove",
+        "reason": "Variante asíncrona de Events.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre Events.remove."
+      },
+      {
+        "method": "Events.send",
+        "operation": "events/send",
+        "reason": null
+      },
+      {
+        "method": "Events.send_async",
+        "operation": "events/send",
+        "reason": "Variante asíncrona de Events.send: arma la misma petición con el cliente HTTP asíncrono; el caso corre Events.send."
+      },
+      {
+        "method": "Events.update",
+        "operation": "events/update",
+        "reason": null
+      },
+      {
+        "method": "Events.update_async",
+        "operation": "events/update",
+        "reason": "Variante asíncrona de Events.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre Events.update."
+      },
+      {
+        "method": "InboxAgent.get",
+        "operation": "inboxes/get-agent",
+        "reason": null
+      },
+      {
+        "method": "InboxAgent.get_async",
+        "operation": "inboxes/get-agent",
+        "reason": "Variante asíncrona de InboxAgent.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxAgent.get."
+      },
+      {
+        "method": "InboxAgent.update",
+        "operation": "inboxes/update-agent",
+        "reason": null
+      },
+      {
+        "method": "InboxAgent.update_async",
+        "operation": "inboxes/update-agent",
+        "reason": "Variante asíncrona de InboxAgent.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxAgent.update."
+      },
+      {
+        "method": "InboxDrafts.create",
+        "operation": "inboxes/create-draft",
+        "reason": null
+      },
+      {
+        "method": "InboxDrafts.create_async",
+        "operation": "inboxes/create-draft",
+        "reason": "Variante asíncrona de InboxDrafts.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxDrafts.create."
+      },
+      {
+        "method": "InboxDrafts.get",
+        "operation": "inboxes/get-draft",
+        "reason": null
+      },
+      {
+        "method": "InboxDrafts.get_async",
+        "operation": "inboxes/get-draft",
+        "reason": "Variante asíncrona de InboxDrafts.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxDrafts.get."
+      },
+      {
+        "method": "InboxDrafts.list",
+        "operation": "inboxes/list-drafts",
+        "reason": null
+      },
+      {
+        "method": "InboxDrafts.list_async",
+        "operation": "inboxes/list-drafts",
+        "reason": "Variante asíncrona de InboxDrafts.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxDrafts.list."
+      },
+      {
+        "method": "InboxDrafts.remove",
+        "operation": "inboxes/remove-draft",
+        "reason": null
+      },
+      {
+        "method": "InboxDrafts.remove_async",
+        "operation": "inboxes/remove-draft",
+        "reason": "Variante asíncrona de InboxDrafts.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxDrafts.remove."
+      },
+      {
+        "method": "InboxDrafts.send",
+        "operation": "inboxes/send-draft",
+        "reason": null
+      },
+      {
+        "method": "InboxDrafts.send_async",
+        "operation": "inboxes/send-draft",
+        "reason": "Variante asíncrona de InboxDrafts.send: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxDrafts.send."
+      },
+      {
+        "method": "InboxDrafts.update",
+        "operation": "inboxes/update-draft",
+        "reason": null
+      },
+      {
+        "method": "InboxDrafts.update_async",
+        "operation": "inboxes/update-draft",
+        "reason": "Variante asíncrona de InboxDrafts.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxDrafts.update."
+      },
+      {
+        "method": "InboxLabels.create",
+        "operation": "inboxes/create-label",
+        "reason": null
+      },
+      {
+        "method": "InboxLabels.create_async",
+        "operation": "inboxes/create-label",
+        "reason": "Variante asíncrona de InboxLabels.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxLabels.create."
+      },
+      {
+        "method": "InboxLabels.list",
+        "operation": "inboxes/list-labels",
+        "reason": null
+      },
+      {
+        "method": "InboxLabels.list_async",
+        "operation": "inboxes/list-labels",
+        "reason": "Variante asíncrona de InboxLabels.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxLabels.list."
+      },
+      {
+        "method": "InboxLabels.remove",
+        "operation": "inboxes/remove-label",
+        "reason": null
+      },
+      {
+        "method": "InboxLabels.remove_async",
+        "operation": "inboxes/remove-label",
+        "reason": "Variante asíncrona de InboxLabels.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxLabels.remove."
+      },
+      {
+        "method": "InboxLabels.update",
+        "operation": "inboxes/update-label",
+        "reason": null
+      },
+      {
+        "method": "InboxLabels.update_async",
+        "operation": "inboxes/update-label",
+        "reason": "Variante asíncrona de InboxLabels.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxLabels.update."
+      },
+      {
+        "method": "InboxThreadEmails.forward",
+        "operation": "inboxes/forward-thread-email",
+        "reason": null
+      },
+      {
+        "method": "InboxThreadEmails.forward_async",
+        "operation": "inboxes/forward-thread-email",
+        "reason": "Variante asíncrona de InboxThreadEmails.forward: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxThreadEmails.forward."
+      },
+      {
+        "method": "InboxThreadEmails.get",
+        "operation": "inboxes/get-thread-email",
+        "reason": null
+      },
+      {
+        "method": "InboxThreadEmails.get_async",
+        "operation": "inboxes/get-thread-email",
+        "reason": "Variante asíncrona de InboxThreadEmails.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxThreadEmails.get."
+      },
+      {
+        "method": "InboxThreadEmails.list",
+        "operation": "inboxes/list-thread-emails",
+        "reason": null
+      },
+      {
+        "method": "InboxThreadEmails.list_async",
+        "operation": "inboxes/list-thread-emails",
+        "reason": "Variante asíncrona de InboxThreadEmails.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxThreadEmails.list."
+      },
+      {
+        "method": "InboxThreadEmails.reply",
+        "operation": "inboxes/reply-thread-email",
+        "reason": null
+      },
+      {
+        "method": "InboxThreadEmails.reply_async",
+        "operation": "inboxes/reply-thread-email",
+        "reason": "Variante asíncrona de InboxThreadEmails.reply: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxThreadEmails.reply."
+      },
+      {
+        "method": "InboxThreadLabels.add",
+        "operation": "inboxes/add-thread-labels",
+        "reason": null
+      },
+      {
+        "method": "InboxThreadLabels.add_async",
+        "operation": "inboxes/add-thread-labels",
+        "reason": "Variante asíncrona de InboxThreadLabels.add: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxThreadLabels.add."
+      },
+      {
+        "method": "InboxThreadLabels.remove",
+        "operation": "inboxes/remove-thread-label",
+        "reason": null
+      },
+      {
+        "method": "InboxThreadLabels.remove_async",
+        "operation": "inboxes/remove-thread-label",
+        "reason": "Variante asíncrona de InboxThreadLabels.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxThreadLabels.remove."
+      },
+      {
+        "method": "InboxThreadLabels.set",
+        "operation": "inboxes/set-thread-labels",
+        "reason": null
+      },
+      {
+        "method": "InboxThreadLabels.set_async",
+        "operation": "inboxes/set-thread-labels",
+        "reason": "Variante asíncrona de InboxThreadLabels.set: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxThreadLabels.set."
+      },
+      {
+        "method": "InboxThreads.get",
+        "operation": "inboxes/get-thread",
+        "reason": null
+      },
+      {
+        "method": "InboxThreads.get_async",
+        "operation": "inboxes/get-thread",
+        "reason": "Variante asíncrona de InboxThreads.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxThreads.get."
+      },
+      {
+        "method": "InboxThreads.list",
+        "operation": "inboxes/list-threads",
+        "reason": null
+      },
+      {
+        "method": "InboxThreads.list_async",
+        "operation": "inboxes/list-threads",
+        "reason": "Variante asíncrona de InboxThreads.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxThreads.list."
+      },
+      {
+        "method": "InboxThreads.remove",
+        "operation": "inboxes/remove-thread",
+        "reason": null
+      },
+      {
+        "method": "InboxThreads.remove_async",
+        "operation": "inboxes/remove-thread",
+        "reason": "Variante asíncrona de InboxThreads.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxThreads.remove."
+      },
+      {
+        "method": "InboxThreads.search",
+        "operation": "inboxes/search-threads",
+        "reason": null
+      },
+      {
+        "method": "InboxThreads.search_async",
+        "operation": "inboxes/search-threads",
+        "reason": "Variante asíncrona de InboxThreads.search: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxThreads.search."
+      },
+      {
+        "method": "InboxThreads.update",
+        "operation": "inboxes/update-thread",
+        "reason": null
+      },
+      {
+        "method": "InboxThreads.update_async",
+        "operation": "inboxes/update-thread",
+        "reason": "Variante asíncrona de InboxThreads.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre InboxThreads.update."
+      },
+      {
+        "method": "Inboxes.create",
+        "operation": "inboxes/create",
+        "reason": null
+      },
+      {
+        "method": "Inboxes.create_async",
+        "operation": "inboxes/create",
+        "reason": "Variante asíncrona de Inboxes.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre Inboxes.create."
+      },
+      {
+        "method": "Inboxes.get",
+        "operation": "inboxes/get",
+        "reason": null
+      },
+      {
+        "method": "Inboxes.get_async",
+        "operation": "inboxes/get",
+        "reason": "Variante asíncrona de Inboxes.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Inboxes.get."
+      },
+      {
+        "method": "Inboxes.list",
+        "operation": "inboxes/list",
+        "reason": null
+      },
+      {
+        "method": "Inboxes.list_async",
+        "operation": "inboxes/list",
+        "reason": "Variante asíncrona de Inboxes.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Inboxes.list."
+      },
+      {
+        "method": "Inboxes.remove",
+        "operation": "inboxes/remove",
+        "reason": null
+      },
+      {
+        "method": "Inboxes.remove_async",
+        "operation": "inboxes/remove",
+        "reason": "Variante asíncrona de Inboxes.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre Inboxes.remove."
+      },
+      {
+        "method": "Inboxes.update",
+        "operation": "inboxes/update",
+        "reason": null
+      },
+      {
+        "method": "Inboxes.update_async",
+        "operation": "inboxes/update",
+        "reason": "Variante asíncrona de Inboxes.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre Inboxes.update."
+      },
+      {
+        "method": "Logs.get",
+        "operation": "logs/get",
+        "reason": null
+      },
+      {
+        "method": "Logs.get_async",
+        "operation": "logs/get",
+        "reason": "Variante asíncrona de Logs.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Logs.get."
+      },
+      {
+        "method": "Logs.list",
+        "operation": "logs/list",
+        "reason": null
+      },
+      {
+        "method": "Logs.list_async",
+        "operation": "logs/list",
+        "reason": "Variante asíncrona de Logs.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Logs.list."
+      },
+      {
+        "method": "OAuthGrants.list",
+        "operation": "oauth/list-grants",
+        "reason": null
+      },
+      {
+        "method": "OAuthGrants.list_async",
+        "operation": "oauth/list-grants",
+        "reason": "Variante asíncrona de OAuthGrants.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre OAuthGrants.list."
+      },
+      {
+        "method": "OAuthGrants.revoke",
+        "operation": "oauth/revoke-grant",
+        "reason": null
+      },
+      {
+        "method": "OAuthGrants.revoke_async",
+        "operation": "oauth/revoke-grant",
+        "reason": "Variante asíncrona de OAuthGrants.revoke: arma la misma petición con el cliente HTTP asíncrono; el caso corre OAuthGrants.revoke."
+      },
+      {
+        "method": "Segments.create",
+        "operation": "segments/create",
+        "reason": null
+      },
+      {
+        "method": "Segments.create_async",
+        "operation": "segments/create",
+        "reason": "Variante asíncrona de Segments.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre Segments.create."
+      },
+      {
+        "method": "Segments.get",
+        "operation": "segments/get",
+        "reason": null
+      },
+      {
+        "method": "Segments.get_async",
+        "operation": "segments/get",
+        "reason": "Variante asíncrona de Segments.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Segments.get."
+      },
+      {
+        "method": "Segments.list",
+        "operation": "segments/list",
+        "reason": null
+      },
+      {
+        "method": "Segments.list_async",
+        "operation": "segments/list",
+        "reason": "Variante asíncrona de Segments.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Segments.list."
+      },
+      {
+        "method": "Segments.remove",
+        "operation": "segments/remove",
+        "reason": null
+      },
+      {
+        "method": "Segments.remove_async",
+        "operation": "segments/remove",
+        "reason": "Variante asíncrona de Segments.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre Segments.remove."
+      },
+      {
+        "method": "Segments.update",
+        "operation": "segments/update",
+        "reason": null
+      },
+      {
+        "method": "Segments.update_async",
+        "operation": "segments/update",
+        "reason": "Variante asíncrona de Segments.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre Segments.update."
+      },
+      {
+        "method": "Suppressions.add",
+        "operation": "suppressions/add",
+        "reason": null
+      },
+      {
+        "method": "Suppressions.add_async",
+        "operation": "suppressions/add",
+        "reason": "Variante asíncrona de Suppressions.add: arma la misma petición con el cliente HTTP asíncrono; el caso corre Suppressions.add."
+      },
+      {
+        "method": "Suppressions.get",
+        "operation": "suppressions/get",
+        "reason": null
+      },
+      {
+        "method": "Suppressions.get_async",
+        "operation": "suppressions/get",
+        "reason": "Variante asíncrona de Suppressions.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Suppressions.get."
+      },
+      {
+        "method": "Suppressions.list",
+        "operation": "suppressions/list",
+        "reason": null
+      },
+      {
+        "method": "Suppressions.list_async",
+        "operation": "suppressions/list",
+        "reason": "Variante asíncrona de Suppressions.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Suppressions.list."
+      },
+      {
+        "method": "Suppressions.remove",
+        "operation": "suppressions/remove",
+        "reason": null
+      },
+      {
+        "method": "Suppressions.remove_async",
+        "operation": "suppressions/remove",
+        "reason": "Variante asíncrona de Suppressions.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre Suppressions.remove."
+      },
+      {
+        "method": "SuppressionsBatch.add",
+        "operation": "suppressions/batch-add",
+        "reason": null
+      },
+      {
+        "method": "SuppressionsBatch.add_async",
+        "operation": "suppressions/batch-add",
+        "reason": "Variante asíncrona de SuppressionsBatch.add: arma la misma petición con el cliente HTTP asíncrono; el caso corre SuppressionsBatch.add."
+      },
+      {
+        "method": "SuppressionsBatch.remove",
+        "operation": "suppressions/batch-remove",
+        "reason": null
+      },
+      {
+        "method": "SuppressionsBatch.remove_async",
+        "operation": "suppressions/batch-remove",
+        "reason": "Variante asíncrona de SuppressionsBatch.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre SuppressionsBatch.remove."
+      },
+      {
+        "method": "Templates.create",
+        "operation": "templates/create",
+        "reason": null
+      },
+      {
+        "method": "Templates.create_async",
+        "operation": "templates/create",
+        "reason": "Variante asíncrona de Templates.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre Templates.create."
+      },
+      {
+        "method": "Templates.duplicate",
+        "operation": "templates/duplicate",
+        "reason": null
+      },
+      {
+        "method": "Templates.duplicate_async",
+        "operation": "templates/duplicate",
+        "reason": "Variante asíncrona de Templates.duplicate: arma la misma petición con el cliente HTTP asíncrono; el caso corre Templates.duplicate."
+      },
+      {
+        "method": "Templates.get",
+        "operation": "templates/get",
+        "reason": null
+      },
+      {
+        "method": "Templates.get_async",
+        "operation": "templates/get",
+        "reason": "Variante asíncrona de Templates.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Templates.get."
+      },
+      {
+        "method": "Templates.list",
+        "operation": "templates/list",
+        "reason": null
+      },
+      {
+        "method": "Templates.list_async",
+        "operation": "templates/list",
+        "reason": "Variante asíncrona de Templates.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Templates.list."
+      },
+      {
+        "method": "Templates.publish",
+        "operation": "templates/publish",
+        "reason": null
+      },
+      {
+        "method": "Templates.publish_async",
+        "operation": "templates/publish",
+        "reason": "Variante asíncrona de Templates.publish: arma la misma petición con el cliente HTTP asíncrono; el caso corre Templates.publish."
+      },
+      {
+        "method": "Templates.remove",
+        "operation": "templates/remove",
+        "reason": null
+      },
+      {
+        "method": "Templates.remove_async",
+        "operation": "templates/remove",
+        "reason": "Variante asíncrona de Templates.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre Templates.remove."
+      },
+      {
+        "method": "Templates.update",
+        "operation": "templates/update",
+        "reason": null
+      },
+      {
+        "method": "Templates.update_async",
+        "operation": "templates/update",
+        "reason": "Variante asíncrona de Templates.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre Templates.update."
+      },
+      {
+        "method": "Topics.create",
+        "operation": "topics/create",
+        "reason": null
+      },
+      {
+        "method": "Topics.create_async",
+        "operation": "topics/create",
+        "reason": "Variante asíncrona de Topics.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre Topics.create."
+      },
+      {
+        "method": "Topics.get",
+        "operation": "topics/get",
+        "reason": null
+      },
+      {
+        "method": "Topics.get_async",
+        "operation": "topics/get",
+        "reason": "Variante asíncrona de Topics.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Topics.get."
+      },
+      {
+        "method": "Topics.list",
+        "operation": "topics/list",
+        "reason": null
+      },
+      {
+        "method": "Topics.list_async",
+        "operation": "topics/list",
+        "reason": "Variante asíncrona de Topics.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Topics.list."
+      },
+      {
+        "method": "Topics.remove",
+        "operation": "topics/remove",
+        "reason": null
+      },
+      {
+        "method": "Topics.remove_async",
+        "operation": "topics/remove",
+        "reason": "Variante asíncrona de Topics.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre Topics.remove."
+      },
+      {
+        "method": "Topics.update",
+        "operation": "topics/update",
+        "reason": null
+      },
+      {
+        "method": "Topics.update_async",
+        "operation": "topics/update",
+        "reason": "Variante asíncrona de Topics.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre Topics.update."
+      },
+      {
+        "method": "Usage.get",
+        "operation": "usage/get",
+        "reason": null
+      },
+      {
+        "method": "Usage.get_async",
+        "operation": "usage/get",
+        "reason": "Variante asíncrona de Usage.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Usage.get."
+      },
+      {
+        "method": "Webhooks.create",
+        "operation": "webhooks/create",
+        "reason": null
+      },
+      {
+        "method": "Webhooks.create_async",
+        "operation": "webhooks/create",
+        "reason": "Variante asíncrona de Webhooks.create: arma la misma petición con el cliente HTTP asíncrono; el caso corre Webhooks.create."
+      },
+      {
+        "method": "Webhooks.get",
+        "operation": "webhooks/get",
+        "reason": null
+      },
+      {
+        "method": "Webhooks.get_async",
+        "operation": "webhooks/get",
+        "reason": "Variante asíncrona de Webhooks.get: arma la misma petición con el cliente HTTP asíncrono; el caso corre Webhooks.get."
+      },
+      {
+        "method": "Webhooks.get_event",
+        "operation": "webhooks/get-event",
+        "reason": null
+      },
+      {
+        "method": "Webhooks.get_event_async",
+        "operation": "webhooks/get-event",
+        "reason": "Variante asíncrona de Webhooks.get_event: arma la misma petición con el cliente HTTP asíncrono; el caso corre Webhooks.get_event."
+      },
+      {
+        "method": "Webhooks.list",
+        "operation": "webhooks/list",
+        "reason": null
+      },
+      {
+        "method": "Webhooks.list_async",
+        "operation": "webhooks/list",
+        "reason": "Variante asíncrona de Webhooks.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Webhooks.list."
+      },
+      {
+        "method": "Webhooks.list_event_attempts",
+        "operation": "webhooks/list-event-attempts",
+        "reason": null
+      },
+      {
+        "method": "Webhooks.list_event_attempts_async",
+        "operation": "webhooks/list-event-attempts",
+        "reason": "Variante asíncrona de Webhooks.list_event_attempts: arma la misma petición con el cliente HTTP asíncrono; el caso corre Webhooks.list_event_attempts."
+      },
+      {
+        "method": "Webhooks.list_events",
+        "operation": "webhooks/list-events",
+        "reason": null
+      },
+      {
+        "method": "Webhooks.list_events_async",
+        "operation": "webhooks/list-events",
+        "reason": "Variante asíncrona de Webhooks.list_events: arma la misma petición con el cliente HTTP asíncrono; el caso corre Webhooks.list_events."
+      },
+      {
+        "method": "Webhooks.remove",
+        "operation": "webhooks/remove",
+        "reason": null
+      },
+      {
+        "method": "Webhooks.remove_async",
+        "operation": "webhooks/remove",
+        "reason": "Variante asíncrona de Webhooks.remove: arma la misma petición con el cliente HTTP asíncrono; el caso corre Webhooks.remove."
+      },
+      {
+        "method": "Webhooks.replay_event",
+        "operation": "webhooks/replay-event",
+        "reason": null
+      },
+      {
+        "method": "Webhooks.replay_event_async",
+        "operation": "webhooks/replay-event",
+        "reason": "Variante asíncrona de Webhooks.replay_event: arma la misma petición con el cliente HTTP asíncrono; el caso corre Webhooks.replay_event."
+      },
+      {
+        "method": "Webhooks.rotate_signing_secret",
+        "operation": "webhooks/rotate-signing-secret",
+        "reason": null
+      },
+      {
+        "method": "Webhooks.rotate_signing_secret_async",
+        "operation": "webhooks/rotate-signing-secret",
+        "reason": "Variante asíncrona de Webhooks.rotate_signing_secret: arma la misma petición con el cliente HTTP asíncrono; el caso corre Webhooks.rotate_signing_secret."
+      },
+      {
+        "method": "Webhooks.update",
+        "operation": "webhooks/update",
+        "reason": null
+      },
+      {
+        "method": "Webhooks.update_async",
+        "operation": "webhooks/update",
+        "reason": "Variante asíncrona de Webhooks.update: arma la misma petición con el cliente HTTP asíncrono; el caso corre Webhooks.update."
+      },
+      {
+        "method": "Webhooks.verify",
+        "operation": null,
+        "reason": "Verifica localmente la firma de un webhook; no envía peticiones."
+      }
+    ]
+  },
+  "go": {
+    "sdk": "github.com/resend/resend-go/v3 v3.17.0",
+    "enumerated_by": "go doc -all github.com/resend/resend-go/v3 (líneas func con receptor)",
+    "methods": [
+      {
+        "method": "ApiKeysSvcImpl.Create",
+        "operation": "api-keys/create",
+        "reason": null
+      },
+      {
+        "method": "ApiKeysSvcImpl.CreateWithContext",
+        "operation": "api-keys/create",
+        "reason": "Variante de ApiKeysSvcImpl.Create (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ApiKeysSvcImpl.Create."
+      },
+      {
+        "method": "ApiKeysSvcImpl.List",
+        "operation": "api-keys/list",
+        "reason": "Variante de ApiKeysSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ApiKeysSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "ApiKeysSvcImpl.ListWithContext",
+        "operation": "api-keys/list",
+        "reason": "Variante de ApiKeysSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ApiKeysSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "ApiKeysSvcImpl.ListWithOptions",
+        "operation": "api-keys/list",
+        "reason": null
+      },
+      {
+        "method": "ApiKeysSvcImpl.Remove",
+        "operation": "api-keys/remove",
+        "reason": null
+      },
+      {
+        "method": "ApiKeysSvcImpl.RemoveWithContext",
+        "operation": "api-keys/remove",
+        "reason": "Variante de ApiKeysSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ApiKeysSvcImpl.Remove."
+      },
+      {
+        "method": "ApiKeysSvcImpl.Update",
+        "operation": "api-keys/update",
+        "reason": null
+      },
+      {
+        "method": "ApiKeysSvcImpl.UpdateWithContext",
+        "operation": "api-keys/update",
+        "reason": "Variante de ApiKeysSvcImpl.Update (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ApiKeysSvcImpl.Update."
+      },
+      {
+        "method": "Attachment.MarshalJSON",
+        "operation": null,
+        "reason": "Serialización JSON de un adjunto; no envía peticiones."
+      },
+      {
+        "method": "AudiencesSvcImpl.Create",
+        "operation": "segments/create",
+        "reason": "Obsoleto: delega en Segments.Create y envía POST segments, no audiences; lo compara el caso de segments/create."
+      },
+      {
+        "method": "AudiencesSvcImpl.CreateWithContext",
+        "operation": "segments/create",
+        "reason": "Obsoleto: delega en Segments.CreateWithContext; lo compara el caso de segments/create."
+      },
+      {
+        "method": "AudiencesSvcImpl.Get",
+        "operation": "segments/get",
+        "reason": "Obsoleto: delega en Segments.Get; lo compara el caso de segments/get."
+      },
+      {
+        "method": "AudiencesSvcImpl.GetWithContext",
+        "operation": "segments/get",
+        "reason": "Obsoleto: delega en Segments.GetWithContext; lo compara el caso de segments/get."
+      },
+      {
+        "method": "AudiencesSvcImpl.List",
+        "operation": "segments/list",
+        "reason": "Obsoleto: delega en Segments.List; lo compara el caso de segments/list."
+      },
+      {
+        "method": "AudiencesSvcImpl.ListWithContext",
+        "operation": "segments/list",
+        "reason": "Obsoleto: delega en Segments.ListWithContext; lo compara el caso de segments/list."
+      },
+      {
+        "method": "AudiencesSvcImpl.ListWithOptions",
+        "operation": "segments/list",
+        "reason": "Obsoleto: delega en Segments.ListWithOptions; lo compara el caso de segments/list."
+      },
+      {
+        "method": "AudiencesSvcImpl.Remove",
+        "operation": "segments/remove",
+        "reason": "Obsoleto: delega en Segments.Remove; lo compara el caso de segments/remove."
+      },
+      {
+        "method": "AudiencesSvcImpl.RemoveWithContext",
+        "operation": "segments/remove",
+        "reason": "Obsoleto: delega en Segments.RemoveWithContext; lo compara el caso de segments/remove."
+      },
+      {
+        "method": "AutomationsSvcImpl.Create",
+        "operation": "automations/create",
+        "reason": null
+      },
+      {
+        "method": "AutomationsSvcImpl.CreateWithContext",
+        "operation": "automations/create",
+        "reason": "Variante de AutomationsSvcImpl.Create (con o sin context.Context u opciones) que arma la misma ruta; el caso usa AutomationsSvcImpl.Create."
+      },
+      {
+        "method": "AutomationsSvcImpl.Duplicate",
+        "operation": "automations/duplicate",
+        "reason": null
+      },
+      {
+        "method": "AutomationsSvcImpl.DuplicateWithContext",
+        "operation": "automations/duplicate",
+        "reason": "Variante de AutomationsSvcImpl.Duplicate (con o sin context.Context u opciones) que arma la misma ruta; el caso usa AutomationsSvcImpl.Duplicate."
+      },
+      {
+        "method": "AutomationsSvcImpl.Get",
+        "operation": "automations/get",
+        "reason": null
+      },
+      {
+        "method": "AutomationsSvcImpl.GetRun",
+        "operation": "automations/get-run",
+        "reason": null
+      },
+      {
+        "method": "AutomationsSvcImpl.GetRunWithContext",
+        "operation": "automations/get-run",
+        "reason": "Variante de AutomationsSvcImpl.GetRun (con o sin context.Context u opciones) que arma la misma ruta; el caso usa AutomationsSvcImpl.GetRun."
+      },
+      {
+        "method": "AutomationsSvcImpl.GetWithContext",
+        "operation": "automations/get",
+        "reason": "Variante de AutomationsSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa AutomationsSvcImpl.Get."
+      },
+      {
+        "method": "AutomationsSvcImpl.List",
+        "operation": "automations/list",
+        "reason": "Variante de AutomationsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa AutomationsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "AutomationsSvcImpl.ListRuns",
+        "operation": "automations/list-runs",
+        "reason": "Variante de AutomationsSvcImpl.ListRunsWithContext (con o sin context.Context u opciones) que arma la misma ruta; el caso usa AutomationsSvcImpl.ListRunsWithContext."
+      },
+      {
+        "method": "AutomationsSvcImpl.ListRunsWithContext",
+        "operation": "automations/list-runs",
+        "reason": null
+      },
+      {
+        "method": "AutomationsSvcImpl.ListWithContext",
+        "operation": "automations/list",
+        "reason": "Variante de AutomationsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa AutomationsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "AutomationsSvcImpl.ListWithOptions",
+        "operation": "automations/list",
+        "reason": null
+      },
+      {
+        "method": "AutomationsSvcImpl.Remove",
+        "operation": "automations/remove",
+        "reason": null
+      },
+      {
+        "method": "AutomationsSvcImpl.RemoveWithContext",
+        "operation": "automations/remove",
+        "reason": "Variante de AutomationsSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa AutomationsSvcImpl.Remove."
+      },
+      {
+        "method": "AutomationsSvcImpl.Stop",
+        "operation": "automations/stop",
+        "reason": null
+      },
+      {
+        "method": "AutomationsSvcImpl.StopWithContext",
+        "operation": "automations/stop",
+        "reason": "Variante de AutomationsSvcImpl.Stop (con o sin context.Context u opciones) que arma la misma ruta; el caso usa AutomationsSvcImpl.Stop."
+      },
+      {
+        "method": "AutomationsSvcImpl.Update",
+        "operation": "automations/update",
+        "reason": null
+      },
+      {
+        "method": "AutomationsSvcImpl.UpdateWithContext",
+        "operation": "automations/update",
+        "reason": "Variante de AutomationsSvcImpl.Update (con o sin context.Context u opciones) que arma la misma ruta; el caso usa AutomationsSvcImpl.Update."
+      },
+      {
+        "method": "BatchSendEmailOptions.GetBatchValidation",
+        "operation": null,
+        "reason": "Getter local de las opciones de lote; no envía peticiones."
+      },
+      {
+        "method": "BatchSendEmailOptions.GetIdempotencyKey",
+        "operation": null,
+        "reason": "Getter local de las opciones de lote; no envía peticiones."
+      },
+      {
+        "method": "BatchSvcImpl.Send",
+        "operation": "emails/send-batch",
+        "reason": "Variante de BatchSvcImpl.SendWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BatchSvcImpl.SendWithOptions."
+      },
+      {
+        "method": "BatchSvcImpl.SendWithContext",
+        "operation": "emails/send-batch",
+        "reason": "Variante de BatchSvcImpl.SendWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BatchSvcImpl.SendWithOptions."
+      },
+      {
+        "method": "BatchSvcImpl.SendWithOptions",
+        "operation": "emails/send-batch",
+        "reason": null
+      },
+      {
+        "method": "BatchValidationMode.IsValid",
+        "operation": null,
+        "reason": "Validación local de un valor de enumeración; no envía peticiones."
+      },
+      {
+        "method": "BatchValidationMode.String",
+        "operation": null,
+        "reason": "Representación textual de un valor de enumeración; no envía peticiones."
+      },
+      {
+        "method": "BroadcastsSvcImpl.Cancel",
+        "operation": "broadcasts/cancel",
+        "reason": null
+      },
+      {
+        "method": "BroadcastsSvcImpl.CancelWithContext",
+        "operation": "broadcasts/cancel",
+        "reason": "Variante de BroadcastsSvcImpl.Cancel (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BroadcastsSvcImpl.Cancel."
+      },
+      {
+        "method": "BroadcastsSvcImpl.ClickedLinks",
+        "operation": "broadcasts/list-clicked-links",
+        "reason": "Variante de BroadcastsSvcImpl.ClickedLinksWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BroadcastsSvcImpl.ClickedLinksWithOptions."
+      },
+      {
+        "method": "BroadcastsSvcImpl.ClickedLinksWithContext",
+        "operation": "broadcasts/list-clicked-links",
+        "reason": "Variante de BroadcastsSvcImpl.ClickedLinksWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BroadcastsSvcImpl.ClickedLinksWithOptions."
+      },
+      {
+        "method": "BroadcastsSvcImpl.ClickedLinksWithOptions",
+        "operation": "broadcasts/list-clicked-links",
+        "reason": null
+      },
+      {
+        "method": "BroadcastsSvcImpl.Create",
+        "operation": "broadcasts/create",
+        "reason": null
+      },
+      {
+        "method": "BroadcastsSvcImpl.CreateWithContext",
+        "operation": "broadcasts/create",
+        "reason": "Variante de BroadcastsSvcImpl.Create (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BroadcastsSvcImpl.Create."
+      },
+      {
+        "method": "BroadcastsSvcImpl.Get",
+        "operation": "broadcasts/get",
+        "reason": null
+      },
+      {
+        "method": "BroadcastsSvcImpl.GetWithContext",
+        "operation": "broadcasts/get",
+        "reason": "Variante de BroadcastsSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BroadcastsSvcImpl.Get."
+      },
+      {
+        "method": "BroadcastsSvcImpl.List",
+        "operation": "broadcasts/list",
+        "reason": "Variante de BroadcastsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BroadcastsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "BroadcastsSvcImpl.ListWithContext",
+        "operation": "broadcasts/list",
+        "reason": "Variante de BroadcastsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BroadcastsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "BroadcastsSvcImpl.ListWithOptions",
+        "operation": "broadcasts/list",
+        "reason": null
+      },
+      {
+        "method": "BroadcastsSvcImpl.Recipients",
+        "operation": "broadcasts/recipients",
+        "reason": null
+      },
+      {
+        "method": "BroadcastsSvcImpl.RecipientsWithContext",
+        "operation": "broadcasts/recipients",
+        "reason": "Variante de BroadcastsSvcImpl.Recipients (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BroadcastsSvcImpl.Recipients."
+      },
+      {
+        "method": "BroadcastsSvcImpl.Remove",
+        "operation": "broadcasts/remove",
+        "reason": null
+      },
+      {
+        "method": "BroadcastsSvcImpl.RemoveWithContext",
+        "operation": "broadcasts/remove",
+        "reason": "Variante de BroadcastsSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BroadcastsSvcImpl.Remove."
+      },
+      {
+        "method": "BroadcastsSvcImpl.Send",
+        "operation": "broadcasts/send",
+        "reason": null
+      },
+      {
+        "method": "BroadcastsSvcImpl.SendWithContext",
+        "operation": "broadcasts/send",
+        "reason": "Variante de BroadcastsSvcImpl.Send (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BroadcastsSvcImpl.Send."
+      },
+      {
+        "method": "BroadcastsSvcImpl.Update",
+        "operation": "broadcasts/update",
+        "reason": null
+      },
+      {
+        "method": "BroadcastsSvcImpl.UpdateWithContext",
+        "operation": "broadcasts/update",
+        "reason": "Variante de BroadcastsSvcImpl.Update (con o sin context.Context u opciones) que arma la misma ruta; el caso usa BroadcastsSvcImpl.Update."
+      },
+      {
+        "method": "Client.NewMultipartRequest",
+        "operation": null,
+        "reason": "Construye un *http.Request multipart genérico; no corresponde a una operación."
+      },
+      {
+        "method": "Client.NewRequest",
+        "operation": null,
+        "reason": "Construye un *http.Request genérico por ruta; no corresponde a una operación."
+      },
+      {
+        "method": "Client.NewRequestWithOptions",
+        "operation": null,
+        "reason": "Construye un *http.Request genérico con cabecera de idempotencia; no corresponde a una operación."
+      },
+      {
+        "method": "Client.Perform",
+        "operation": null,
+        "reason": "Envía un *http.Request ya construido y decodifica la respuesta; no corresponde a una operación."
+      },
+      {
+        "method": "ContactImportsSvcImpl.Create",
+        "operation": "contacts/create-import",
+        "reason": "Cuerpo multipart/form-data con frontera aleatoria por petición: el cuerpo normalizado (§7.1) es el sha256 de los bytes y nunca coincide entre dos clientes, así que la comparación no es posible."
+      },
+      {
+        "method": "ContactImportsSvcImpl.CreateWithContext",
+        "operation": "contacts/create-import",
+        "reason": "Variante con context.Context de ContactImportsSvcImpl.Create; mismo motivo: multipart con frontera aleatoria."
+      },
+      {
+        "method": "ContactImportsSvcImpl.Get",
+        "operation": "contacts/get-import",
+        "reason": null
+      },
+      {
+        "method": "ContactImportsSvcImpl.GetWithContext",
+        "operation": "contacts/get-import",
+        "reason": "Variante de ContactImportsSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactImportsSvcImpl.Get."
+      },
+      {
+        "method": "ContactImportsSvcImpl.List",
+        "operation": "contacts/list-imports",
+        "reason": null
+      },
+      {
+        "method": "ContactImportsSvcImpl.ListWithContext",
+        "operation": "contacts/list-imports",
+        "reason": "Variante de ContactImportsSvcImpl.List (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactImportsSvcImpl.List."
+      },
+      {
+        "method": "ContactPropertiesSvcImpl.Create",
+        "operation": "contact-properties/create",
+        "reason": null
+      },
+      {
+        "method": "ContactPropertiesSvcImpl.CreateWithContext",
+        "operation": "contact-properties/create",
+        "reason": "Variante de ContactPropertiesSvcImpl.Create (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactPropertiesSvcImpl.Create."
+      },
+      {
+        "method": "ContactPropertiesSvcImpl.Get",
+        "operation": "contact-properties/get",
+        "reason": null
+      },
+      {
+        "method": "ContactPropertiesSvcImpl.GetWithContext",
+        "operation": "contact-properties/get",
+        "reason": "Variante de ContactPropertiesSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactPropertiesSvcImpl.Get."
+      },
+      {
+        "method": "ContactPropertiesSvcImpl.List",
+        "operation": "contact-properties/list",
+        "reason": "Variante de ContactPropertiesSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactPropertiesSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "ContactPropertiesSvcImpl.ListWithContext",
+        "operation": "contact-properties/list",
+        "reason": "Variante de ContactPropertiesSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactPropertiesSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "ContactPropertiesSvcImpl.ListWithOptions",
+        "operation": "contact-properties/list",
+        "reason": null
+      },
+      {
+        "method": "ContactPropertiesSvcImpl.Remove",
+        "operation": "contact-properties/remove",
+        "reason": null
+      },
+      {
+        "method": "ContactPropertiesSvcImpl.RemoveWithContext",
+        "operation": "contact-properties/remove",
+        "reason": "Variante de ContactPropertiesSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactPropertiesSvcImpl.Remove."
+      },
+      {
+        "method": "ContactPropertiesSvcImpl.Update",
+        "operation": "contact-properties/update",
+        "reason": null
+      },
+      {
+        "method": "ContactPropertiesSvcImpl.UpdateWithContext",
+        "operation": "contact-properties/update",
+        "reason": "Variante de ContactPropertiesSvcImpl.Update (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactPropertiesSvcImpl.Update."
+      },
+      {
+        "method": "ContactSegmentsSvcImpl.Add",
+        "operation": "contacts/add-segment",
+        "reason": null
+      },
+      {
+        "method": "ContactSegmentsSvcImpl.AddWithContext",
+        "operation": "contacts/add-segment",
+        "reason": "Variante de ContactSegmentsSvcImpl.Add (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactSegmentsSvcImpl.Add."
+      },
+      {
+        "method": "ContactSegmentsSvcImpl.List",
+        "operation": "contacts/list-segments",
+        "reason": "Variante de ContactSegmentsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactSegmentsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "ContactSegmentsSvcImpl.ListWithContext",
+        "operation": "contacts/list-segments",
+        "reason": "Variante de ContactSegmentsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactSegmentsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "ContactSegmentsSvcImpl.ListWithOptions",
+        "operation": "contacts/list-segments",
+        "reason": null
+      },
+      {
+        "method": "ContactSegmentsSvcImpl.Remove",
+        "operation": "contacts/remove-segment",
+        "reason": null
+      },
+      {
+        "method": "ContactSegmentsSvcImpl.RemoveWithContext",
+        "operation": "contacts/remove-segment",
+        "reason": "Variante de ContactSegmentsSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactSegmentsSvcImpl.Remove."
+      },
+      {
+        "method": "ContactTopicsSvcImpl.List",
+        "operation": "contacts/list-topics",
+        "reason": "Variante de ContactTopicsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactTopicsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "ContactTopicsSvcImpl.ListWithContext",
+        "operation": "contacts/list-topics",
+        "reason": "Variante de ContactTopicsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactTopicsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "ContactTopicsSvcImpl.ListWithOptions",
+        "operation": "contacts/list-topics",
+        "reason": null
+      },
+      {
+        "method": "ContactTopicsSvcImpl.Update",
+        "operation": "contacts/update-topics",
+        "reason": null
+      },
+      {
+        "method": "ContactTopicsSvcImpl.UpdateWithContext",
+        "operation": "contacts/update-topics",
+        "reason": "Variante de ContactTopicsSvcImpl.Update (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactTopicsSvcImpl.Update."
+      },
+      {
+        "method": "ContactsSvcImpl.Create",
+        "operation": "contacts/create",
+        "reason": null
+      },
+      {
+        "method": "ContactsSvcImpl.CreateWithContext",
+        "operation": "contacts/create",
+        "reason": "Variante de ContactsSvcImpl.Create (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactsSvcImpl.Create."
+      },
+      {
+        "method": "ContactsSvcImpl.Get",
+        "operation": "contacts/get",
+        "reason": null
+      },
+      {
+        "method": "ContactsSvcImpl.GetWithContext",
+        "operation": "contacts/get",
+        "reason": "Variante de ContactsSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactsSvcImpl.Get."
+      },
+      {
+        "method": "ContactsSvcImpl.List",
+        "operation": "segments/list-contacts",
+        "reason": null
+      },
+      {
+        "method": "ContactsSvcImpl.ListWithContext",
+        "operation": "segments/list-contacts",
+        "reason": "Variante de ContactsSvcImpl.List (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactsSvcImpl.List."
+      },
+      {
+        "method": "ContactsSvcImpl.Remove",
+        "operation": "contacts/remove",
+        "reason": null
+      },
+      {
+        "method": "ContactsSvcImpl.RemoveWithContext",
+        "operation": "contacts/remove",
+        "reason": "Variante de ContactsSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactsSvcImpl.Remove."
+      },
+      {
+        "method": "ContactsSvcImpl.Update",
+        "operation": "contacts/update",
+        "reason": null
+      },
+      {
+        "method": "ContactsSvcImpl.UpdateWithContext",
+        "operation": "contacts/update",
+        "reason": "Variante de ContactsSvcImpl.Update (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactsSvcImpl.Update."
+      },
+      {
+        "method": "DomainClaimsSvcImpl.Create",
+        "operation": "domains/create-claim",
+        "reason": null
+      },
+      {
+        "method": "DomainClaimsSvcImpl.CreateWithContext",
+        "operation": "domains/create-claim",
+        "reason": "Variante de DomainClaimsSvcImpl.Create (con o sin context.Context u opciones) que arma la misma ruta; el caso usa DomainClaimsSvcImpl.Create."
+      },
+      {
+        "method": "DomainClaimsSvcImpl.Get",
+        "operation": "domains/get-claim",
+        "reason": null
+      },
+      {
+        "method": "DomainClaimsSvcImpl.GetWithContext",
+        "operation": "domains/get-claim",
+        "reason": "Variante de DomainClaimsSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa DomainClaimsSvcImpl.Get."
+      },
+      {
+        "method": "DomainClaimsSvcImpl.Verify",
+        "operation": "domains/verify-claim",
+        "reason": null
+      },
+      {
+        "method": "DomainClaimsSvcImpl.VerifyWithContext",
+        "operation": "domains/verify-claim",
+        "reason": "Variante de DomainClaimsSvcImpl.Verify (con o sin context.Context u opciones) que arma la misma ruta; el caso usa DomainClaimsSvcImpl.Verify."
+      },
+      {
+        "method": "DomainsSvcImpl.Create",
+        "operation": "domains/create",
+        "reason": null
+      },
+      {
+        "method": "DomainsSvcImpl.CreateWithContext",
+        "operation": "domains/create",
+        "reason": "Variante de DomainsSvcImpl.Create (con o sin context.Context u opciones) que arma la misma ruta; el caso usa DomainsSvcImpl.Create."
+      },
+      {
+        "method": "DomainsSvcImpl.Get",
+        "operation": "domains/get",
+        "reason": null
+      },
+      {
+        "method": "DomainsSvcImpl.GetWithContext",
+        "operation": "domains/get",
+        "reason": "Variante de DomainsSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa DomainsSvcImpl.Get."
+      },
+      {
+        "method": "DomainsSvcImpl.List",
+        "operation": "domains/list",
+        "reason": "Variante de DomainsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa DomainsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "DomainsSvcImpl.ListWithContext",
+        "operation": "domains/list",
+        "reason": "Variante de DomainsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa DomainsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "DomainsSvcImpl.ListWithOptions",
+        "operation": "domains/list",
+        "reason": null
+      },
+      {
+        "method": "DomainsSvcImpl.Remove",
+        "operation": "domains/remove",
+        "reason": null
+      },
+      {
+        "method": "DomainsSvcImpl.RemoveWithContext",
+        "operation": "domains/remove",
+        "reason": "Variante de DomainsSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa DomainsSvcImpl.Remove."
+      },
+      {
+        "method": "DomainsSvcImpl.Update",
+        "operation": "domains/update",
+        "reason": null
+      },
+      {
+        "method": "DomainsSvcImpl.UpdateWithContext",
+        "operation": "domains/update",
+        "reason": "Variante de DomainsSvcImpl.Update (con o sin context.Context u opciones) que arma la misma ruta; el caso usa DomainsSvcImpl.Update."
+      },
+      {
+        "method": "DomainsSvcImpl.Verify",
+        "operation": "domains/verify",
+        "reason": null
+      },
+      {
+        "method": "DomainsSvcImpl.VerifyWithContext",
+        "operation": "domains/verify",
+        "reason": "Variante de DomainsSvcImpl.Verify (con o sin context.Context u opciones) que arma la misma ruta; el caso usa DomainsSvcImpl.Verify."
+      },
+      {
+        "method": "EmailsSvcImpl.Cancel",
+        "operation": "emails/cancel",
+        "reason": null
+      },
+      {
+        "method": "EmailsSvcImpl.CancelWithContext",
+        "operation": "emails/cancel",
+        "reason": "Variante de EmailsSvcImpl.Cancel (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.Cancel."
+      },
+      {
+        "method": "EmailsSvcImpl.Get",
+        "operation": "emails/get",
+        "reason": null
+      },
+      {
+        "method": "EmailsSvcImpl.GetAttachment",
+        "operation": "emails/get-attachment",
+        "reason": null
+      },
+      {
+        "method": "EmailsSvcImpl.GetAttachmentWithContext",
+        "operation": "emails/get-attachment",
+        "reason": "Variante de EmailsSvcImpl.GetAttachment (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.GetAttachment."
+      },
+      {
+        "method": "EmailsSvcImpl.GetWithContext",
+        "operation": "emails/get",
+        "reason": "Variante de EmailsSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.Get."
+      },
+      {
+        "method": "EmailsSvcImpl.List",
+        "operation": "emails/list",
+        "reason": "Variante de EmailsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "EmailsSvcImpl.ListAttachments",
+        "operation": "emails/list-attachments",
+        "reason": "Variante de EmailsSvcImpl.ListAttachmentsWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.ListAttachmentsWithOptions."
+      },
+      {
+        "method": "EmailsSvcImpl.ListAttachmentsWithContext",
+        "operation": "emails/list-attachments",
+        "reason": "Variante de EmailsSvcImpl.ListAttachmentsWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.ListAttachmentsWithOptions."
+      },
+      {
+        "method": "EmailsSvcImpl.ListAttachmentsWithOptions",
+        "operation": "emails/list-attachments",
+        "reason": null
+      },
+      {
+        "method": "EmailsSvcImpl.ListWithContext",
+        "operation": "emails/list",
+        "reason": "Variante de EmailsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "EmailsSvcImpl.ListWithOptions",
+        "operation": "emails/list",
+        "reason": null
+      },
+      {
+        "method": "EmailsSvcImpl.Metrics",
+        "operation": "emails/metrics",
+        "reason": "Variante de EmailsSvcImpl.MetricsWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.MetricsWithOptions."
+      },
+      {
+        "method": "EmailsSvcImpl.MetricsWithContext",
+        "operation": "emails/metrics",
+        "reason": "Variante de EmailsSvcImpl.MetricsWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.MetricsWithOptions."
+      },
+      {
+        "method": "EmailsSvcImpl.MetricsWithOptions",
+        "operation": "emails/metrics",
+        "reason": null
+      },
+      {
+        "method": "EmailsSvcImpl.Send",
+        "operation": "emails/send",
+        "reason": "Variante de EmailsSvcImpl.SendWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.SendWithOptions."
+      },
+      {
+        "method": "EmailsSvcImpl.SendWithContext",
+        "operation": "emails/send",
+        "reason": "Variante de EmailsSvcImpl.SendWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.SendWithOptions."
+      },
+      {
+        "method": "EmailsSvcImpl.SendWithOptions",
+        "operation": "emails/send",
+        "reason": null
+      },
+      {
+        "method": "EmailsSvcImpl.Share",
+        "operation": "emails/share",
+        "reason": null
+      },
+      {
+        "method": "EmailsSvcImpl.ShareWithContext",
+        "operation": "emails/share",
+        "reason": "Variante de EmailsSvcImpl.Share (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.Share."
+      },
+      {
+        "method": "EmailsSvcImpl.Update",
+        "operation": "emails/update",
+        "reason": null
+      },
+      {
+        "method": "EmailsSvcImpl.UpdateWithContext",
+        "operation": "emails/update",
+        "reason": "Variante de EmailsSvcImpl.Update (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EmailsSvcImpl.Update."
+      },
+      {
+        "method": "EventsSvcImpl.Create",
+        "operation": "events/create",
+        "reason": null
+      },
+      {
+        "method": "EventsSvcImpl.CreateWithContext",
+        "operation": "events/create",
+        "reason": "Variante de EventsSvcImpl.Create (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EventsSvcImpl.Create."
+      },
+      {
+        "method": "EventsSvcImpl.Get",
+        "operation": "events/get",
+        "reason": null
+      },
+      {
+        "method": "EventsSvcImpl.GetWithContext",
+        "operation": "events/get",
+        "reason": "Variante de EventsSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EventsSvcImpl.Get."
+      },
+      {
+        "method": "EventsSvcImpl.List",
+        "operation": "events/list",
+        "reason": "Variante de EventsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EventsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "EventsSvcImpl.ListWithContext",
+        "operation": "events/list",
+        "reason": "Variante de EventsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EventsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "EventsSvcImpl.ListWithOptions",
+        "operation": "events/list",
+        "reason": null
+      },
+      {
+        "method": "EventsSvcImpl.Remove",
+        "operation": "events/remove",
+        "reason": null
+      },
+      {
+        "method": "EventsSvcImpl.RemoveWithContext",
+        "operation": "events/remove",
+        "reason": "Variante de EventsSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EventsSvcImpl.Remove."
+      },
+      {
+        "method": "EventsSvcImpl.Send",
+        "operation": "events/send",
+        "reason": null
+      },
+      {
+        "method": "EventsSvcImpl.SendWithContext",
+        "operation": "events/send",
+        "reason": "Variante de EventsSvcImpl.Send (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EventsSvcImpl.Send."
+      },
+      {
+        "method": "EventsSvcImpl.Update",
+        "operation": "events/update",
+        "reason": null
+      },
+      {
+        "method": "EventsSvcImpl.UpdateWithContext",
+        "operation": "events/update",
+        "reason": "Variante de EventsSvcImpl.Update (con o sin context.Context u opciones) que arma la misma ruta; el caso usa EventsSvcImpl.Update."
+      },
+      {
+        "method": "LogsSvcImpl.Get",
+        "operation": "logs/get",
+        "reason": null
+      },
+      {
+        "method": "LogsSvcImpl.GetWithContext",
+        "operation": "logs/get",
+        "reason": "Variante de LogsSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa LogsSvcImpl.Get."
+      },
+      {
+        "method": "LogsSvcImpl.List",
+        "operation": "logs/list",
+        "reason": "Variante de LogsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa LogsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "LogsSvcImpl.ListWithContext",
+        "operation": "logs/list",
+        "reason": "Variante de LogsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa LogsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "LogsSvcImpl.ListWithOptions",
+        "operation": "logs/list",
+        "reason": null
+      },
+      {
+        "method": "MissingRequiredFieldsError.Error",
+        "operation": null,
+        "reason": "Texto de un error del cliente; no envía peticiones."
+      },
+      {
+        "method": "OAuthGrantsSvcImpl.List",
+        "operation": "oauth/list-grants",
+        "reason": "Variante de OAuthGrantsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa OAuthGrantsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "OAuthGrantsSvcImpl.ListWithContext",
+        "operation": "oauth/list-grants",
+        "reason": "Variante de OAuthGrantsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa OAuthGrantsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "OAuthGrantsSvcImpl.ListWithOptions",
+        "operation": "oauth/list-grants",
+        "reason": null
+      },
+      {
+        "method": "OAuthGrantsSvcImpl.Revoke",
+        "operation": "oauth/revoke-grant",
+        "reason": null
+      },
+      {
+        "method": "OAuthGrantsSvcImpl.RevokeWithContext",
+        "operation": "oauth/revoke-grant",
+        "reason": "Variante de OAuthGrantsSvcImpl.Revoke (con o sin context.Context u opciones) que arma la misma ruta; el caso usa OAuthGrantsSvcImpl.Revoke."
+      },
+      {
+        "method": "RateLimitError.Error",
+        "operation": null,
+        "reason": "Texto del error de límite de tasa; no envía peticiones."
+      },
+      {
+        "method": "RateLimitError.Is",
+        "operation": null,
+        "reason": "Comparación con ErrRateLimit para errors.Is; no envía peticiones."
+      },
+      {
+        "method": "ReceivingSvcImpl.Get",
+        "operation": "emails/get-receiving",
+        "reason": null
+      },
+      {
+        "method": "ReceivingSvcImpl.GetAttachment",
+        "operation": "emails/get-receiving-attachment",
+        "reason": null
+      },
+      {
+        "method": "ReceivingSvcImpl.GetAttachmentWithContext",
+        "operation": "emails/get-receiving-attachment",
+        "reason": "Variante de ReceivingSvcImpl.GetAttachment (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ReceivingSvcImpl.GetAttachment."
+      },
+      {
+        "method": "ReceivingSvcImpl.GetWithContext",
+        "operation": "emails/get-receiving",
+        "reason": "Variante de ReceivingSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ReceivingSvcImpl.Get."
+      },
+      {
+        "method": "ReceivingSvcImpl.GetWithOptions",
+        "operation": "emails/get-receiving",
+        "reason": "Variante de ReceivingSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ReceivingSvcImpl.Get."
+      },
+      {
+        "method": "ReceivingSvcImpl.List",
+        "operation": "emails/list-receiving",
+        "reason": "Variante de ReceivingSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ReceivingSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "ReceivingSvcImpl.ListAttachments",
+        "operation": "emails/list-receiving-attachments",
+        "reason": "Variante de ReceivingSvcImpl.ListAttachmentsWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ReceivingSvcImpl.ListAttachmentsWithOptions."
+      },
+      {
+        "method": "ReceivingSvcImpl.ListAttachmentsWithContext",
+        "operation": "emails/list-receiving-attachments",
+        "reason": "Variante de ReceivingSvcImpl.ListAttachmentsWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ReceivingSvcImpl.ListAttachmentsWithOptions."
+      },
+      {
+        "method": "ReceivingSvcImpl.ListAttachmentsWithOptions",
+        "operation": "emails/list-receiving-attachments",
+        "reason": null
+      },
+      {
+        "method": "ReceivingSvcImpl.ListWithContext",
+        "operation": "emails/list-receiving",
+        "reason": "Variante de ReceivingSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ReceivingSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "ReceivingSvcImpl.ListWithOptions",
+        "operation": "emails/list-receiving",
+        "reason": null
+      },
+      {
+        "method": "SegmentsSvcImpl.Create",
+        "operation": "segments/create",
+        "reason": null
+      },
+      {
+        "method": "SegmentsSvcImpl.CreateWithContext",
+        "operation": "segments/create",
+        "reason": "Variante de SegmentsSvcImpl.Create (con o sin context.Context u opciones) que arma la misma ruta; el caso usa SegmentsSvcImpl.Create."
+      },
+      {
+        "method": "SegmentsSvcImpl.Get",
+        "operation": "segments/get",
+        "reason": null
+      },
+      {
+        "method": "SegmentsSvcImpl.GetWithContext",
+        "operation": "segments/get",
+        "reason": "Variante de SegmentsSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa SegmentsSvcImpl.Get."
+      },
+      {
+        "method": "SegmentsSvcImpl.List",
+        "operation": "segments/list",
+        "reason": "Variante de SegmentsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa SegmentsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "SegmentsSvcImpl.ListWithContext",
+        "operation": "segments/list",
+        "reason": "Variante de SegmentsSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa SegmentsSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "SegmentsSvcImpl.ListWithOptions",
+        "operation": "segments/list",
+        "reason": null
+      },
+      {
+        "method": "SegmentsSvcImpl.Remove",
+        "operation": "segments/remove",
+        "reason": null
+      },
+      {
+        "method": "SegmentsSvcImpl.RemoveWithContext",
+        "operation": "segments/remove",
+        "reason": "Variante de SegmentsSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa SegmentsSvcImpl.Remove."
+      },
+      {
+        "method": "SendEmailOptions.GetIdempotencyKey",
+        "operation": null,
+        "reason": "Getter local de las opciones de envío; no envía peticiones."
+      },
+      {
+        "method": "SuppressionsBatchSvcImpl.Add",
+        "operation": "suppressions/batch-add",
+        "reason": null
+      },
+      {
+        "method": "SuppressionsBatchSvcImpl.AddWithContext",
+        "operation": "suppressions/batch-add",
+        "reason": "Variante de SuppressionsBatchSvcImpl.Add (con o sin context.Context u opciones) que arma la misma ruta; el caso usa SuppressionsBatchSvcImpl.Add."
+      },
+      {
+        "method": "SuppressionsBatchSvcImpl.Remove",
+        "operation": "suppressions/batch-remove",
+        "reason": null
+      },
+      {
+        "method": "SuppressionsBatchSvcImpl.RemoveWithContext",
+        "operation": "suppressions/batch-remove",
+        "reason": "Variante de SuppressionsBatchSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa SuppressionsBatchSvcImpl.Remove."
+      },
+      {
+        "method": "SuppressionsSvcImpl.Add",
+        "operation": "suppressions/add",
+        "reason": null
+      },
+      {
+        "method": "SuppressionsSvcImpl.AddWithContext",
+        "operation": "suppressions/add",
+        "reason": "Variante de SuppressionsSvcImpl.Add (con o sin context.Context u opciones) que arma la misma ruta; el caso usa SuppressionsSvcImpl.Add."
+      },
+      {
+        "method": "SuppressionsSvcImpl.Get",
+        "operation": "suppressions/get",
+        "reason": null
+      },
+      {
+        "method": "SuppressionsSvcImpl.GetWithContext",
+        "operation": "suppressions/get",
+        "reason": "Variante de SuppressionsSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa SuppressionsSvcImpl.Get."
+      },
+      {
+        "method": "SuppressionsSvcImpl.List",
+        "operation": "suppressions/list",
+        "reason": null
+      },
+      {
+        "method": "SuppressionsSvcImpl.ListWithContext",
+        "operation": "suppressions/list",
+        "reason": "Variante de SuppressionsSvcImpl.List (con o sin context.Context u opciones) que arma la misma ruta; el caso usa SuppressionsSvcImpl.List."
+      },
+      {
+        "method": "SuppressionsSvcImpl.Remove",
+        "operation": "suppressions/remove",
+        "reason": null
+      },
+      {
+        "method": "SuppressionsSvcImpl.RemoveWithContext",
+        "operation": "suppressions/remove",
+        "reason": "Variante de SuppressionsSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa SuppressionsSvcImpl.Remove."
+      },
+      {
+        "method": "TemplatesSvcImpl.Create",
+        "operation": "templates/create",
+        "reason": null
+      },
+      {
+        "method": "TemplatesSvcImpl.CreateWithContext",
+        "operation": "templates/create",
+        "reason": "Variante de TemplatesSvcImpl.Create (con o sin context.Context u opciones) que arma la misma ruta; el caso usa TemplatesSvcImpl.Create."
+      },
+      {
+        "method": "TemplatesSvcImpl.Duplicate",
+        "operation": "templates/duplicate",
+        "reason": null
+      },
+      {
+        "method": "TemplatesSvcImpl.DuplicateWithContext",
+        "operation": "templates/duplicate",
+        "reason": "Variante de TemplatesSvcImpl.Duplicate (con o sin context.Context u opciones) que arma la misma ruta; el caso usa TemplatesSvcImpl.Duplicate."
+      },
+      {
+        "method": "TemplatesSvcImpl.Get",
+        "operation": "templates/get",
+        "reason": null
+      },
+      {
+        "method": "TemplatesSvcImpl.GetWithContext",
+        "operation": "templates/get",
+        "reason": "Variante de TemplatesSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa TemplatesSvcImpl.Get."
+      },
+      {
+        "method": "TemplatesSvcImpl.List",
+        "operation": "templates/list",
+        "reason": null
+      },
+      {
+        "method": "TemplatesSvcImpl.ListWithContext",
+        "operation": "templates/list",
+        "reason": "Variante de TemplatesSvcImpl.List (con o sin context.Context u opciones) que arma la misma ruta; el caso usa TemplatesSvcImpl.List."
+      },
+      {
+        "method": "TemplatesSvcImpl.Publish",
+        "operation": "templates/publish",
+        "reason": null
+      },
+      {
+        "method": "TemplatesSvcImpl.PublishWithContext",
+        "operation": "templates/publish",
+        "reason": "Variante de TemplatesSvcImpl.Publish (con o sin context.Context u opciones) que arma la misma ruta; el caso usa TemplatesSvcImpl.Publish."
+      },
+      {
+        "method": "TemplatesSvcImpl.Remove",
+        "operation": "templates/remove",
+        "reason": null
+      },
+      {
+        "method": "TemplatesSvcImpl.RemoveWithContext",
+        "operation": "templates/remove",
+        "reason": "Variante de TemplatesSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa TemplatesSvcImpl.Remove."
+      },
+      {
+        "method": "TemplatesSvcImpl.Update",
+        "operation": "templates/update",
+        "reason": null
+      },
+      {
+        "method": "TemplatesSvcImpl.UpdateWithContext",
+        "operation": "templates/update",
+        "reason": "Variante de TemplatesSvcImpl.Update (con o sin context.Context u opciones) que arma la misma ruta; el caso usa TemplatesSvcImpl.Update."
+      },
+      {
+        "method": "TopicsSvcImpl.Create",
+        "operation": "topics/create",
+        "reason": null
+      },
+      {
+        "method": "TopicsSvcImpl.CreateWithContext",
+        "operation": "topics/create",
+        "reason": "Variante de TopicsSvcImpl.Create (con o sin context.Context u opciones) que arma la misma ruta; el caso usa TopicsSvcImpl.Create."
+      },
+      {
+        "method": "TopicsSvcImpl.Get",
+        "operation": "topics/get",
+        "reason": null
+      },
+      {
+        "method": "TopicsSvcImpl.GetWithContext",
+        "operation": "topics/get",
+        "reason": "Variante de TopicsSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa TopicsSvcImpl.Get."
+      },
+      {
+        "method": "TopicsSvcImpl.List",
+        "operation": "topics/list",
+        "reason": null
+      },
+      {
+        "method": "TopicsSvcImpl.ListWithContext",
+        "operation": "topics/list",
+        "reason": "Variante de TopicsSvcImpl.List (con o sin context.Context u opciones) que arma la misma ruta; el caso usa TopicsSvcImpl.List."
+      },
+      {
+        "method": "TopicsSvcImpl.Remove",
+        "operation": "topics/remove",
+        "reason": null
+      },
+      {
+        "method": "TopicsSvcImpl.RemoveWithContext",
+        "operation": "topics/remove",
+        "reason": "Variante de TopicsSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa TopicsSvcImpl.Remove."
+      },
+      {
+        "method": "TopicsSvcImpl.Update",
+        "operation": "topics/update",
+        "reason": null
+      },
+      {
+        "method": "TopicsSvcImpl.UpdateWithContext",
+        "operation": "topics/update",
+        "reason": "Variante de TopicsSvcImpl.Update (con o sin context.Context u opciones) que arma la misma ruta; el caso usa TopicsSvcImpl.Update."
+      },
+      {
+        "method": "UpdateContactRequest.MarshalJSON",
+        "operation": null,
+        "reason": "Serialización JSON de la petición; no envía peticiones."
+      },
+      {
+        "method": "UpdateContactRequest.SetUnsubscribed",
+        "operation": null,
+        "reason": "Setter local de un campo de la petición; no envía peticiones."
+      },
+      {
+        "method": "UpdateDomainRequest.MarshalJSON",
+        "operation": null,
+        "reason": "Serialización JSON de la petición; no envía peticiones."
+      },
+      {
+        "method": "UpdateDomainRequest.SetClickTracking",
+        "operation": null,
+        "reason": "Setter local de un campo de la petición; no envía peticiones."
+      },
+      {
+        "method": "UpdateDomainRequest.SetOpenTracking",
+        "operation": null,
+        "reason": "Setter local de un campo de la petición; no envía peticiones."
+      },
+      {
+        "method": "WebhooksSvcImpl.Create",
+        "operation": "webhooks/create",
+        "reason": null
+      },
+      {
+        "method": "WebhooksSvcImpl.CreateWithContext",
+        "operation": "webhooks/create",
+        "reason": "Variante de WebhooksSvcImpl.Create (con o sin context.Context u opciones) que arma la misma ruta; el caso usa WebhooksSvcImpl.Create."
+      },
+      {
+        "method": "WebhooksSvcImpl.Get",
+        "operation": "webhooks/get",
+        "reason": null
+      },
+      {
+        "method": "WebhooksSvcImpl.GetWithContext",
+        "operation": "webhooks/get",
+        "reason": "Variante de WebhooksSvcImpl.Get (con o sin context.Context u opciones) que arma la misma ruta; el caso usa WebhooksSvcImpl.Get."
+      },
+      {
+        "method": "WebhooksSvcImpl.List",
+        "operation": "webhooks/list",
+        "reason": "Variante de WebhooksSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa WebhooksSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "WebhooksSvcImpl.ListWithContext",
+        "operation": "webhooks/list",
+        "reason": "Variante de WebhooksSvcImpl.ListWithOptions (con o sin context.Context u opciones) que arma la misma ruta; el caso usa WebhooksSvcImpl.ListWithOptions."
+      },
+      {
+        "method": "WebhooksSvcImpl.ListWithOptions",
+        "operation": "webhooks/list",
+        "reason": null
+      },
+      {
+        "method": "WebhooksSvcImpl.Remove",
+        "operation": "webhooks/remove",
+        "reason": null
+      },
+      {
+        "method": "WebhooksSvcImpl.RemoveWithContext",
+        "operation": "webhooks/remove",
+        "reason": "Variante de WebhooksSvcImpl.Remove (con o sin context.Context u opciones) que arma la misma ruta; el caso usa WebhooksSvcImpl.Remove."
+      },
+      {
+        "method": "WebhooksSvcImpl.Update",
+        "operation": "webhooks/update",
+        "reason": null
+      },
+      {
+        "method": "WebhooksSvcImpl.UpdateWithContext",
+        "operation": "webhooks/update",
+        "reason": "Variante de WebhooksSvcImpl.Update (con o sin context.Context u opciones) que arma la misma ruta; el caso usa WebhooksSvcImpl.Update."
+      },
+      {
+        "method": "WebhooksSvcImpl.Verify",
+        "operation": null,
+        "reason": "Verifica localmente la firma de un webhook; no envía peticiones."
+      }
+    ]
+  }
+}

@@ -32,6 +32,9 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 ## Oráculo
 
 - La equivalencia con los SDKs oficiales solo cubre las operaciones que cada SDK oficial expone en su versión fijada. Las demás solo se comparan entre superficies propias y contra la especificación con Prism.
+- `contacts/create-import` no se compara con ningún SDK oficial: el cuerpo `multipart/form-data` lleva una frontera aleatoria por petición, así que su forma normalizada (un sha256 de los bytes) nunca coincide entre dos clientes. Solo la cubren C5 y C8.
+- Los drivers oficiales solo ejecutan los casos `<operationId>#example`; la paginación con iterador no tiene equivalente en los SDKs oficiales y no se compara contra ellos.
+- `resend-go` devuelve errores con solo un mensaje (salvo el de 429), así que en `results.jsonl` el driver oficial de Go no reporta `code` ni `statusCode` de otros errores.
 - Los SDKs oficiales no reintentan solos, así que el comportamiento ante fallos se compara entre las superficies propias y contra la política declarada, no contra los oficiales.
 - Para el CLI oficial se usa una variable de entorno de URL base presente en su código pero no documentada. Si una versión futura la quita, la comparación con el CLI oficial deja de ser posible.
 

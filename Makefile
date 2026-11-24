@@ -10,6 +10,7 @@ bootstrap:
 	python3 -m venv .venv
 	.venv/bin/pip install --quiet -r requirements-dev.txt
 	cd tools && go mod download
+	cd harness/oracle/official-go && go mod download
 
 generate:
 	node generator/src/main.ts

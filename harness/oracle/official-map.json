@@ -1,0 +1,660 @@
+{
+  "format": "paridad-official-map/1",
+  "operations": {
+    "api-keys/create": {
+      "ts": {"method": "apiKeys.create", "args": ["$body"]},
+      "python": {"method": "ApiKeys.create", "args": ["$body"]},
+      "go": {"method": "ApiKeys.Create", "args": ["$body"]}
+    },
+    "api-keys/list": {
+      "ts": {"method": "apiKeys.list", "args": ["$query"]},
+      "python": {"method": "ApiKeys.list", "args": ["$query"]},
+      "go": {"method": "ApiKeys.ListWithOptions", "args": ["$query"]}
+    },
+    "api-keys/remove": {
+      "ts": {"method": "apiKeys.remove", "args": ["$path.api_key_id"]},
+      "python": {"method": "ApiKeys.remove", "args": ["$path.api_key_id"]},
+      "go": {"method": "ApiKeys.Remove", "args": ["$path.api_key_id"]}
+    },
+    "api-keys/update": {
+      "ts": {"method": "apiKeys.update", "args": ["$path.api_key_id", "$body"]},
+      "python": {"method": "ApiKeys.update", "args": [{"$with": "$body", "id": "$path.api_key_id"}]},
+      "go": {"method": "ApiKeys.Update", "args": ["$path.api_key_id", "$body"]}
+    },
+    "automations/cancel-run": {
+      "ts": {"method": "automations.runs.cancel", "args": [{"automationId": "$path.automation_id", "runId": "$path.run_id"}]}
+    },
+    "automations/create": {
+      "ts": {"method": "automations.create", "args": ["$body"]},
+      "python": {"method": "Automations.create", "args": ["$body"]},
+      "go": {"method": "Automations.Create", "args": ["$body"]}
+    },
+    "automations/duplicate": {
+      "ts": {"method": "automations.duplicate", "args": ["$path.automation_id"]},
+      "python": {"method": "Automations.duplicate", "args": ["$path.automation_id"]},
+      "go": {"method": "Automations.Duplicate", "args": ["$path.automation_id"]}
+    },
+    "automations/get": {
+      "ts": {"method": "automations.get", "args": ["$path.automation_id"]},
+      "python": {"method": "Automations.get", "args": ["$path.automation_id"]},
+      "go": {"method": "Automations.Get", "args": ["$path.automation_id"]}
+    },
+    "automations/get-run": {
+      "ts": {"method": "automations.runs.get", "args": [{"automationId": "$path.automation_id", "runId": "$path.run_id"}]},
+      "python": {"method": "Automations.Runs.get", "args": ["$path.automation_id", "$path.run_id"]},
+      "go": {"method": "Automations.GetRun", "args": ["$path.automation_id", "$path.run_id"]}
+    },
+    "automations/list": {
+      "ts": {"method": "automations.list", "args": ["$query"]},
+      "python": {"method": "Automations.list", "args": ["$query"]},
+      "go": {"method": "Automations.ListWithOptions", "args": ["$query"]}
+    },
+    "automations/list-runs": {
+      "ts": {"method": "automations.runs.list", "args": [{"$with": "$query", "automationId": "$path.automation_id"}]},
+      "python": {"method": "Automations.Runs.list", "args": ["$path.automation_id", "$query"]},
+      "go": {"method": "Automations.ListRunsWithContext", "args": ["$path.automation_id", "$query"]}
+    },
+    "automations/remove": {
+      "ts": {"method": "automations.remove", "args": ["$path.automation_id"]},
+      "python": {"method": "Automations.remove", "args": ["$path.automation_id"]},
+      "go": {"method": "Automations.Remove", "args": ["$path.automation_id"]}
+    },
+    "automations/stop": {
+      "ts": {"method": "automations.stop", "args": ["$path.automation_id"]},
+      "python": {"method": "Automations.stop", "args": ["$path.automation_id"]},
+      "go": {"method": "Automations.Stop", "args": ["$path.automation_id"]}
+    },
+    "automations/update": {
+      "ts": {"method": "automations.update", "args": ["$path.automation_id", "$body"]},
+      "python": {"method": "Automations.update", "args": [{"$with": "$body", "automation_id": "$path.automation_id"}]},
+      "go": {"method": "Automations.Update", "args": ["$path.automation_id", "$body"]}
+    },
+    "broadcasts/cancel": {
+      "ts": {"method": "broadcasts.cancel", "args": ["$path.id"]},
+      "python": {"method": "Broadcasts.cancel", "args": ["$path.id"]},
+      "go": {"method": "Broadcasts.Cancel", "args": ["$path.id"]}
+    },
+    "broadcasts/create": {
+      "ts": {"method": "broadcasts.create", "args": [{"$camel": "$body"}]},
+      "python": {"method": "Broadcasts.create", "args": ["$body"]},
+      "go": {"method": "Broadcasts.Create", "args": ["$body"]}
+    },
+    "broadcasts/duplicate": {
+      "ts": {"method": "broadcasts.duplicate", "args": ["$path.id"]},
+      "python": {"method": "Broadcasts.duplicate", "args": ["$path.id"]}
+    },
+    "broadcasts/get": {
+      "ts": {"method": "broadcasts.get", "args": ["$path.id"]},
+      "python": {"method": "Broadcasts.get", "args": ["$path.id"]},
+      "go": {"method": "Broadcasts.Get", "args": ["$path.id"]}
+    },
+    "broadcasts/list": {
+      "ts": {"method": "broadcasts.list", "args": ["$query"]},
+      "python": {"method": "Broadcasts.list", "args": ["$query"]},
+      "go": {"method": "Broadcasts.ListWithOptions", "args": ["$query"]}
+    },
+    "broadcasts/list-clicked-links": {
+      "ts": {"method": "broadcasts.clickedLinks", "args": ["$path.id", "$query"]},
+      "python": {"method": "Broadcasts.clicked_links", "args": ["$path.id", "$query"]},
+      "go": {"method": "Broadcasts.ClickedLinksWithOptions", "args": ["$path.id", "$query"]}
+    },
+    "broadcasts/recipients": {
+      "ts": {"method": "broadcasts.recipients", "args": ["$path.id", {"$camel": "$query"}]},
+      "python": {"method": "Broadcasts.recipients", "args": ["$path.id", "$query"]},
+      "go": {"method": "Broadcasts.Recipients", "args": ["$path.id", {"$camel": "$query"}]}
+    },
+    "broadcasts/remove": {
+      "ts": {"method": "broadcasts.remove", "args": ["$path.id"]},
+      "python": {"method": "Broadcasts.remove", "args": ["$path.id"]},
+      "go": {"method": "Broadcasts.Remove", "args": ["$path.id"]}
+    },
+    "broadcasts/send": {
+      "ts": {"method": "broadcasts.send", "args": ["$path.id", {"$camel": "$body"}]},
+      "python": {"method": "Broadcasts.send", "args": [{"$with": "$body", "broadcast_id": "$path.id"}]},
+      "go": {"method": "Broadcasts.Send", "args": [{"$with": "$body", "broadcast_id": "$path.id"}]}
+    },
+    "broadcasts/update": {
+      "ts": {"method": "broadcasts.update", "args": ["$path.id", {"$camel": "$body"}]},
+      "python": {"method": "Broadcasts.update", "args": [{"$with": "$body", "broadcast_id": "$path.id"}]},
+      "go": {"method": "Broadcasts.Update", "args": [{"$with": "$body", "broadcast_id": "$path.id"}]}
+    },
+    "contact-properties/create": {
+      "ts": {"method": "contactProperties.create", "args": [{"$camel": "$body"}]},
+      "python": {"method": "ContactProperties.create", "args": ["$body"]},
+      "go": {"method": "ContactProperties.Create", "args": ["$body"]}
+    },
+    "contact-properties/get": {
+      "ts": {"method": "contactProperties.get", "args": ["$path.id"]},
+      "python": {"method": "ContactProperties.get", "args": ["$path.id"]},
+      "go": {"method": "ContactProperties.Get", "args": ["$path.id"]}
+    },
+    "contact-properties/list": {
+      "ts": {"method": "contactProperties.list", "args": ["$query"]},
+      "python": {"method": "ContactProperties.list", "args": ["$query"]},
+      "go": {"method": "ContactProperties.ListWithOptions", "args": ["$query"]}
+    },
+    "contact-properties/remove": {
+      "ts": {"method": "contactProperties.remove", "args": ["$path.id"]},
+      "python": {"method": "ContactProperties.remove", "args": ["$path.id"]},
+      "go": {"method": "ContactProperties.Remove", "args": ["$path.id"]}
+    },
+    "contact-properties/update": {
+      "ts": {"method": "contactProperties.update", "args": [{"$camel": "$body", "id": "$path.id"}]},
+      "python": {"method": "ContactProperties.update", "args": [{"$with": "$body", "id": "$path.id"}]},
+      "go": {"method": "ContactProperties.Update", "args": [{"$with": "$body", "Id": "$path.id"}]}
+    },
+    "contacts/add-segment": {
+      "ts": {"method": "contacts.segments.add", "args": [{"contactId": "$path.contact_id", "segmentId": "$path.segment_id"}]},
+      "python": {"method": "ContactSegments.add", "args": [{"contact_id": "$path.contact_id", "segment_id": "$path.segment_id"}]},
+      "go": {"method": "Contacts.Segments.Add", "args": [{"contact_id": "$path.contact_id", "segment_id": "$path.segment_id"}]}
+    },
+    "contacts/create": {
+      "ts": {"method": "contacts.create", "args": [{"$camel": "$body"}]},
+      "python": {"method": "Contacts.create", "args": ["$body"]},
+      "go": {"method": "Contacts.Create", "args": ["$body"]}
+    },
+    "contacts/get": {
+      "ts": {"method": "contacts.get", "args": ["$path.id"]},
+      "python": {"method": "Contacts.get", "args": [null, "$path.id"]},
+      "go": {"method": "Contacts.Get", "args": [{"Id": "$path.id"}]}
+    },
+    "contacts/get-import": {
+      "ts": {"method": "contacts.imports.get", "args": ["$path.id"]},
+      "python": {"method": "ContactImports.get", "args": ["$path.id"]},
+      "go": {"method": "Contacts.Imports.Get", "args": ["$path.id"]}
+    },
+    "contacts/list": {
+      "ts": {"method": "contacts.list", "args": ["$query"]},
+      "python": {"method": "Contacts.list", "args": [null, "$query"]},
+      "go": {"method": "Contacts.List", "args": ["$query"]}
+    },
+    "contacts/list-imports": {
+      "ts": {"method": "contacts.imports.list", "args": ["$query"]},
+      "python": {"method": "ContactImports.list", "args": ["$query"]},
+      "go": {"method": "Contacts.Imports.List", "args": ["$query"]}
+    },
+    "contacts/list-segments": {
+      "ts": {"method": "contacts.segments.list", "args": [{"$with": "$query", "contactId": "$path.contact_id"}]},
+      "python": {"method": "ContactSegments.list", "args": [{"contact_id": "$path.contact_id"}, "$query"]},
+      "go": {"method": "Contacts.Segments.ListWithOptions", "args": [{"contact_id": "$path.contact_id"}, "$query"]}
+    },
+    "contacts/list-topics": {
+      "ts": {"method": "contacts.topics.list", "args": [{"$with": "$query", "id": "$path.contact_id"}]},
+      "python": {"method": "Contacts.Topics.list", "args": ["$path.contact_id", null, "$query"]},
+      "go": {"method": "Contacts.Topics.ListWithOptions", "args": ["$path.contact_id", "$query"]}
+    },
+    "contacts/remove": {
+      "ts": {"method": "contacts.remove", "args": ["$path.id"]},
+      "python": {"method": "Contacts.remove", "args": [null, "$path.id"]},
+      "go": {"method": "Contacts.Remove", "args": [{"Id": "$path.id"}]}
+    },
+    "contacts/remove-segment": {
+      "ts": {"method": "contacts.segments.remove", "args": [{"contactId": "$path.contact_id", "segmentId": "$path.segment_id"}]},
+      "python": {"method": "ContactSegments.remove", "args": [{"contact_id": "$path.contact_id", "segment_id": "$path.segment_id"}]},
+      "go": {"method": "Contacts.Segments.Remove", "args": [{"contact_id": "$path.contact_id", "segment_id": "$path.segment_id"}]}
+    },
+    "contacts/update": {
+      "ts": {"method": "contacts.update", "args": [{"id": "$path.id", "unsubscribed": "$body.unsubscribed", "firstName": "$body.first_name", "lastName": "$body.last_name", "properties": "$body.properties"}]},
+      "python": {"method": "Contacts.update", "args": [{"id": "$path.id", "unsubscribed": "$body.unsubscribed", "first_name": "$body.first_name", "last_name": "$body.last_name", "properties": "$body.properties"}]},
+      "go": {"method": "Contacts.Update", "args": [{"$with": "$body", "id": "$path.id"}]}
+    },
+    "contacts/update-topics": {
+      "ts": {"method": "contacts.topics.update", "args": [{"id": "$path.contact_id", "topics": "$body.topics"}]},
+      "python": {"method": "Contacts.Topics.update", "args": [{"id": "$path.contact_id", "topics": "$body.topics"}]},
+      "go": {"method": "Contacts.Topics.Update", "args": [{"Id": "$path.contact_id", "topics": "$body.topics"}]}
+    },
+    "domains/create": {
+      "ts": {"method": "domains.create", "args": [{"$camel": "$body"}]},
+      "python": {"method": "Domains.create", "args": ["$body"]},
+      "go": {"method": "Domains.Create", "args": ["$body"]}
+    },
+    "domains/create-claim": {
+      "ts": {"method": "domains.claims.create", "args": [{"$camel": "$body"}]},
+      "python": {"method": "DomainClaims.create", "args": ["$body"]},
+      "go": {"method": "DomainClaims.Create", "args": ["$body"]}
+    },
+    "domains/enable-forge": {
+      "ts": {"method": "domains.forge.enable", "args": [{"$camel": "$body", "id": "$path.domain_id"}]},
+      "python": {"method": "DomainForge.enable", "args": [{"$with": "$body", "id": "$path.domain_id"}]}
+    },
+    "domains/get": {
+      "ts": {"method": "domains.get", "args": ["$path.domain_id"]},
+      "python": {"method": "Domains.get", "args": ["$path.domain_id"]},
+      "go": {"method": "Domains.Get", "args": ["$path.domain_id"]}
+    },
+    "domains/get-claim": {
+      "ts": {"method": "domains.claims.get", "args": ["$path.domain_id"]},
+      "python": {"method": "DomainClaims.get", "args": ["$path.domain_id"]},
+      "go": {"method": "DomainClaims.Get", "args": ["$path.domain_id"]}
+    },
+    "domains/list": {
+      "ts": {"method": "domains.list", "args": ["$query"]},
+      "python": {"method": "Domains.list", "args": ["$query"]},
+      "go": {"method": "Domains.ListWithOptions", "args": ["$query"]}
+    },
+    "domains/remove": {
+      "ts": {"method": "domains.remove", "args": ["$path.domain_id"]},
+      "python": {"method": "Domains.remove", "args": ["$path.domain_id"]},
+      "go": {"method": "Domains.Remove", "args": ["$path.domain_id"]}
+    },
+    "domains/update": {
+      "ts": {"method": "domains.update", "args": [{"$camel": "$body", "id": "$path.domain_id"}]},
+      "python": {"method": "Domains.update", "args": [{"$with": "$body", "id": "$path.domain_id"}]},
+      "go": {"method": "Domains.Update", "args": ["$path.domain_id", "$body"]}
+    },
+    "domains/verify": {
+      "ts": {"method": "domains.verify", "args": ["$path.domain_id", {"scope": "$body.scope"}]},
+      "python": {"method": "Domains.verify", "args": ["$path.domain_id", "$body"]},
+      "go": {"method": "Domains.Verify", "args": ["$path.domain_id"]}
+    },
+    "domains/verify-claim": {
+      "ts": {"method": "domains.claims.verify", "args": ["$path.domain_id"]},
+      "python": {"method": "DomainClaims.verify", "args": ["$path.domain_id"]},
+      "go": {"method": "DomainClaims.Verify", "args": ["$path.domain_id"]}
+    },
+    "emails/cancel": {
+      "ts": {"method": "emails.cancel", "args": ["$path.email_id"]},
+      "python": {"method": "Emails.cancel", "args": ["$path.email_id"]},
+      "go": {"method": "Emails.Cancel", "args": ["$path.email_id"]}
+    },
+    "emails/get": {
+      "ts": {"method": "emails.get", "args": ["$path.email_id"]},
+      "python": {"method": "Emails.get", "args": ["$path.email_id"]},
+      "go": {"method": "Emails.Get", "args": ["$path.email_id"]}
+    },
+    "emails/get-attachment": {
+      "ts": {"method": "emails.attachments.get", "args": [{"emailId": "$path.email_id", "id": "$path.attachment_id"}]},
+      "python": {"method": "EmailAttachments.get", "args": ["$path.email_id", "$path.attachment_id"]},
+      "go": {"method": "Emails.GetAttachment", "args": ["$path.email_id", "$path.attachment_id"]}
+    },
+    "emails/get-receiving": {
+      "ts": {"method": "emails.receiving.get", "args": ["$path.email_id"]},
+      "python": {"method": "Emails.Receiving.get", "args": ["$path.email_id"]},
+      "go": {"method": "Emails.Receiving.Get", "args": ["$path.email_id"]}
+    },
+    "emails/get-receiving-attachment": {
+      "ts": {"method": "emails.receiving.attachments.get", "args": [{"emailId": "$path.email_id", "id": "$path.attachment_id"}]},
+      "python": {"method": "Emails.Receiving.Attachments.get", "args": ["$path.email_id", "$path.attachment_id"]},
+      "go": {"method": "Emails.Receiving.GetAttachment", "args": ["$path.email_id", "$path.attachment_id"]}
+    },
+    "emails/list": {
+      "ts": {"method": "emails.list", "args": ["$query"]},
+      "python": {"method": "Emails.list", "args": ["$query"]},
+      "go": {"method": "Emails.ListWithOptions", "args": ["$query"]}
+    },
+    "emails/list-attachments": {
+      "ts": {"method": "emails.attachments.list", "args": [{"$with": "$query", "emailId": "$path.email_id"}]},
+      "python": {"method": "EmailAttachments.list", "args": ["$path.email_id", "$query"]},
+      "go": {"method": "Emails.ListAttachmentsWithOptions", "args": ["$path.email_id", "$query"]}
+    },
+    "emails/list-receiving": {
+      "ts": {"method": "emails.receiving.list", "args": ["$query"]},
+      "python": {"method": "Emails.Receiving.list", "args": ["$query"]},
+      "go": {"method": "Emails.Receiving.ListWithOptions", "args": ["$query"]}
+    },
+    "emails/list-receiving-attachments": {
+      "ts": {"method": "emails.receiving.attachments.list", "args": [{"$with": "$query", "emailId": "$path.email_id"}]},
+      "python": {"method": "Emails.Receiving.Attachments.list", "args": ["$path.email_id", "$query"]},
+      "go": {"method": "Emails.Receiving.ListAttachmentsWithOptions", "args": ["$path.email_id", "$query"]}
+    },
+    "emails/metrics": {
+      "ts": {"method": "emails.metrics", "args": [{"$camel": "$query"}]},
+      "python": {"method": "Emails.metrics", "args": ["$query"]},
+      "go": {"method": "Emails.MetricsWithOptions", "args": [{"$camel": "$query"}]}
+    },
+    "emails/send": {
+      "ts": {"method": "emails.send", "args": [{"$camel": "$body"}, {"idempotencyKey": "$idempotency_key"}]},
+      "python": {"method": "Emails.send", "args": ["$body", {"idempotency_key": "$idempotency_key"}]},
+      "go": {"method": "Emails.SendWithOptions", "args": ["$body", {"idempotency_key": "$idempotency_key"}]}
+    },
+    "emails/send-batch": {
+      "ts": {"method": "batch.send", "args": [{"$each": "$body", "as": {"$camel": "$item"}}, {"idempotencyKey": "$idempotency_key"}]},
+      "python": {"method": "Batch.send", "args": ["$body", {"idempotency_key": "$idempotency_key"}]},
+      "go": {"method": "Batch.SendWithOptions", "args": ["$body", {"idempotency_key": "$idempotency_key"}]}
+    },
+    "emails/share": {
+      "ts": {"method": "emails.share", "args": ["$path.email_id", {"$camel": "$body"}]},
+      "python": {"method": "Emails.share", "args": ["$path.email_id", "$body"]},
+      "go": {"method": "Emails.Share", "args": ["$path.email_id", "$body"]}
+    },
+    "emails/update": {
+      "ts": {"method": "emails.update", "args": [{"id": "$path.email_id"}]},
+      "python": {"method": "Emails.update", "args": [{"id": "$path.email_id"}]},
+      "go": {"method": "Emails.Update", "args": [{"id": "$path.email_id"}]}
+    },
+    "events/create": {
+      "ts": {"method": "events.create", "args": ["$body"]},
+      "python": {"method": "Events.create", "args": ["$body"]},
+      "go": {"method": "Events.Create", "args": ["$body"]}
+    },
+    "events/get": {
+      "ts": {"method": "events.get", "args": ["$path.identifier"]},
+      "python": {"method": "Events.get", "args": ["$path.identifier"]},
+      "go": {"method": "Events.Get", "args": ["$path.identifier"]}
+    },
+    "events/list": {
+      "ts": {"method": "events.list", "args": ["$query"]},
+      "python": {"method": "Events.list", "args": ["$query"]},
+      "go": {"method": "Events.ListWithOptions", "args": ["$query"]}
+    },
+    "events/remove": {
+      "ts": {"method": "events.remove", "args": ["$path.identifier"]},
+      "python": {"method": "Events.remove", "args": ["$path.identifier"]},
+      "go": {"method": "Events.Remove", "args": ["$path.identifier"]}
+    },
+    "events/send": {
+      "ts": {"method": "events.send", "args": [{"$camel": "$body"}]},
+      "python": {"method": "Events.send", "args": ["$body"]},
+      "go": {"method": "Events.Send", "args": ["$body"]}
+    },
+    "events/update": {
+      "ts": {"method": "events.update", "args": ["$path.identifier", "$body"]},
+      "python": {"method": "Events.update", "args": [{"$with": "$body", "identifier": "$path.identifier"}]},
+      "go": {"method": "Events.Update", "args": ["$path.identifier", "$body"]}
+    },
+    "inboxes/add-thread-labels": {
+      "ts": {"method": "inboxes.threads.labels.add", "args": [{"inboxId": "$path.inbox_id", "threadId": "$path.thread_id", "labels": "$body.labels"}]},
+      "python": {"method": "InboxThreadLabels.add", "args": [{"$with": "$body", "inbox_id": "$path.inbox_id", "thread_id": "$path.thread_id"}]}
+    },
+    "inboxes/create": {
+      "ts": {"method": "inboxes.create", "args": [{"$camel": "$body"}]},
+      "python": {"method": "Inboxes.create", "args": ["$body"]}
+    },
+    "inboxes/create-draft": {
+      "ts": {"method": "inboxes.drafts.create", "args": [{"$with": "$body", "inboxId": "$path.inbox_id", "threadId": "$body.thread_id", "replyToEmailId": "$body.reply_to_email_id"}, {"idempotencyKey": "$idempotency_key"}]},
+      "python": {"method": "InboxDrafts.create", "args": [{"$with": "$body", "inbox_id": "$path.inbox_id"}, {"idempotency_key": "$idempotency_key"}]}
+    },
+    "inboxes/create-label": {
+      "ts": {"method": "inboxes.labels.create", "args": [{"inboxId": "$path.inbox_id", "name": "$body.name", "color": "$body.color"}]},
+      "python": {"method": "InboxLabels.create", "args": [{"$with": "$body", "inbox_id": "$path.inbox_id"}]}
+    },
+    "inboxes/forward-thread-email": {
+      "ts": {"method": "inboxes.threads.emails.forward", "args": [{"$camel": "$body", "inboxId": "$path.inbox_id", "threadId": "$path.thread_id", "emailId": "$path.email_id"}, {"idempotencyKey": "$idempotency_key"}]},
+      "python": {"method": "InboxThreadEmails.forward", "args": [{"$with": "$body", "inbox_id": "$path.inbox_id", "thread_id": "$path.thread_id", "email_id": "$path.email_id"}, {"idempotency_key": "$idempotency_key"}]}
+    },
+    "inboxes/get": {
+      "ts": {"method": "inboxes.get", "args": ["$path.inbox_id"]},
+      "python": {"method": "Inboxes.get", "args": ["$path.inbox_id"]}
+    },
+    "inboxes/get-agent": {
+      "ts": {"method": "inboxes.agent.get", "args": [{"inboxId": "$path.inbox_id"}]},
+      "python": {"method": "InboxAgent.get", "args": ["$path.inbox_id"]}
+    },
+    "inboxes/get-draft": {
+      "ts": {"method": "inboxes.drafts.get", "args": [{"inboxId": "$path.inbox_id", "draftId": "$path.draft_id"}]},
+      "python": {"method": "InboxDrafts.get", "args": ["$path.inbox_id", "$path.draft_id"]}
+    },
+    "inboxes/get-thread": {
+      "ts": {"method": "inboxes.threads.get", "args": [{"inboxId": "$path.inbox_id", "threadId": "$path.thread_id"}]},
+      "python": {"method": "InboxThreads.get", "args": ["$path.inbox_id", "$path.thread_id"]}
+    },
+    "inboxes/get-thread-email": {
+      "ts": {"method": "inboxes.threads.emails.get", "args": [{"inboxId": "$path.inbox_id", "threadId": "$path.thread_id", "emailId": "$path.email_id"}]},
+      "python": {"method": "InboxThreadEmails.get", "args": ["$path.inbox_id", "$path.thread_id", "$path.email_id"]}
+    },
+    "inboxes/list": {
+      "ts": {"method": "inboxes.list", "args": ["$query"]},
+      "python": {"method": "Inboxes.list", "args": ["$query"]}
+    },
+    "inboxes/list-drafts": {
+      "ts": {"method": "inboxes.drafts.list", "args": [{"$with": "$query", "inboxId": "$path.inbox_id"}]},
+      "python": {"method": "InboxDrafts.list", "args": ["$path.inbox_id", "$query"]}
+    },
+    "inboxes/list-labels": {
+      "ts": {"method": "inboxes.labels.list", "args": [{"inboxId": "$path.inbox_id"}]},
+      "python": {"method": "InboxLabels.list", "args": ["$path.inbox_id"]}
+    },
+    "inboxes/list-thread-emails": {
+      "ts": {"method": "inboxes.threads.emails.list", "args": [{"$with": "$query", "inboxId": "$path.inbox_id", "threadId": "$path.thread_id"}]},
+      "python": {"method": "InboxThreadEmails.list", "args": ["$path.inbox_id", "$path.thread_id", "$query"]}
+    },
+    "inboxes/list-threads": {
+      "ts": {"method": "inboxes.threads.list", "args": [{"$with": "$query", "inboxId": "$path.inbox_id"}]},
+      "python": {"method": "InboxThreads.list", "args": ["$path.inbox_id", "$query"]}
+    },
+    "inboxes/remove": {
+      "ts": {"method": "inboxes.remove", "args": ["$path.inbox_id"]},
+      "python": {"method": "Inboxes.remove", "args": ["$path.inbox_id"]}
+    },
+    "inboxes/remove-draft": {
+      "ts": {"method": "inboxes.drafts.remove", "args": [{"inboxId": "$path.inbox_id", "draftId": "$path.draft_id"}]},
+      "python": {"method": "InboxDrafts.remove", "args": ["$path.inbox_id", "$path.draft_id"]}
+    },
+    "inboxes/remove-label": {
+      "ts": {"method": "inboxes.labels.remove", "args": [{"inboxId": "$path.inbox_id", "labelId": "$path.label_id"}]},
+      "python": {"method": "InboxLabels.remove", "args": ["$path.inbox_id", "$path.label_id"]}
+    },
+    "inboxes/remove-thread": {
+      "ts": {"method": "inboxes.threads.remove", "args": [{"inboxId": "$path.inbox_id", "threadId": "$path.thread_id"}]},
+      "python": {"method": "InboxThreads.remove", "args": ["$path.inbox_id", "$path.thread_id"]}
+    },
+    "inboxes/remove-thread-label": {
+      "ts": {"method": "inboxes.threads.labels.remove", "args": [{"inboxId": "$path.inbox_id", "threadId": "$path.thread_id", "labelId": "$path.label_id"}]},
+      "python": {"method": "InboxThreadLabels.remove", "args": ["$path.inbox_id", "$path.thread_id", "$path.label_id"]}
+    },
+    "inboxes/reply-thread-email": {
+      "ts": {"method": "inboxes.threads.emails.reply", "args": [{"$camel": "$body", "inboxId": "$path.inbox_id", "threadId": "$path.thread_id", "emailId": "$path.email_id"}, {"idempotencyKey": "$idempotency_key"}]},
+      "python": {"method": "InboxThreadEmails.reply", "args": [{"$with": "$body", "inbox_id": "$path.inbox_id", "thread_id": "$path.thread_id", "email_id": "$path.email_id"}, {"idempotency_key": "$idempotency_key"}]}
+    },
+    "inboxes/search-threads": {
+      "ts": {"method": "inboxes.threads.search", "args": [{"$camel": "$query", "inboxId": "$path.inbox_id"}]},
+      "python": {"method": "InboxThreads.search", "args": ["$path.inbox_id", "$query"]}
+    },
+    "inboxes/send-draft": {
+      "ts": {"method": "inboxes.drafts.send", "args": [{"inboxId": "$path.inbox_id", "draftId": "$path.draft_id", "headers": "$body.headers"}, {"idempotencyKey": "$idempotency_key"}]},
+      "python": {"method": "InboxDrafts.send", "args": ["$path.inbox_id", "$path.draft_id", "$body", {"idempotency_key": "$idempotency_key"}]}
+    },
+    "inboxes/set-thread-labels": {
+      "ts": {"method": "inboxes.threads.labels.set", "args": [{"inboxId": "$path.inbox_id", "threadId": "$path.thread_id", "labels": "$body.labels"}]},
+      "python": {"method": "InboxThreadLabels.set", "args": [{"$with": "$body", "inbox_id": "$path.inbox_id", "thread_id": "$path.thread_id"}]}
+    },
+    "inboxes/update": {
+      "ts": {"method": "inboxes.update", "args": ["$path.inbox_id", {"$camel": "$body"}]},
+      "python": {"method": "Inboxes.update", "args": [{"$with": "$body", "id": "$path.inbox_id"}]}
+    },
+    "inboxes/update-agent": {
+      "ts": {"method": "inboxes.agent.update", "args": [{"$with": "$body", "inboxId": "$path.inbox_id"}]},
+      "python": {"method": "InboxAgent.update", "args": [{"$with": "$body", "inbox_id": "$path.inbox_id"}]}
+    },
+    "inboxes/update-draft": {
+      "ts": {"method": "inboxes.drafts.update", "args": [{"$with": "$body", "inboxId": "$path.inbox_id", "draftId": "$path.draft_id"}]},
+      "python": {"method": "InboxDrafts.update", "args": [{"$with": "$body", "inbox_id": "$path.inbox_id", "id": "$path.draft_id"}]}
+    },
+    "inboxes/update-label": {
+      "ts": {"method": "inboxes.labels.update", "args": [{"inboxId": "$path.inbox_id", "labelId": "$path.label_id", "name": "$body.name", "color": "$body.color"}]},
+      "python": {"method": "InboxLabels.update", "args": [{"$with": "$body", "inbox_id": "$path.inbox_id", "id": "$path.label_id"}]}
+    },
+    "inboxes/update-thread": {
+      "ts": {"method": "inboxes.threads.update", "args": [{"inboxId": "$path.inbox_id", "threadId": "$path.thread_id", "read": "$body.read", "folder": "$body.folder"}]},
+      "python": {"method": "InboxThreads.update", "args": [{"$with": "$body", "inbox_id": "$path.inbox_id", "id": "$path.thread_id"}]}
+    },
+    "logs/get": {
+      "ts": {"method": "logs.get", "args": ["$path.log_id"]},
+      "python": {"method": "Logs.get", "args": ["$path.log_id"]},
+      "go": {"method": "Logs.Get", "args": ["$path.log_id"]}
+    },
+    "logs/list": {
+      "ts": {"method": "logs.list", "args": ["$query"]},
+      "python": {"method": "Logs.list", "args": ["$query"]},
+      "go": {"method": "Logs.ListWithOptions", "args": ["$query"]}
+    },
+    "oauth/list-grants": {
+      "ts": {"method": "oauthGrants.list", "args": ["$query"]},
+      "python": {"method": "OAuthGrants.list", "args": ["$query"]},
+      "go": {"method": "OAuthGrants.ListWithOptions", "args": ["$query"]}
+    },
+    "oauth/revoke-grant": {
+      "ts": {"method": "oauthGrants.revoke", "args": ["$path.oauth_grant_id"]},
+      "python": {"method": "OAuthGrants.revoke", "args": ["$path.oauth_grant_id"]},
+      "go": {"method": "OAuthGrants.Revoke", "args": ["$path.oauth_grant_id"]}
+    },
+    "segments/create": {
+      "ts": {"method": "segments.create", "args": ["$body"]},
+      "python": {"method": "Segments.create", "args": ["$body"]},
+      "go": {"method": "Segments.Create", "args": ["$body"]}
+    },
+    "segments/get": {
+      "ts": {"method": "segments.get", "args": ["$path.id"]},
+      "python": {"method": "Segments.get", "args": ["$path.id"]},
+      "go": {"method": "Segments.Get", "args": ["$path.id"]}
+    },
+    "segments/list": {
+      "ts": {"method": "segments.list", "args": ["$query"]},
+      "python": {"method": "Segments.list", "args": ["$query"]},
+      "go": {"method": "Segments.ListWithOptions", "args": ["$query"]}
+    },
+    "segments/list-contacts": {
+      "ts": {"method": "contacts.list", "args": [{"$camel": "$query", "segmentId": "$path.id"}]},
+      "python": {"method": "Contacts.list", "args": [null, "$query", "$path.id"]},
+      "go": {"method": "Contacts.List", "args": [{"$with": "$query", "SegmentId": "$path.id"}]}
+    },
+    "segments/remove": {
+      "ts": {"method": "segments.remove", "args": ["$path.id"]},
+      "python": {"method": "Segments.remove", "args": ["$path.id"]},
+      "go": {"method": "Segments.Remove", "args": ["$path.id"]}
+    },
+    "segments/update": {
+      "ts": {"method": "segments.update", "args": ["$path.id", "$body"]},
+      "python": {"method": "Segments.update", "args": ["$path.id", "$body"]}
+    },
+    "suppressions/add": {
+      "ts": {"method": "suppressions.add", "args": ["$body"]},
+      "python": {"method": "Suppressions.add", "args": ["$body"]},
+      "go": {"method": "Suppressions.Add", "args": ["$body"]}
+    },
+    "suppressions/batch-add": {
+      "ts": {"method": "suppressions.batch.add", "args": ["$body"]},
+      "python": {"method": "SuppressionsBatch.add", "args": ["$body"]},
+      "go": {"method": "Suppressions.Batch.Add", "args": ["$body"]}
+    },
+    "suppressions/batch-remove": {
+      "ts": {"method": "suppressions.batch.remove", "args": ["$body"]},
+      "python": {"method": "SuppressionsBatch.remove", "args": ["$body"]},
+      "go": {"method": "Suppressions.Batch.Remove", "args": ["$body"]}
+    },
+    "suppressions/get": {
+      "ts": {"method": "suppressions.get", "args": ["$path.suppression"]},
+      "python": {"method": "Suppressions.get", "args": ["$path.suppression"]},
+      "go": {"method": "Suppressions.Get", "args": ["$path.suppression"]}
+    },
+    "suppressions/list": {
+      "ts": {"method": "suppressions.list", "args": ["$query"]},
+      "python": {"method": "Suppressions.list", "args": ["$query"]},
+      "go": {"method": "Suppressions.List", "args": ["$query"]}
+    },
+    "suppressions/remove": {
+      "ts": {"method": "suppressions.remove", "args": ["$path.suppression"]},
+      "python": {"method": "Suppressions.remove", "args": ["$path.suppression"]},
+      "go": {"method": "Suppressions.Remove", "args": ["$path.suppression"]}
+    },
+    "templates/create": {
+      "ts": {"method": "templates.create", "args": [{"$camel": "$body"}]},
+      "python": {"method": "Templates.create", "args": ["$body"]},
+      "go": {"method": "Templates.Create", "args": ["$body"]}
+    },
+    "templates/duplicate": {
+      "ts": {"method": "templates.duplicate", "args": ["$path.id"]},
+      "python": {"method": "Templates.duplicate", "args": ["$path.id"]},
+      "go": {"method": "Templates.Duplicate", "args": ["$path.id"]}
+    },
+    "templates/get": {
+      "ts": {"method": "templates.get", "args": ["$path.id"]},
+      "python": {"method": "Templates.get", "args": ["$path.id"]},
+      "go": {"method": "Templates.Get", "args": ["$path.id"]}
+    },
+    "templates/list": {
+      "ts": {"method": "templates.list", "args": ["$query"]},
+      "python": {"method": "Templates.list", "args": ["$query"]},
+      "go": {"method": "Templates.List", "args": ["$query"]}
+    },
+    "templates/publish": {
+      "ts": {"method": "templates.publish", "args": ["$path.id"]},
+      "python": {"method": "Templates.publish", "args": ["$path.id"]},
+      "go": {"method": "Templates.Publish", "args": ["$path.id"]}
+    },
+    "templates/remove": {
+      "ts": {"method": "templates.remove", "args": ["$path.id"]},
+      "python": {"method": "Templates.remove", "args": ["$path.id"]},
+      "go": {"method": "Templates.Remove", "args": ["$path.id"]}
+    },
+    "templates/update": {
+      "ts": {"method": "templates.update", "args": ["$path.id", {"$camel": "$body"}]},
+      "python": {"method": "Templates.update", "args": [{"$with": "$body", "id": "$path.id"}]},
+      "go": {"method": "Templates.Update", "args": ["$path.id", "$body"]}
+    },
+    "topics/create": {
+      "ts": {"method": "topics.create", "args": [{"$camel": "$body"}]},
+      "python": {"method": "Topics.create", "args": ["$body"]},
+      "go": {"method": "Topics.Create", "args": ["$body"]}
+    },
+    "topics/get": {
+      "ts": {"method": "topics.get", "args": ["$path.id"]},
+      "python": {"method": "Topics.get", "args": ["$path.id"]},
+      "go": {"method": "Topics.Get", "args": ["$path.id"]}
+    },
+    "topics/list": {
+      "ts": {"method": "topics.list", "args": []},
+      "python": {"method": "Topics.list", "args": ["$query"]},
+      "go": {"method": "Topics.List", "args": ["$query"]}
+    },
+    "topics/remove": {
+      "ts": {"method": "topics.remove", "args": ["$path.id"]},
+      "python": {"method": "Topics.remove", "args": ["$path.id"]},
+      "go": {"method": "Topics.Remove", "args": ["$path.id"]}
+    },
+    "topics/update": {
+      "ts": {"method": "topics.update", "args": [{"$with": "$body", "id": "$path.id"}]},
+      "python": {"method": "Topics.update", "args": ["$path.id", "$body"]},
+      "go": {"method": "Topics.Update", "args": ["$path.id", "$body"]}
+    },
+    "usage/get": {
+      "ts": {"method": "usage.get", "args": []},
+      "python": {"method": "Usage.get", "args": []}
+    },
+    "webhooks/create": {
+      "ts": {"method": "webhooks.create", "args": ["$body"]},
+      "python": {"method": "Webhooks.create", "args": ["$body"]},
+      "go": {"method": "Webhooks.Create", "args": ["$body"]}
+    },
+    "webhooks/get": {
+      "ts": {"method": "webhooks.get", "args": ["$path.webhook_id"]},
+      "python": {"method": "Webhooks.get", "args": ["$path.webhook_id"]},
+      "go": {"method": "Webhooks.Get", "args": ["$path.webhook_id"]}
+    },
+    "webhooks/get-event": {
+      "ts": {"method": "webhooks.events.get", "args": [{"webhookId": "$path.webhook_id", "eventId": "$path.event_id"}]},
+      "python": {"method": "Webhooks.get_event", "args": ["$path.webhook_id", "$path.event_id"]}
+    },
+    "webhooks/list": {
+      "ts": {"method": "webhooks.list", "args": ["$query"]},
+      "python": {"method": "Webhooks.list", "args": ["$query"]},
+      "go": {"method": "Webhooks.ListWithOptions", "args": ["$query"]}
+    },
+    "webhooks/list-event-attempts": {
+      "ts": {"method": "webhooks.events.attempts.list", "args": [{"$with": "$query", "webhookId": "$path.webhook_id", "eventId": "$path.event_id"}]},
+      "python": {"method": "Webhooks.list_event_attempts", "args": ["$path.webhook_id", "$path.event_id", "$query"]}
+    },
+    "webhooks/list-events": {
+      "ts": {"method": "webhooks.events.list", "args": [{"$with": "$query", "webhookId": "$path.webhook_id"}]},
+      "python": {"method": "Webhooks.list_events", "args": ["$path.webhook_id", "$query"]}
+    },
+    "webhooks/remove": {
+      "ts": {"method": "webhooks.remove", "args": ["$path.webhook_id"]},
+      "python": {"method": "Webhooks.remove", "args": ["$path.webhook_id"]},
+      "go": {"method": "Webhooks.Remove", "args": ["$path.webhook_id"]}
+    },
+    "webhooks/replay-event": {
+      "ts": {"method": "webhooks.events.replay", "args": [{"webhookId": "$path.webhook_id", "eventId": "$path.event_id"}]},
+      "python": {"method": "Webhooks.replay_event", "args": ["$path.webhook_id", "$path.event_id"]}
+    },
+    "webhooks/rotate-signing-secret": {
+      "ts": {"method": "webhooks.rotateSigningSecret", "args": ["$path.webhook_id"]},
+      "python": {"method": "Webhooks.rotate_signing_secret", "args": ["$path.webhook_id"]}
+    },
+    "webhooks/update": {
+      "ts": {"method": "webhooks.update", "args": ["$path.webhook_id", "$body"]},
+      "python": {"method": "Webhooks.update", "args": [{"$with": "$body", "webhook_id": "$path.webhook_id"}]},
+      "go": {"method": "Webhooks.Update", "args": ["$path.webhook_id", "$body"]}
+    }
+  }
+}
