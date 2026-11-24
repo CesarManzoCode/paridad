@@ -33,6 +33,13 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - `StatusCode` vale 0 cuando no hubo respuesta (`invalid_idempotency_key`, `timeout`, `connection_error`), en lugar del nulo de las otras superficies. Si el `context.Context` del llamador termina antes, la llamada devuelve `ctx.Err()` y no un `*resend.Error`.
 - Cada intento abre una conexión nueva (sin keep-alive), para que `net/http` no repita por su cuenta peticiones fallidas sobre una conexión reutilizada. No se midió el costo en latencia.
 
+## Servidor MCP
+
+- Los campos de archivo de un cuerpo `multipart/form-data` (`file` de `contacts/create-import`) se dan como texto en los argumentos y se envían como archivo con ese texto como contenido: un archivo binario que no sea texto UTF-8 no se puede pasar.
+- El argumento `idempotency_key` no lleva `maxLength` en su `inputSchema`, para que una clave fuera de 1 a 256 caracteres llegue al SDK y dé `invalid_idempotency_key` como en las demás superficies; así ese esquema no rechaza la clave de 257 caracteres que el esquema de la cabecera en la spec sí rechaza.
+- `format` se trata como anotación al validar los argumentos (vocabulario por defecto de 2020-12): un `uuid` o `email` mal formado pasa la validación del servidor y lo rechaza la API.
+- Por el puente stdio, las notificaciones que el servidor escribe mientras atiende una petición llegan al cliente HTTP solo por el flujo SSE independiente (`GET /mcp`), porque en stdio no hay forma de saber a qué petición pertenecen.
+
 ## Oráculo
 
 - La equivalencia con los SDKs oficiales solo cubre las operaciones que cada SDK oficial expone en su versión fijada. Las demás solo se comparan entre superficies propias y contra la especificación con Prism.
