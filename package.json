@@ -7,6 +7,7 @@
     "node": ">=26"
   },
   "devDependencies": {
+    "@stoplight/prism-cli": "5.16.0",
     "@types/node": "26.6.6",
     "ajv": "8.20.0",
     "typescript": "7.0.2",

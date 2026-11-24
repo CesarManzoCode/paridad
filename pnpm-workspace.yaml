@@ -8,4 +8,5 @@ packages:
   - harness
   - verify
 allowBuilds:
+  '@scarf/scarf': false
   esbuild: false

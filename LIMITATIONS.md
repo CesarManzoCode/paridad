@@ -51,6 +51,12 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - Los SDKs oficiales no reintentan solos, así que el comportamiento ante fallos se compara entre las superficies propias y contra la política declarada, no contra los oficiales.
 - Para el CLI oficial se usa una variable de entorno de URL base presente en su código pero no documentada. Si una versión futura la quita, la comparación con el CLI oficial deja de ser posible.
 
+## Arnés
+
+- Los mensajes de error que fuerza C6 los escribe el propio arnés (`Forced by the paridad fault proxy: <estado> <name>.`), no son los textos de la página oficial de errores: C6 comprueba que cada superficie los muestra sin cambios, no que coincidan con los del servidor real.
+- El driver del MCP pagina él mismo cuando un caso itera (llama otra vez a la herramienta con `after` igual al id del último elemento), porque el servidor MCP devuelve una sola página; esa iteración es del cliente de prueba, no del producto.
+- C2 toma las capturas de `.paridad/runs/c5/` tal como estén; si C5 se corrió con un subconjunto de `SURFACES`, C2 cuenta como faltantes las superficies que no corrieron. Solo corre C5 por su cuenta cuando ese archivo no existe.
+
 ## Medición
 
 - La conformidad MCP sobre stdio pasa por un puente que reenvía los mensajes a Streamable HTTP, porque el marco oficial solo prueba servidores por URL.

@@ -228,7 +228,7 @@ export const COMMANDS: readonly Command[] = ${JSON.stringify(commands, null, 2)}
 // ------------------------------------------------------------------------ tests
 
 // The text a flag takes for a value, or null when the flag cannot give it.
-function flagText(kind: FlagKind, value: unknown): string | null {
+export function flagText(kind: FlagKind, value: unknown): string | null {
   switch (kind) {
     case "string":
       return typeof value === "string" ? value : null;
