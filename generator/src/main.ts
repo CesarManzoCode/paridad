@@ -5,6 +5,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { parseArgs } from "node:util";
+import { emitCli } from "./emit/cli.ts";
 import { emitGo } from "./emit/go.ts";
 import { emitPython } from "./emit/python.ts";
 import { emitTypescript } from "./emit/typescript.ts";
@@ -18,7 +19,7 @@ type Emitter = (ir: IR, outDir: string) => void;
 
 // Later sprints register their emitters here, in this order: TypeScript SDK,
 // Python SDK, Go SDK, CLI, MCP, skill, docs.
-const emitters: Emitter[] = [emitTypescript, emitPython, emitGo];
+const emitters: Emitter[] = [emitTypescript, emitPython, emitGo, emitCli];
 
 function main(): void {
   const { values } = parseArgs({ options: { spec: { type: "string" }, out: { type: "string" } }, strict: true });

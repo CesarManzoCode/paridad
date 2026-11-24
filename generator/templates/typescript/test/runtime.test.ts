@@ -133,6 +133,13 @@ test("every request carries Authorization and User-Agent; Content-Type only with
   assert.deepEqual(JSON.parse(post!.body.toString()), SEND);
 });
 
+test("userAgentSuffix is appended to the User-Agent after a space", async () => {
+  const server = await serve(list);
+  const resend = new Resend(KEY, { baseUrl: server.url, userAgentSuffix: "cli" });
+  assert.equal((await resend.domains.list()).error, null);
+  assert.equal(server.received[0]!.headers["user-agent"], `${USER_AGENT} cli`);
+});
+
 test("key, base URL and timeout come from RESEND_API_KEY, RESEND_BASE_URL and RESEND_TIMEOUT_MS", async () => {
   const server = await serve(hang, list);
   await withEnv({ RESEND_API_KEY: KEY, RESEND_BASE_URL: `${server.url}/`, RESEND_TIMEOUT_MS: "200" }, async () => {

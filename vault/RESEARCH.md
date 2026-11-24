@@ -58,7 +58,7 @@ Fuentes primarias con su revisión fijada. Todo lo marcado como "ejecutado" se i
 ## React Email
 
 - **F-REMAIL** npm `@react-email/render@2.3.1` (exporta `render`, `pretty`, `toPlainText`), `@react-email/components@1.0.12`, `react@19.3.1`, `react-dom@19.3.1`. Ejecutado: `await render(<Html><Button/></Html>)` devuelve HTML con doctype XHTML 1.0 Transitional.
-- **F-ESBUILD** npm `esbuild@0.28.2`. Ejecutado: `build({bundle: true, format: 'esm', platform: 'node', jsx: 'automatic', packages: 'external'})` sobre una plantilla `.tsx`, importación del resultado y `render` con props: funciona. Node 26 no ejecuta JSX con la eliminación de tipos.
+- **F-ESBUILD** npm `esbuild@0.28.2`. Ejecutado: `build({bundle: true, format: 'esm', platform: 'node', jsx: 'automatic', packages: 'external'})` sobre una plantilla `.tsx`, importación del resultado y `render` con props: funciona. Node 26 no ejecuta JSX con la eliminación de tipos. Instalado en `cli/` con pnpm 11.25.0 (24 nov 2026), pnpm bloquea su script de instalación (`ERR_PNPM_IGNORED_BUILDS`) y exige decidir en `allowBuilds` de `pnpm-workspace.yaml`; con `esbuild: false` el script no corre y `build()` funciona igual, porque el binario viene del paquete opcional `@esbuild/linux-x64`.
 
 ## Registros y publicación
 

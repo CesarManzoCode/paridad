@@ -47,6 +47,8 @@ export interface ClientOptions {
   baseUrl?: string;
   // Maximum time of each attempt. Default: RESEND_TIMEOUT_MS, then 30000.
   timeoutMs?: number;
+  // Appended to the User-Agent after a space: the CLI sends "cli" and the MCP server "mcp".
+  userAgentSuffix?: string;
 }
 
 export interface IdempotentRequestOptions {
@@ -84,6 +86,7 @@ export class Core {
   readonly #apiKey: string;
   readonly #baseUrl: string;
   readonly #timeoutMs: number;
+  readonly #userAgent: string;
   readonly #debug: boolean;
 
   constructor(apiKey?: string, options: ClientOptions = {}) {
@@ -95,9 +98,11 @@ export class Core {
     const timeout = options.timeoutMs ?? nonEmpty(env["RESEND_TIMEOUT_MS"]) ?? DEFAULT_TIMEOUT_MS;
     this.#timeoutMs = Number(timeout);
     if (!Number.isInteger(this.#timeoutMs) || this.#timeoutMs <= 0) throw new Error("The timeout must be a positive integer of milliseconds.");
+    const suffix = nonEmpty(options.userAgentSuffix);
+    this.#userAgent = suffix === undefined ? USER_AGENT : `${USER_AGENT} ${suffix}`;
     this.#debug = env["PARIDAD_DEBUG"] === "1";
     if (this.#debug) {
-      debug(`config base_url=${this.#baseUrl} timeout_ms=${this.#timeoutMs} api_key=${maskKey(key)} user_agent=${USER_AGENT}`);
+      debug(`config base_url=${this.#baseUrl} timeout_ms=${this.#timeoutMs} api_key=${maskKey(key)} user_agent=${this.#userAgent}`);
     }
   }
 
@@ -115,7 +120,7 @@ export class Core {
       if (length < rules.min_length || length > rules.max_length) return failure(new ParidadError(rules.error_code, rules.error_message, null));
     }
     const url = this.#url(op, path, query);
-    const headers: Record<string, string> = { Authorization: `Bearer ${this.#apiKey}`, "User-Agent": USER_AGENT };
+    const headers: Record<string, string> = { Authorization: `Bearer ${this.#apiKey}`, "User-Agent": this.#userAgent };
     if (key !== undefined) headers[rules.header] = key;
     // The body is serialized once, so every attempt sends the same bytes.
     let payload: string | Uint8Array<ArrayBuffer> | undefined;
