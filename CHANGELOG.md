@@ -4,6 +4,11 @@ Formato basado en Keep a Changelog. Las versiones siguen semver una vez que exis
 
 ## [Sin publicar]
 
+### K2 — Comportamiento común, CLI, MCP, skill y documentación
+
+#### Agregado
+- Proxy de fallos `harness/faults/proxy.ts`: se encadena entre una superficie y el servidor de captura, cuenta intentos por (caso, superficie) desde la última sesión y aplica por intento `pass`, `respond`, `delay` o `cut` según un archivo de escenarios (`verify/scenarios/README.md`); escribe `traces.jsonl` con tiempos de `process.hrtime.bigint()`, `sha256` del cuerpo recibido, acción, estado y cabeceras de respuesta. `rateLimitResponse` construye el 429 de tasa con las cuatro cabeceras de límite. Su prueba `harness/faults/proxy.test.ts` se escribió sin ejecutarla.
+
 ### K1 — Spec fijada, representación intermedia y SDKs TS, Python y Go
 
 #### Agregado
