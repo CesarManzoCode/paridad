@@ -1,0 +1,28 @@
+{
+  "case": "ratelimit-get",
+  "operation": "domains/list",
+  "idempotency_key": null,
+  "iterate": false,
+  "list_items": null,
+  "timeout_ms": 1000,
+  "actions": [
+    {
+      "action": "respond",
+      "status": 429,
+      "headers": {
+        "ratelimit-limit": "2",
+        "ratelimit-remaining": "0",
+        "ratelimit-reset": "1",
+        "retry-after": "1"
+      },
+      "body": {
+        "statusCode": 429,
+        "name": "rate_limit_exceeded",
+        "message": "Too many requests."
+      }
+    },
+    {
+      "action": "pass"
+    }
+  ]
+}

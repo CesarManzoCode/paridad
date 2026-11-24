@@ -1,0 +1,16 @@
+{
+  "case": "idem-retry-batch",
+  "operation": "emails/send-batch",
+  "idempotency_key": "k2-idem-retry-batch",
+  "iterate": false,
+  "list_items": null,
+  "timeout_ms": 1000,
+  "actions": [
+    {
+      "action": "cut"
+    },
+    {
+      "action": "pass"
+    }
+  ]
+}

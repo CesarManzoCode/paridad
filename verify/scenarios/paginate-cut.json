@@ -1,0 +1,22 @@
+{
+  "case": "paginate-cut",
+  "operation": "contacts/list",
+  "query": {
+    "limit": 2
+  },
+  "idempotency_key": null,
+  "iterate": true,
+  "list_items": 5,
+  "timeout_ms": 1000,
+  "actions": [
+    {
+      "action": "pass"
+    },
+    {
+      "action": "cut"
+    },
+    {
+      "action": "pass"
+    }
+  ]
+}

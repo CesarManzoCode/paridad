@@ -45,6 +45,8 @@ export interface Trace {
 
 export interface ProxyOptions {
   port: number;
+  // Address of the proxied port; 127.0.0.1 by default. The control port stays on 127.0.0.1.
+  host?: string;
   controlPort: number;
   upstream: string;
   scenarios: Scenarios;
@@ -162,8 +164,8 @@ export async function startFaultProxy(options: ProxyOptions): Promise<FaultProxy
     sendJson(response, 404, { error: `unknown control request ${incoming.method} ${incoming.url}` });
   };
 
-  const api = await listen(handle, options.port);
-  const controlServer = await listen(control, options.controlPort);
+  const api = await listen(handle, options.port, options.host ?? HOST);
+  const controlServer = await listen(control, options.controlPort, HOST);
   return {
     port: (api.address() as AddressInfo).port,
     controlPort: (controlServer.address() as AddressInfo).port,
@@ -307,7 +309,7 @@ function sendJson(response: ServerResponse, status: number, body: unknown): void
   response.writeHead(status, { "content-type": "application/json", "content-length": Buffer.byteLength(text) }).end(text);
 }
 
-function listen(handler: (request: IncomingMessage, response: ServerResponse) => Promise<void>, port: number): Promise<Server> {
+function listen(handler: (request: IncomingMessage, response: ServerResponse) => Promise<void>, port: number, host: string): Promise<Server> {
   const server = createServer((incoming, response) => {
     handler(incoming, response).catch((error: unknown) => {
       process.stderr.write(`faults: ${error instanceof Error ? error.message : String(error)}\n`);
@@ -317,7 +319,7 @@ function listen(handler: (request: IncomingMessage, response: ServerResponse) =>
   });
   return new Promise((done, fail) => {
     server.once("error", fail);
-    server.listen(port, HOST, () => {
+    server.listen(port, host, () => {
       server.off("error", fail);
       done(server);
     });

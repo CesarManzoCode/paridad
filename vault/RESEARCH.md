@@ -12,7 +12,8 @@ Fuentes primarias con su revisión fijada. Todo lo marcado como "ejecutado" se i
 | Go | go1.27.4 linux/amd64 | `go version` |
 | Java | OpenJDK 17.0.21 (lo necesita `vnu.jar`) | `java --version` |
 | promtool | 3.16.0 | `promtool --version` |
-| iproute2 (`ip`, `tc`) | 7.3.0 | `tc -V` |
+| iproute2 (`ip`, `tc`) | 7.3.0 | `tc -V`; el 24 nov 2026, `ip netns help`, `tc qdisc help` y `tc qdisc add dev lo root netem help` confirmaron `ip netns add|delete|exec NAME`, `tc qdisc add dev DEV root netem` y las opciones `delay TIME JITTER`, `loss random PERCENT` y `reorder PERCENT [CORRELATION]` |
+| `setpriv` (util-linux) | 2.42.4 | `setpriv --version`; su página de manual (documentación de util-linux) define `--reuid`, `--regid` e `--init-groups` (este último solo junto con `--ruid` o `--reuid`). C12 lo usa para volver al usuario normal dentro del namespace |
 | sudo | `sudo -n true` falla: pide contraseña | ejecutado |
 | systemd | `systemd-run --user --scope -p MemoryAccounting=yes` crea un cgroup v2 con `memory.peak` legible | ejecutado |
 | Arquitectura | x86_64, 12 hilos, 14 GiB visibles | `uname -m`, `nproc`, `free` |

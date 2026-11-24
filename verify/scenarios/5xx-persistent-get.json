@@ -1,0 +1,37 @@
+{
+  "case": "5xx-persistent-get",
+  "operation": "domains/list",
+  "idempotency_key": null,
+  "iterate": false,
+  "list_items": null,
+  "timeout_ms": 1000,
+  "actions": [
+    {
+      "action": "respond",
+      "status": 500,
+      "body": {
+        "statusCode": 500,
+        "name": "application_error",
+        "message": "Forced by the paridad fault proxy: 500 application_error."
+      }
+    },
+    {
+      "action": "respond",
+      "status": 500,
+      "body": {
+        "statusCode": 500,
+        "name": "application_error",
+        "message": "Forced by the paridad fault proxy: 500 application_error."
+      }
+    },
+    {
+      "action": "respond",
+      "status": 500,
+      "body": {
+        "statusCode": 500,
+        "name": "application_error",
+        "message": "Forced by the paridad fault proxy: 500 application_error."
+      }
+    }
+  ]
+}

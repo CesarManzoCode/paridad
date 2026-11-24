@@ -1,0 +1,16 @@
+{
+  "case": "cut-post-key",
+  "operation": "emails/send",
+  "idempotency_key": "k2-cut-post-key",
+  "iterate": false,
+  "list_items": null,
+  "timeout_ms": 1000,
+  "actions": [
+    {
+      "action": "cut"
+    },
+    {
+      "action": "pass"
+    }
+  ]
+}

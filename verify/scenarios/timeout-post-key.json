@@ -1,0 +1,17 @@
+{
+  "case": "timeout-post-key",
+  "operation": "emails/send",
+  "idempotency_key": "k2-timeout-post-key",
+  "iterate": false,
+  "list_items": null,
+  "timeout_ms": 1000,
+  "actions": [
+    {
+      "action": "delay",
+      "delay_ms": 2000
+    },
+    {
+      "action": "pass"
+    }
+  ]
+}

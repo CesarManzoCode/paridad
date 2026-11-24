@@ -1,0 +1,22 @@
+{
+  "case": "5xx-intermittent-get",
+  "operation": "domains/list",
+  "idempotency_key": null,
+  "iterate": false,
+  "list_items": null,
+  "timeout_ms": 1000,
+  "actions": [
+    {
+      "action": "respond",
+      "status": 503,
+      "body": {
+        "statusCode": 503,
+        "name": "service_unavailable",
+        "message": "Forced by the paridad fault proxy: 503 service_unavailable."
+      }
+    },
+    {
+      "action": "pass"
+    }
+  ]
+}

@@ -73,6 +73,10 @@ export interface BatteryOptions {
   // Control ports (capture server, fault proxy) that receive each session.
   controlPorts: number[];
   goDriver: string;
+  // Items the capture server serves per page walk of a case (session list_items).
+  listItems?: Record<string, number>;
+  // Command put before every driver, such as one that enters a network namespace.
+  prefix?: string[];
 }
 
 // Runs every case on every surface; returns the result lines, with a driver_failed
@@ -85,13 +89,13 @@ export async function runBattery(options: BatteryOptions): Promise<ResultLine[]>
         const session = await fetch(`http://127.0.0.1:${port}/__paridad/session`, {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ run: options.run, case: item.case, surface }),
+          body: JSON.stringify({ run: options.run, case: item.case, surface, list_items: options.listItems?.[item.case] }),
         });
         if (session.status !== 200) throw new Error(`session for ${item.case} ${surface} on port ${port}: ${session.status} ${await session.text()}`);
       }
       const prefix = join(options.out, `${caseFile(item.case)}.${surface}`);
       const own = surface === "cli" || surface === "mcp";
-      const result = await runCommand(driverArgv(surface, JSON.stringify(item), prefix, options.goDriver), {
+      const result = await runCommand([...(options.prefix ?? []), ...driverArgv(surface, JSON.stringify(item), prefix, options.goDriver)], {
         cwd: ROOT,
         env: options.env,
         out: own ? `${prefix}.driver` : prefix,

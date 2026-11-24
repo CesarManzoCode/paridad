@@ -1,0 +1,17 @@
+{
+  "case": "timeout-get",
+  "operation": "domains/list",
+  "idempotency_key": null,
+  "iterate": false,
+  "list_items": null,
+  "timeout_ms": 1000,
+  "actions": [
+    {
+      "action": "delay",
+      "delay_ms": 2000
+    },
+    {
+      "action": "pass"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "case": "cut-post-nokey",
+  "operation": "emails/send",
+  "idempotency_key": null,
+  "iterate": false,
+  "list_items": null,
+  "timeout_ms": 1000,
+  "actions": [
+    {
+      "action": "cut"
+    }
+  ]
+}
