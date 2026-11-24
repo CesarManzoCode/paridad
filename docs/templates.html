@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>templates — paridad</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:60rem;margin:0 auto;padding:1rem;line-height:1.5}
+pre{background:#f4f4f4;padding:.75rem;overflow-x:auto}
+section{border-top:1px solid #ccc;margin-top:2rem}
+code{font-family:ui-monospace,monospace}
+</style>
+</head>
+<body>
+<header>
+<p><a href="index.html">Índice</a></p>
+<h1>templates</h1>
+</header>
+<main>
+<ul>
+<li><a href="#templates/create"><code>templates/create</code></a></li>
+<li><a href="#templates/duplicate"><code>templates/duplicate</code></a></li>
+<li><a href="#templates/get"><code>templates/get</code></a></li>
+<li><a href="#templates/list"><code>templates/list</code></a></li>
+<li><a href="#templates/publish"><code>templates/publish</code></a></li>
+<li><a href="#templates/remove"><code>templates/remove</code></a></li>
+<li><a href="#templates/update"><code>templates/update</code></a></li>
+</ul>
+<section id="templates/create" data-operation-id="templates/create">
+<h2><code>templates/create</code></h2>
+<p>Create a template</p>
+<p><code>POST /templates</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="templates/create">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.templates.create({
+  &quot;name&quot;: &quot;example&quot;,
+  &quot;html&quot;: &quot;example&quot;
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="templates/create">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.templates.create({
+    &quot;name&quot;: &quot;example&quot;,
+    &quot;html&quot;: &quot;example&quot;,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="templates/create">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.CreateTemplateRequest
+	if err := json.Unmarshal([]byte(`{&quot;name&quot;:&quot;example&quot;,&quot;html&quot;:&quot;example&quot;}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Templates.Create(ctx, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="templates/create">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad templates create --name example --html example
+</code></pre>
+</section>
+<section id="templates/duplicate" data-operation-id="templates/duplicate">
+<h2><code>templates/duplicate</code></h2>
+<p>Duplicate a template</p>
+<p><code>POST /templates/{id}/duplicate</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="templates/duplicate">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.templates.duplicate(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="templates/duplicate">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.templates.duplicate(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="templates/duplicate">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Templates.Duplicate(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="templates/duplicate">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad templates duplicate --id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="templates/get" data-operation-id="templates/get">
+<h2><code>templates/get</code></h2>
+<p>Retrieve a single template</p>
+<p><code>GET /templates/{id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="templates/get">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.templates.get(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="templates/get">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.templates.get(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="templates/get">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Templates.Get(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="templates/get">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad templates get --id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="templates/list" data-operation-id="templates/list">
+<h2><code>templates/list</code></h2>
+<p>Retrieve a list of templates</p>
+<p><code>GET /templates</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="templates/list">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.templates.list({});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="templates/list">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.templates.list({})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="templates/list">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.TemplatesListQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Templates.List(ctx, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="templates/list">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad templates list
+</code></pre>
+</section>
+<section id="templates/publish" data-operation-id="templates/publish">
+<h2><code>templates/publish</code></h2>
+<p>Publish a template</p>
+<p><code>POST /templates/{id}/publish</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="templates/publish">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.templates.publish(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="templates/publish">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.templates.publish(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="templates/publish">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Templates.Publish(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="templates/publish">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad templates publish --id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="templates/remove" data-operation-id="templates/remove">
+<h2><code>templates/remove</code></h2>
+<p>Remove an existing template</p>
+<p><code>DELETE /templates/{id}</code> — destructiva</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="templates/remove">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.templates.remove(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="templates/remove">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.templates.remove(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="templates/remove">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Templates.Remove(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="templates/remove">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad templates remove --id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="templates/update" data-operation-id="templates/update">
+<h2><code>templates/update</code></h2>
+<p>Update an existing template</p>
+<p><code>PATCH /templates/{id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="templates/update">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.templates.update(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+  &quot;name&quot;: &quot;example&quot;
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="templates/update">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.templates.update(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+    &quot;name&quot;: &quot;example&quot;,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="templates/update">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.UpdateTemplateOptions
+	if err := json.Unmarshal([]byte(`{&quot;name&quot;:&quot;example&quot;}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Templates.Update(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="templates/update">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad templates update --id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --name example
+</code></pre>
+</section>
+</main>
+</body>
+</html>

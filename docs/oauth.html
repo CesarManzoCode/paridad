@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>oauth — paridad</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:60rem;margin:0 auto;padding:1rem;line-height:1.5}
+pre{background:#f4f4f4;padding:.75rem;overflow-x:auto}
+section{border-top:1px solid #ccc;margin-top:2rem}
+code{font-family:ui-monospace,monospace}
+</style>
+</head>
+<body>
+<header>
+<p><a href="index.html">Índice</a></p>
+<h1>oauth</h1>
+</header>
+<main>
+<ul>
+<li><a href="#oauth/list-grants"><code>oauth/list-grants</code></a></li>
+<li><a href="#oauth/revoke-grant"><code>oauth/revoke-grant</code></a></li>
+</ul>
+<section id="oauth/list-grants" data-operation-id="oauth/list-grants">
+<h2><code>oauth/list-grants</code></h2>
+<p>Retrieve a list of OAuth grants</p>
+<p><code>GET /oauth/grants</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="oauth/list-grants">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.oauth.listGrants({});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="oauth/list-grants">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.oauth.list_grants({})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="oauth/list-grants">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.OAuthListGrantsQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.OAuth.ListGrants(ctx, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="oauth/list-grants">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad oauth list-grants
+</code></pre>
+</section>
+<section id="oauth/revoke-grant" data-operation-id="oauth/revoke-grant">
+<h2><code>oauth/revoke-grant</code></h2>
+<p>Revoke an OAuth grant</p>
+<p><code>DELETE /oauth/grants/{oauth_grant_id}</code> — destructiva</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="oauth/revoke-grant">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.oauth.revokeGrant(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="oauth/revoke-grant">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.oauth.revoke_grant(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="oauth/revoke-grant">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.OAuth.RevokeGrant(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="oauth/revoke-grant">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad oauth revoke-grant --oauth-grant-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+</main>
+</body>
+</html>

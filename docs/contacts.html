@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>contacts — paridad</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:60rem;margin:0 auto;padding:1rem;line-height:1.5}
+pre{background:#f4f4f4;padding:.75rem;overflow-x:auto}
+section{border-top:1px solid #ccc;margin-top:2rem}
+code{font-family:ui-monospace,monospace}
+</style>
+</head>
+<body>
+<header>
+<p><a href="index.html">Índice</a></p>
+<h1>contacts</h1>
+</header>
+<main>
+<ul>
+<li><a href="#contacts/add-segment"><code>contacts/add-segment</code></a></li>
+<li><a href="#contacts/create"><code>contacts/create</code></a></li>
+<li><a href="#contacts/create-import"><code>contacts/create-import</code></a></li>
+<li><a href="#contacts/get"><code>contacts/get</code></a></li>
+<li><a href="#contacts/get-import"><code>contacts/get-import</code></a></li>
+<li><a href="#contacts/list"><code>contacts/list</code></a></li>
+<li><a href="#contacts/list-imports"><code>contacts/list-imports</code></a></li>
+<li><a href="#contacts/list-segments"><code>contacts/list-segments</code></a></li>
+<li><a href="#contacts/list-topics"><code>contacts/list-topics</code></a></li>
+<li><a href="#contacts/remove"><code>contacts/remove</code></a></li>
+<li><a href="#contacts/remove-segment"><code>contacts/remove-segment</code></a></li>
+<li><a href="#contacts/update"><code>contacts/update</code></a></li>
+<li><a href="#contacts/update-topics"><code>contacts/update-topics</code></a></li>
+</ul>
+<section id="contacts/add-segment" data-operation-id="contacts/add-segment">
+<h2><code>contacts/add-segment</code></h2>
+<p>Add a contact to a segment</p>
+<p><code>POST /contacts/{contact_id}/segments/{segment_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/add-segment">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.addSegment(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/add-segment">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.add_segment(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/add-segment">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Contacts.AddSegment(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/add-segment">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts add-segment --contact-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --segment-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="contacts/create" data-operation-id="contacts/create">
+<h2><code>contacts/create</code></h2>
+<p>Create a new contact</p>
+<p><code>POST /contacts</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/create">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.create({
+  &quot;email&quot;: &quot;steve.wozniak@gmail.com&quot;
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/create">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.create({
+    &quot;email&quot;: &quot;steve.wozniak@gmail.com&quot;,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/create">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.CreateContactOptions
+	if err := json.Unmarshal([]byte(`{&quot;email&quot;:&quot;steve.wozniak@gmail.com&quot;}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Contacts.Create(ctx, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/create">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts create --email steve.wozniak@gmail.com
+</code></pre>
+</section>
+<section id="contacts/create-import" data-operation-id="contacts/create-import">
+<h2><code>contacts/create-import</code></h2>
+<p>Create a contact import</p>
+<p><code>POST /contacts/imports</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/create-import">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.createImport({
+  &quot;file&quot;: &quot;example&quot;
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/create-import">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.create_import({
+    &quot;file&quot;: &quot;example&quot;,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/create-import">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.CreateContactImportOptions
+	if err := json.Unmarshal([]byte(`{&quot;file&quot;:&quot;ZXhhbXBsZQ==&quot;}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Contacts.CreateImport(ctx, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/create-import">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts create-import --body '{&quot;file&quot;:&quot;example&quot;}'
+</code></pre>
+</section>
+<section id="contacts/get" data-operation-id="contacts/get">
+<h2><code>contacts/get</code></h2>
+<p>Retrieve a single contact by ID or email</p>
+<p><code>GET /contacts/{id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/get">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.get(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/get">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.get(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/get">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Contacts.Get(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/get">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts get --id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="contacts/get-import" data-operation-id="contacts/get-import">
+<h2><code>contacts/get-import</code></h2>
+<p>Retrieve a single contact import</p>
+<p><code>GET /contacts/imports/{id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/get-import">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.getImport(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/get-import">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.get_import(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/get-import">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Contacts.GetImport(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/get-import">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts get-import --id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="contacts/list" data-operation-id="contacts/list">
+<h2><code>contacts/list</code></h2>
+<p>Retrieve a list of contacts</p>
+<p><code>GET /contacts</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/list">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.list({});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/list">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.list({})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/list">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.ContactsListQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Contacts.List(ctx, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/list">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts list
+</code></pre>
+</section>
+<section id="contacts/list-imports" data-operation-id="contacts/list-imports">
+<h2><code>contacts/list-imports</code></h2>
+<p>Retrieve a list of contact imports</p>
+<p><code>GET /contacts/imports</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/list-imports">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.listImports({});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/list-imports">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.list_imports({})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/list-imports">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.ContactsListImportsQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Contacts.ListImports(ctx, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/list-imports">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts list-imports
+</code></pre>
+</section>
+<section id="contacts/list-segments" data-operation-id="contacts/list-segments">
+<h2><code>contacts/list-segments</code></h2>
+<p>Retrieve a list of segments for a contact</p>
+<p><code>GET /contacts/{contact_id}/segments</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/list-segments">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.listSegments(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/list-segments">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.list_segments(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/list-segments">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.ContactsListSegmentsQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Contacts.ListSegments(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/list-segments">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts list-segments --contact-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="contacts/list-topics" data-operation-id="contacts/list-topics">
+<h2><code>contacts/list-topics</code></h2>
+<p>Retrieve topics for a contact</p>
+<p><code>GET /contacts/{contact_id}/topics</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/list-topics">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.listTopics(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/list-topics">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.list_topics(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/list-topics">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.ContactsListTopicsQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Contacts.ListTopics(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/list-topics">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts list-topics --contact-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="contacts/remove" data-operation-id="contacts/remove">
+<h2><code>contacts/remove</code></h2>
+<p>Remove an existing contact by ID or email</p>
+<p><code>DELETE /contacts/{id}</code> — destructiva</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/remove">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.remove(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/remove">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.remove(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/remove">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Contacts.Remove(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/remove">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts remove --id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="contacts/remove-segment" data-operation-id="contacts/remove-segment">
+<h2><code>contacts/remove-segment</code></h2>
+<p>Remove a contact from a segment</p>
+<p><code>DELETE /contacts/{contact_id}/segments/{segment_id}</code> — destructiva</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/remove-segment">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.removeSegment(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/remove-segment">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.remove_segment(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/remove-segment">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Contacts.RemoveSegment(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/remove-segment">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts remove-segment --contact-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --segment-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="contacts/update" data-operation-id="contacts/update">
+<h2><code>contacts/update</code></h2>
+<p>Update a single contact by ID or email</p>
+<p><code>PATCH /contacts/{id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/update">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.update(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+  &quot;email&quot;: &quot;steve.wozniak@gmail.com&quot;
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/update">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.update(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+    &quot;email&quot;: &quot;steve.wozniak@gmail.com&quot;,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/update">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.UpdateContactOptions
+	if err := json.Unmarshal([]byte(`{&quot;email&quot;:&quot;steve.wozniak@gmail.com&quot;}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Contacts.Update(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/update">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts update --id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --email steve.wozniak@gmail.com
+</code></pre>
+</section>
+<section id="contacts/update-topics" data-operation-id="contacts/update-topics">
+<h2><code>contacts/update-topics</code></h2>
+<p>Update topics for a contact</p>
+<p><code>PATCH /contacts/{contact_id}/topics</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="contacts/update-topics">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.contacts.updateTopics(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+  &quot;topics&quot;: [
+    {
+      &quot;id&quot;: &quot;b6d24b8e-af0b-4c3c-be0c-359bbd97381e&quot;,
+      &quot;subscription&quot;: &quot;opt_in&quot;
+    }
+  ]
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="contacts/update-topics">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.contacts.update_topics(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+    &quot;topics&quot;: [
+        {
+            &quot;id&quot;: &quot;b6d24b8e-af0b-4c3c-be0c-359bbd97381e&quot;,
+            &quot;subscription&quot;: &quot;opt_in&quot;,
+        },
+    ],
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="contacts/update-topics">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.UpdateContactTopicsOptions
+	if err := json.Unmarshal([]byte(`{&quot;topics&quot;:[{&quot;id&quot;:&quot;b6d24b8e-af0b-4c3c-be0c-359bbd97381e&quot;,&quot;subscription&quot;:&quot;opt_in&quot;}]}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Contacts.UpdateTopics(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="contacts/update-topics">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad contacts update-topics --contact-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --topics '[{&quot;id&quot;:&quot;b6d24b8e-af0b-4c3c-be0c-359bbd97381e&quot;,&quot;subscription&quot;:&quot;opt_in&quot;}]'
+</code></pre>
+</section>
+</main>
+</body>
+</html>

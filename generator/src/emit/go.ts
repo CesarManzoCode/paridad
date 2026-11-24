@@ -671,7 +671,7 @@ ${assignments.join("\n")}
 // ------------------------------------------------------------------------ tests
 
 // A Go string literal holding `text`.
-function goString(text: string): string {
+export function goString(text: string): string {
   if (!text.includes("`")) return `\`${text}\``;
   const quoted = JSON.stringify(text);
   if (/\\ud[89a-f]/i.test(quoted)) throw new Error("go: example has a lone surrogate");
@@ -693,25 +693,53 @@ function exampleBody(types: GoTypes, op: IROperation): unknown {
   );
 }
 
+// A call of an operation with its first example: the variables decoded from JSON
+// before the call (type names unqualified, as in package resend) and the call on a
+// client `c` with a context `ctx`.
+export interface GoExampleCall {
+  decls: { name: string; type: string; json: string }[];
+  call: string;
+}
+
+function exampleCall(types: GoTypes, service: Service, method: Method): GoExampleCall {
+  const { op } = method;
+  const example = op.examples[0];
+  if (example === undefined) throw new Error(`go: ${op.id} has no example`);
+  const decls: GoExampleCall["decls"] = [];
+  const args = ["ctx", ...op.pathParams.map((parameter) => JSON.stringify(String(example.path[parameter.name])))];
+  if (op.requestBody !== null) {
+    const type = bodyType(types, service, method);
+    decls.push({ name: "body", type: type.expr, json: JSON.stringify(exampleBody(types, op)) });
+    args.push(type.kind === "struct" ? "&body" : "body");
+  }
+  if (op.queryParams.length > 0) {
+    decls.push({ name: "query", type: `${service.field}${method.name}Query`, json: JSON.stringify(example.query) });
+    args.push("&query");
+  }
+  return { decls, call: `c.${service.field}.${method.name}(${args.join(", ")})` };
+}
+
+// The example call of every operation, by operationId, with the type names of
+// services.go and types.go (used by the documentation emitter).
+export function goExampleCalls(ir: IR): Map<string, GoExampleCall> {
+  const types = new GoTypes(ir.schemas);
+  const services = groupServices(ir.operations);
+  // Resolves the query, body and response types in the order emitGo does, so the names match.
+  servicesFile(services, types);
+  const calls = new Map<string, GoExampleCall>();
+  for (const service of services) for (const method of service.methods) calls.set(method.op.id, exampleCall(types, service, method));
+  return calls;
+}
+
 function operationsTest(services: Service[], types: GoTypes): string {
   const cases = services.flatMap((service) =>
     service.methods.map((method) => {
       const { op } = method;
-      const example = op.examples[0];
-      if (example === undefined) throw new Error(`go: ${op.id} has no example`);
+      const example = op.examples[0]!;
       const path = op.path.replace(/\{([^}]+)\}/g, (_, param: string) => encodeURIComponent(String(example.path[param])));
-      const lines: string[] = [];
-      const args = ["ctx", ...op.pathParams.map((parameter) => JSON.stringify(String(example.path[parameter.name])))];
-      if (op.requestBody !== null) {
-        const type = bodyType(types, service, method);
-        lines.push(`var body ${type.expr}`, `mustDecode(${goString(JSON.stringify(exampleBody(types, op)))}, &body)`);
-        args.push(type.kind === "struct" ? "&body" : "body");
-      }
-      if (op.queryParams.length > 0) {
-        lines.push(`var query ${service.field}${method.name}Query`, `mustDecode(${goString(JSON.stringify(example.query))}, &query)`);
-        args.push("&query");
-      }
-      lines.push(`_, err := c.${service.field}.${method.name}(${args.join(", ")})`, "return err");
+      const { decls, call } = exampleCall(types, service, method);
+      const lines = decls.flatMap((decl) => [`var ${decl.name} ${decl.type}`, `mustDecode(${goString(decl.json)}, &${decl.name})`]);
+      lines.push(`_, err := ${call}`, "return err");
       const body = bodyKind(op) === "json" ? goString(JSON.stringify(example.body)) : '""';
       return `\t{${JSON.stringify(op.id)}, ${JSON.stringify(op.method)}, ${JSON.stringify(path)}, ${body}, func(ctx context.Context, c *Client) error {\n${lines.map((line) => `\t\t${line}`).join("\n")}\n\t}},`;
     }),

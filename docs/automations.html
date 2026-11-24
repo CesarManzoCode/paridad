@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>automations — paridad</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:60rem;margin:0 auto;padding:1rem;line-height:1.5}
+pre{background:#f4f4f4;padding:.75rem;overflow-x:auto}
+section{border-top:1px solid #ccc;margin-top:2rem}
+code{font-family:ui-monospace,monospace}
+</style>
+</head>
+<body>
+<header>
+<p><a href="index.html">Índice</a></p>
+<h1>automations</h1>
+</header>
+<main>
+<ul>
+<li><a href="#automations/cancel-run"><code>automations/cancel-run</code></a></li>
+<li><a href="#automations/create"><code>automations/create</code></a></li>
+<li><a href="#automations/duplicate"><code>automations/duplicate</code></a></li>
+<li><a href="#automations/get"><code>automations/get</code></a></li>
+<li><a href="#automations/get-run"><code>automations/get-run</code></a></li>
+<li><a href="#automations/list"><code>automations/list</code></a></li>
+<li><a href="#automations/list-runs"><code>automations/list-runs</code></a></li>
+<li><a href="#automations/remove"><code>automations/remove</code></a></li>
+<li><a href="#automations/stop"><code>automations/stop</code></a></li>
+<li><a href="#automations/update"><code>automations/update</code></a></li>
+</ul>
+<section id="automations/cancel-run" data-operation-id="automations/cancel-run">
+<h2><code>automations/cancel-run</code></h2>
+<p>Cancel an automation run</p>
+<p><code>POST /automations/{automation_id}/runs/{run_id}/cancel</code> — destructiva</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="automations/cancel-run">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.automations.cancelRun(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="automations/cancel-run">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.automations.cancel_run(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="automations/cancel-run">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Automations.CancelRun(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="automations/cancel-run">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad automations cancel-run --automation-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --run-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="automations/create" data-operation-id="automations/create">
+<h2><code>automations/create</code></h2>
+<p>Create an automation</p>
+<p><code>POST /automations</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="automations/create">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.automations.create({
+  &quot;name&quot;: &quot;example&quot;,
+  &quot;steps&quot;: [
+    {
+      &quot;key&quot;: &quot;example&quot;,
+      &quot;type&quot;: &quot;trigger&quot;,
+      &quot;config&quot;: {}
+    }
+  ],
+  &quot;connections&quot;: [
+    {
+      &quot;from&quot;: &quot;example&quot;,
+      &quot;to&quot;: &quot;example&quot;
+    }
+  ]
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="automations/create">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.automations.create({
+    &quot;name&quot;: &quot;example&quot;,
+    &quot;steps&quot;: [
+        {
+            &quot;key&quot;: &quot;example&quot;,
+            &quot;type&quot;: &quot;trigger&quot;,
+            &quot;config&quot;: {},
+        },
+    ],
+    &quot;connections&quot;: [
+        {
+            &quot;from&quot;: &quot;example&quot;,
+            &quot;to&quot;: &quot;example&quot;,
+        },
+    ],
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="automations/create">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.CreateAutomationRequest
+	if err := json.Unmarshal([]byte(`{&quot;name&quot;:&quot;example&quot;,&quot;steps&quot;:[{&quot;key&quot;:&quot;example&quot;,&quot;type&quot;:&quot;trigger&quot;,&quot;config&quot;:{}}],&quot;connections&quot;:[{&quot;from&quot;:&quot;example&quot;,&quot;to&quot;:&quot;example&quot;}]}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Automations.Create(ctx, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="automations/create">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad automations create --name example --steps '[{&quot;key&quot;:&quot;example&quot;,&quot;type&quot;:&quot;trigger&quot;,&quot;config&quot;:{}}]' --connections '[{&quot;from&quot;:&quot;example&quot;,&quot;to&quot;:&quot;example&quot;}]'
+</code></pre>
+</section>
+<section id="automations/duplicate" data-operation-id="automations/duplicate">
+<h2><code>automations/duplicate</code></h2>
+<p>Duplicate an automation</p>
+<p><code>POST /automations/{automation_id}/duplicate</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="automations/duplicate">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.automations.duplicate(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="automations/duplicate">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.automations.duplicate(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="automations/duplicate">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Automations.Duplicate(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="automations/duplicate">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad automations duplicate --automation-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="automations/get" data-operation-id="automations/get">
+<h2><code>automations/get</code></h2>
+<p>Retrieve a single automation</p>
+<p><code>GET /automations/{automation_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="automations/get">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.automations.get(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="automations/get">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.automations.get(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="automations/get">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Automations.Get(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="automations/get">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad automations get --automation-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="automations/get-run" data-operation-id="automations/get-run">
+<h2><code>automations/get-run</code></h2>
+<p>Retrieve a single automation run</p>
+<p><code>GET /automations/{automation_id}/runs/{run_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="automations/get-run">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.automations.getRun(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="automations/get-run">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.automations.get_run(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="automations/get-run">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Automations.GetRun(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="automations/get-run">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad automations get-run --automation-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --run-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="automations/list" data-operation-id="automations/list">
+<h2><code>automations/list</code></h2>
+<p>Retrieve a list of automations</p>
+<p><code>GET /automations</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="automations/list">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.automations.list({});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="automations/list">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.automations.list({})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="automations/list">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.AutomationsListQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Automations.List(ctx, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="automations/list">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad automations list
+</code></pre>
+</section>
+<section id="automations/list-runs" data-operation-id="automations/list-runs">
+<h2><code>automations/list-runs</code></h2>
+<p>Retrieve a list of automation runs</p>
+<p><code>GET /automations/{automation_id}/runs</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="automations/list-runs">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.automations.listRuns(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="automations/list-runs">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.automations.list_runs(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="automations/list-runs">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.AutomationsListRunsQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Automations.ListRuns(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="automations/list-runs">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad automations list-runs --automation-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="automations/remove" data-operation-id="automations/remove">
+<h2><code>automations/remove</code></h2>
+<p>Delete an automation</p>
+<p><code>DELETE /automations/{automation_id}</code> — destructiva</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="automations/remove">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.automations.remove(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="automations/remove">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.automations.remove(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="automations/remove">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Automations.Remove(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="automations/remove">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad automations remove --automation-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="automations/stop" data-operation-id="automations/stop">
+<h2><code>automations/stop</code></h2>
+<p>Stop an automation</p>
+<p><code>POST /automations/{automation_id}/stop</code> — destructiva</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="automations/stop">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.automations.stop(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="automations/stop">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.automations.stop(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="automations/stop">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Automations.Stop(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="automations/stop">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad automations stop --automation-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="automations/update" data-operation-id="automations/update">
+<h2><code>automations/update</code></h2>
+<p>Update an automation</p>
+<p><code>PATCH /automations/{automation_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="automations/update">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.automations.update(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+  &quot;name&quot;: &quot;example&quot;
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="automations/update">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.automations.update(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+    &quot;name&quot;: &quot;example&quot;,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="automations/update">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.PatchAutomationRequest
+	if err := json.Unmarshal([]byte(`{&quot;name&quot;:&quot;example&quot;}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Automations.Update(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="automations/update">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad automations update --automation-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --name example
+</code></pre>
+</section>
+</main>
+</body>
+</html>

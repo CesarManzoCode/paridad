@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>logs — paridad</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:60rem;margin:0 auto;padding:1rem;line-height:1.5}
+pre{background:#f4f4f4;padding:.75rem;overflow-x:auto}
+section{border-top:1px solid #ccc;margin-top:2rem}
+code{font-family:ui-monospace,monospace}
+</style>
+</head>
+<body>
+<header>
+<p><a href="index.html">Índice</a></p>
+<h1>logs</h1>
+</header>
+<main>
+<ul>
+<li><a href="#logs/get"><code>logs/get</code></a></li>
+<li><a href="#logs/list"><code>logs/list</code></a></li>
+</ul>
+<section id="logs/get" data-operation-id="logs/get">
+<h2><code>logs/get</code></h2>
+<p>Retrieve a single log</p>
+<p><code>GET /logs/{log_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="logs/get">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.logs.get(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="logs/get">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.logs.get(&quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="logs/get">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Logs.Get(ctx, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="logs/get">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad logs get --log-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="logs/list" data-operation-id="logs/list">
+<h2><code>logs/list</code></h2>
+<p>Retrieve a list of logs</p>
+<p><code>GET /logs</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="logs/list">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.logs.list({});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="logs/list">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.logs.list({})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="logs/list">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.LogsListQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Logs.List(ctx, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="logs/list">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad logs list
+</code></pre>
+</section>
+</main>
+</body>
+</html>

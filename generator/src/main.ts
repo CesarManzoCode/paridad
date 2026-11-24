@@ -6,9 +6,11 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { emitCli } from "./emit/cli.ts";
+import { emitDocs } from "./emit/docs.ts";
 import { emitGo } from "./emit/go.ts";
 import { emitMcp } from "./emit/mcp.ts";
 import { emitPython } from "./emit/python.ts";
+import { emitSkill } from "./emit/skill.ts";
 import { emitTypescript } from "./emit/typescript.ts";
 import { buildIR, loadOverlay, serializeIR, type IR } from "./ir.ts";
 import { loadSpec, readPin } from "./spec.ts";
@@ -18,9 +20,8 @@ const ROOT = resolve(import.meta.dirname, "../..");
 // An emitter writes one surface under `outDir` from the IR.
 type Emitter = (ir: IR, outDir: string) => void;
 
-// Later sprints register their emitters here, in this order: TypeScript SDK,
-// Python SDK, Go SDK, CLI, MCP, skill, docs.
-const emitters: Emitter[] = [emitTypescript, emitPython, emitGo, emitCli, emitMcp];
+// In this order: TypeScript SDK, Python SDK, Go SDK, CLI, MCP, skill, docs.
+const emitters: Emitter[] = [emitTypescript, emitPython, emitGo, emitCli, emitMcp, emitSkill, emitDocs];
 
 function main(): void {
   const { values } = parseArgs({ options: { spec: { type: "string" }, out: { type: "string" } }, strict: true });

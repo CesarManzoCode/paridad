@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>paridad — API de Resend</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:60rem;margin:0 auto;padding:1rem;line-height:1.5}
+pre{background:#f4f4f4;padding:.75rem;overflow-x:auto}
+section{border-top:1px solid #ccc;margin-top:2rem}
+code{font-family:ui-monospace,monospace}
+</style>
+</head>
+<body>
+<header>
+<h1>paridad — API de Resend</h1>
+</header>
+<main>
+<p>Referencia de las 144 operaciones de la especificación OpenAPI fijada de Resend (OpenAPI 3.1.2, versión 1.5.1) en los SDKs de TypeScript (<code>paridad-resend</code>), Python (<code>paridad_resend</code>) y Go (<code>github.com/CesarManzoCode/paridad/sdks/go</code>) y en el CLI <code>paridad</code>. Generada por paridad desde <code>ir/ir.json</code>; no se edita a mano.</p>
+<h2>Configuración</h2>
+<p>Todos los ejemplos leen la clave de <code>RESEND_API_KEY</code> y la URL base de <code>RESEND_BASE_URL</code> (por defecto <code>https://api.resend.com</code>); el tiempo máximo de cada intento sale de <code>RESEND_TIMEOUT_MS</code> (por defecto 30000). Cada ejemplo es un programa completo que imprime la respuesta en JSON y termina con un código distinto de 0 si la API devuelve un error.</p>
+<h2>Recursos</h2>
+<ul>
+<li><a href="api-keys.html">api-keys</a>
+<ul>
+<li><a href="api-keys.html#api-keys/create"><code>api-keys/create</code></a> — Create a new API key</li>
+<li><a href="api-keys.html#api-keys/list"><code>api-keys/list</code></a> — Retrieve a list of API keys</li>
+<li><a href="api-keys.html#api-keys/remove"><code>api-keys/remove</code></a> — Remove an existing API key</li>
+<li><a href="api-keys.html#api-keys/update"><code>api-keys/update</code></a> — Update an existing API key</li>
+</ul>
+</li>
+<li><a href="audiences.html">audiences</a>
+<ul>
+<li><a href="audiences.html#audiences/create"><code>audiences/create</code></a> — Create a list of contacts</li>
+<li><a href="audiences.html#audiences/get"><code>audiences/get</code></a> — Retrieve a single audience</li>
+<li><a href="audiences.html#audiences/list"><code>audiences/list</code></a> — Retrieve a list of audiences</li>
+<li><a href="audiences.html#audiences/remove"><code>audiences/remove</code></a> — Remove an existing audience</li>
+</ul>
+</li>
+<li><a href="automations.html">automations</a>
+<ul>
+<li><a href="automations.html#automations/cancel-run"><code>automations/cancel-run</code></a> — Cancel an automation run</li>
+<li><a href="automations.html#automations/create"><code>automations/create</code></a> — Create an automation</li>
+<li><a href="automations.html#automations/duplicate"><code>automations/duplicate</code></a> — Duplicate an automation</li>
+<li><a href="automations.html#automations/get"><code>automations/get</code></a> — Retrieve a single automation</li>
+<li><a href="automations.html#automations/get-run"><code>automations/get-run</code></a> — Retrieve a single automation run</li>
+<li><a href="automations.html#automations/list"><code>automations/list</code></a> — Retrieve a list of automations</li>
+<li><a href="automations.html#automations/list-runs"><code>automations/list-runs</code></a> — Retrieve a list of automation runs</li>
+<li><a href="automations.html#automations/remove"><code>automations/remove</code></a> — Delete an automation</li>
+<li><a href="automations.html#automations/stop"><code>automations/stop</code></a> — Stop an automation</li>
+<li><a href="automations.html#automations/update"><code>automations/update</code></a> — Update an automation</li>
+</ul>
+</li>
+<li><a href="broadcasts.html">broadcasts</a>
+<ul>
+<li><a href="broadcasts.html#broadcasts/cancel"><code>broadcasts/cancel</code></a> — Cancel a broadcast</li>
+<li><a href="broadcasts.html#broadcasts/create"><code>broadcasts/create</code></a> — Create a broadcast</li>
+<li><a href="broadcasts.html#broadcasts/duplicate"><code>broadcasts/duplicate</code></a> — Duplicate a broadcast</li>
+<li><a href="broadcasts.html#broadcasts/get"><code>broadcasts/get</code></a> — Retrieve a single broadcast</li>
+<li><a href="broadcasts.html#broadcasts/list"><code>broadcasts/list</code></a> — Retrieve a list of broadcasts</li>
+<li><a href="broadcasts.html#broadcasts/list-clicked-links"><code>broadcasts/list-clicked-links</code></a> — Retrieve a broadcast's clicked links</li>
+<li><a href="broadcasts.html#broadcasts/recipients"><code>broadcasts/recipients</code></a> — Retrieve broadcast recipients</li>
+<li><a href="broadcasts.html#broadcasts/remove"><code>broadcasts/remove</code></a> — Remove an existing broadcast that is in the draft status</li>
+<li><a href="broadcasts.html#broadcasts/send"><code>broadcasts/send</code></a> — Send or schedule a broadcast</li>
+<li><a href="broadcasts.html#broadcasts/update"><code>broadcasts/update</code></a> — Update an existing broadcast</li>
+</ul>
+</li>
+<li><a href="contact-properties.html">contact-properties</a>
+<ul>
+<li><a href="contact-properties.html#contact-properties/create"><code>contact-properties/create</code></a> — Create a new contact property</li>
+<li><a href="contact-properties.html#contact-properties/get"><code>contact-properties/get</code></a> — Retrieve a single contact property</li>
+<li><a href="contact-properties.html#contact-properties/list"><code>contact-properties/list</code></a> — Retrieve a list of contact properties</li>
+<li><a href="contact-properties.html#contact-properties/remove"><code>contact-properties/remove</code></a> — Remove an existing contact property</li>
+<li><a href="contact-properties.html#contact-properties/update"><code>contact-properties/update</code></a> — Update an existing contact property</li>
+</ul>
+</li>
+<li><a href="contacts.html">contacts</a>
+<ul>
+<li><a href="contacts.html#contacts/add-segment"><code>contacts/add-segment</code></a> — Add a contact to a segment</li>
+<li><a href="contacts.html#contacts/create"><code>contacts/create</code></a> — Create a new contact</li>
+<li><a href="contacts.html#contacts/create-import"><code>contacts/create-import</code></a> — Create a contact import</li>
+<li><a href="contacts.html#contacts/get"><code>contacts/get</code></a> — Retrieve a single contact by ID or email</li>
+<li><a href="contacts.html#contacts/get-import"><code>contacts/get-import</code></a> — Retrieve a single contact import</li>
+<li><a href="contacts.html#contacts/list"><code>contacts/list</code></a> — Retrieve a list of contacts</li>
+<li><a href="contacts.html#contacts/list-imports"><code>contacts/list-imports</code></a> — Retrieve a list of contact imports</li>
+<li><a href="contacts.html#contacts/list-segments"><code>contacts/list-segments</code></a> — Retrieve a list of segments for a contact</li>
+<li><a href="contacts.html#contacts/list-topics"><code>contacts/list-topics</code></a> — Retrieve topics for a contact</li>
+<li><a href="contacts.html#contacts/remove"><code>contacts/remove</code></a> — Remove an existing contact by ID or email</li>
+<li><a href="contacts.html#contacts/remove-segment"><code>contacts/remove-segment</code></a> — Remove a contact from a segment</li>
+<li><a href="contacts.html#contacts/update"><code>contacts/update</code></a> — Update a single contact by ID or email</li>
+<li><a href="contacts.html#contacts/update-topics"><code>contacts/update-topics</code></a> — Update topics for a contact</li>
+</ul>
+</li>
+<li><a href="domains.html">domains</a>
+<ul>
+<li><a href="domains.html#domains/create"><code>domains/create</code></a> — Create a new domain</li>
+<li><a href="domains.html#domains/create-claim"><code>domains/create-claim</code></a> — Claim a domain</li>
+<li><a href="domains.html#domains/enable-forge"><code>domains/enable-forge</code></a> — Enable Forge for a domain</li>
+<li><a href="domains.html#domains/get"><code>domains/get</code></a> — Retrieve a single domain</li>
+<li><a href="domains.html#domains/get-claim"><code>domains/get-claim</code></a> — Retrieve a domain claim</li>
+<li><a href="domains.html#domains/list"><code>domains/list</code></a> — Retrieve a list of domains</li>
+<li><a href="domains.html#domains/remove"><code>domains/remove</code></a> — Remove an existing domain</li>
+<li><a href="domains.html#domains/update"><code>domains/update</code></a> — Update an existing domain</li>
+<li><a href="domains.html#domains/verify"><code>domains/verify</code></a> — Verify an existing domain</li>
+<li><a href="domains.html#domains/verify-claim"><code>domains/verify-claim</code></a> — Verify a domain claim</li>
+</ul>
+</li>
+<li><a href="emails.html">emails</a>
+<ul>
+<li><a href="emails.html#emails/cancel"><code>emails/cancel</code></a> — Cancel the schedule of the e-mail.</li>
+<li><a href="emails.html#emails/get"><code>emails/get</code></a> — Retrieve a single email</li>
+<li><a href="emails.html#emails/get-attachment"><code>emails/get-attachment</code></a> — Retrieve a single attachment for a sent email</li>
+<li><a href="emails.html#emails/get-receiving"><code>emails/get-receiving</code></a> — Retrieve a single received email</li>
+<li><a href="emails.html#emails/get-receiving-attachment"><code>emails/get-receiving-attachment</code></a> — Retrieve a single attachment for a received email</li>
+<li><a href="emails.html#emails/list"><code>emails/list</code></a> — Retrieve a list of emails</li>
+<li><a href="emails.html#emails/list-attachments"><code>emails/list-attachments</code></a> — Retrieve a list of attachments for a sent email</li>
+<li><a href="emails.html#emails/list-receiving"><code>emails/list-receiving</code></a> — Retrieve a list of received emails</li>
+<li><a href="emails.html#emails/list-receiving-attachments"><code>emails/list-receiving-attachments</code></a> — Retrieve a list of attachments for a received email</li>
+<li><a href="emails.html#emails/metrics"><code>emails/metrics</code></a> — Retrieve account-level email metrics</li>
+<li><a href="emails.html#emails/send"><code>emails/send</code></a> — Send an email</li>
+<li><a href="emails.html#emails/send-batch"><code>emails/send-batch</code></a> — Trigger up to 100 batch emails at once.</li>
+<li><a href="emails.html#emails/share"><code>emails/share</code></a> — Create a shareable link for a sent or received email.</li>
+<li><a href="emails.html#emails/update"><code>emails/update</code></a> — Update a single email</li>
+</ul>
+</li>
+<li><a href="events.html">events</a>
+<ul>
+<li><a href="events.html#events/create"><code>events/create</code></a> — Create an event</li>
+<li><a href="events.html#events/get"><code>events/get</code></a> — Retrieve a single event</li>
+<li><a href="events.html#events/list"><code>events/list</code></a> — Retrieve a list of events</li>
+<li><a href="events.html#events/remove"><code>events/remove</code></a> — Delete an event</li>
+<li><a href="events.html#events/send"><code>events/send</code></a> — Send an event</li>
+<li><a href="events.html#events/update"><code>events/update</code></a> — Update an event</li>
+</ul>
+</li>
+<li><a href="inboxes.html">inboxes</a>
+<ul>
+<li><a href="inboxes.html#inboxes/add-thread-labels"><code>inboxes/add-thread-labels</code></a> — Add labels to an inbox thread</li>
+<li><a href="inboxes.html#inboxes/create"><code>inboxes/create</code></a> — Create an inbox</li>
+<li><a href="inboxes.html#inboxes/create-draft"><code>inboxes/create-draft</code></a> — Create a draft</li>
+<li><a href="inboxes.html#inboxes/create-label"><code>inboxes/create-label</code></a> — Create a label on an inbox</li>
+<li><a href="inboxes.html#inboxes/forward-thread-email"><code>inboxes/forward-thread-email</code></a> — Forward a thread email</li>
+<li><a href="inboxes.html#inboxes/get"><code>inboxes/get</code></a> — Retrieve a single inbox by ID or email address</li>
+<li><a href="inboxes.html#inboxes/get-agent"><code>inboxes/get-agent</code></a> — Retrieve the agent settings for an inbox</li>
+<li><a href="inboxes.html#inboxes/get-draft"><code>inboxes/get-draft</code></a> — Retrieve a single draft</li>
+<li><a href="inboxes.html#inboxes/get-thread"><code>inboxes/get-thread</code></a> — Retrieve a single inbox thread</li>
+<li><a href="inboxes.html#inboxes/get-thread-email"><code>inboxes/get-thread-email</code></a> — Retrieve a single thread email</li>
+<li><a href="inboxes.html#inboxes/list"><code>inboxes/list</code></a> — Retrieve a list of inboxes</li>
+<li><a href="inboxes.html#inboxes/list-drafts"><code>inboxes/list-drafts</code></a> — Retrieve a list of drafts</li>
+<li><a href="inboxes.html#inboxes/list-labels"><code>inboxes/list-labels</code></a> — Retrieve a list of inbox labels</li>
+<li><a href="inboxes.html#inboxes/list-thread-emails"><code>inboxes/list-thread-emails</code></a> — Retrieve a list of thread emails</li>
+<li><a href="inboxes.html#inboxes/list-threads"><code>inboxes/list-threads</code></a> — Retrieve a list of inbox threads</li>
+<li><a href="inboxes.html#inboxes/remove"><code>inboxes/remove</code></a> — Remove an existing inbox by ID or email address</li>
+<li><a href="inboxes.html#inboxes/remove-draft"><code>inboxes/remove-draft</code></a> — Remove an existing draft</li>
+<li><a href="inboxes.html#inboxes/remove-label"><code>inboxes/remove-label</code></a> — Remove an existing inbox label</li>
+<li><a href="inboxes.html#inboxes/remove-thread"><code>inboxes/remove-thread</code></a> — Remove an existing inbox thread</li>
+<li><a href="inboxes.html#inboxes/remove-thread-label"><code>inboxes/remove-thread-label</code></a> — Remove a label from an inbox thread</li>
+<li><a href="inboxes.html#inboxes/reply-thread-email"><code>inboxes/reply-thread-email</code></a> — Reply to a thread email</li>
+<li><a href="inboxes.html#inboxes/search-threads"><code>inboxes/search-threads</code></a> — Search the threads of an inbox</li>
+<li><a href="inboxes.html#inboxes/send-draft"><code>inboxes/send-draft</code></a> — Send a draft</li>
+<li><a href="inboxes.html#inboxes/set-thread-labels"><code>inboxes/set-thread-labels</code></a> — Set the labels of an inbox thread</li>
+<li><a href="inboxes.html#inboxes/update"><code>inboxes/update</code></a> — Update an existing inbox by ID or email address</li>
+<li><a href="inboxes.html#inboxes/update-agent"><code>inboxes/update-agent</code></a> — Update the agent settings for an inbox</li>
+<li><a href="inboxes.html#inboxes/update-draft"><code>inboxes/update-draft</code></a> — Update an existing draft</li>
+<li><a href="inboxes.html#inboxes/update-label"><code>inboxes/update-label</code></a> — Update an existing inbox label</li>
+<li><a href="inboxes.html#inboxes/update-thread"><code>inboxes/update-thread</code></a> — Update an existing inbox thread</li>
+</ul>
+</li>
+<li><a href="logs.html">logs</a>
+<ul>
+<li><a href="logs.html#logs/get"><code>logs/get</code></a> — Retrieve a single log</li>
+<li><a href="logs.html#logs/list"><code>logs/list</code></a> — Retrieve a list of logs</li>
+</ul>
+</li>
+<li><a href="oauth.html">oauth</a>
+<ul>
+<li><a href="oauth.html#oauth/list-grants"><code>oauth/list-grants</code></a> — Retrieve a list of OAuth grants</li>
+<li><a href="oauth.html#oauth/revoke-grant"><code>oauth/revoke-grant</code></a> — Revoke an OAuth grant</li>
+</ul>
+</li>
+<li><a href="segments.html">segments</a>
+<ul>
+<li><a href="segments.html#segments/create"><code>segments/create</code></a> — Create a new segment</li>
+<li><a href="segments.html#segments/get"><code>segments/get</code></a> — Retrieve a single segment</li>
+<li><a href="segments.html#segments/list"><code>segments/list</code></a> — Retrieve a list of segments</li>
+<li><a href="segments.html#segments/list-contacts"><code>segments/list-contacts</code></a> — Retrieve a list of contacts in a segment</li>
+<li><a href="segments.html#segments/remove"><code>segments/remove</code></a> — Remove an existing segment</li>
+<li><a href="segments.html#segments/update"><code>segments/update</code></a> — Update an existing segment</li>
+</ul>
+</li>
+<li><a href="suppressions.html">suppressions</a>
+<ul>
+<li><a href="suppressions.html#suppressions/add"><code>suppressions/add</code></a> — Create a suppression</li>
+<li><a href="suppressions.html#suppressions/batch-add"><code>suppressions/batch-add</code></a> — Add up to 100 suppressions at once</li>
+<li><a href="suppressions.html#suppressions/batch-remove"><code>suppressions/batch-remove</code></a> — Remove up to 100 suppressions at once</li>
+<li><a href="suppressions.html#suppressions/get"><code>suppressions/get</code></a> — Retrieve a single suppression by ID or email</li>
+<li><a href="suppressions.html#suppressions/list"><code>suppressions/list</code></a> — Retrieve a list of suppressions</li>
+<li><a href="suppressions.html#suppressions/remove"><code>suppressions/remove</code></a> — Remove a single suppression by ID or email</li>
+</ul>
+</li>
+<li><a href="templates.html">templates</a>
+<ul>
+<li><a href="templates.html#templates/create"><code>templates/create</code></a> — Create a template</li>
+<li><a href="templates.html#templates/duplicate"><code>templates/duplicate</code></a> — Duplicate a template</li>
+<li><a href="templates.html#templates/get"><code>templates/get</code></a> — Retrieve a single template</li>
+<li><a href="templates.html#templates/list"><code>templates/list</code></a> — Retrieve a list of templates</li>
+<li><a href="templates.html#templates/publish"><code>templates/publish</code></a> — Publish a template</li>
+<li><a href="templates.html#templates/remove"><code>templates/remove</code></a> — Remove an existing template</li>
+<li><a href="templates.html#templates/update"><code>templates/update</code></a> — Update an existing template</li>
+</ul>
+</li>
+<li><a href="topics.html">topics</a>
+<ul>
+<li><a href="topics.html#topics/create"><code>topics/create</code></a> — Create a new topic</li>
+<li><a href="topics.html#topics/get"><code>topics/get</code></a> — Retrieve a single topic</li>
+<li><a href="topics.html#topics/list"><code>topics/list</code></a> — Retrieve a list of topics</li>
+<li><a href="topics.html#topics/remove"><code>topics/remove</code></a> — Remove an existing topic</li>
+<li><a href="topics.html#topics/update"><code>topics/update</code></a> — Update an existing topic</li>
+</ul>
+</li>
+<li><a href="usage.html">usage</a>
+<ul>
+<li><a href="usage.html#usage/get"><code>usage/get</code></a> — Retrieve account usage</li>
+</ul>
+</li>
+<li><a href="webhooks.html">webhooks</a>
+<ul>
+<li><a href="webhooks.html#webhooks/create"><code>webhooks/create</code></a> — Create a new webhook</li>
+<li><a href="webhooks.html#webhooks/get"><code>webhooks/get</code></a> — Retrieve a single webhook</li>
+<li><a href="webhooks.html#webhooks/get-event"><code>webhooks/get-event</code></a> — Retrieve a single webhook event</li>
+<li><a href="webhooks.html#webhooks/list"><code>webhooks/list</code></a> — Retrieve a list of webhooks</li>
+<li><a href="webhooks.html#webhooks/list-event-attempts"><code>webhooks/list-event-attempts</code></a> — Retrieve a list of webhook event attempts</li>
+<li><a href="webhooks.html#webhooks/list-events"><code>webhooks/list-events</code></a> — Retrieve a list of webhook events</li>
+<li><a href="webhooks.html#webhooks/remove"><code>webhooks/remove</code></a> — Remove an existing webhook</li>
+<li><a href="webhooks.html#webhooks/replay-event"><code>webhooks/replay-event</code></a> — Replay a webhook event</li>
+<li><a href="webhooks.html#webhooks/rotate-signing-secret"><code>webhooks/rotate-signing-secret</code></a> — Rotate a webhook signing secret</li>
+<li><a href="webhooks.html#webhooks/update"><code>webhooks/update</code></a> — Update an existing webhook</li>
+</ul>
+</li>
+</ul>
+</main>
+</body>
+</html>

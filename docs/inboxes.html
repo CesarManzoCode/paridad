@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>inboxes — paridad</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:60rem;margin:0 auto;padding:1rem;line-height:1.5}
+pre{background:#f4f4f4;padding:.75rem;overflow-x:auto}
+section{border-top:1px solid #ccc;margin-top:2rem}
+code{font-family:ui-monospace,monospace}
+</style>
+</head>
+<body>
+<header>
+<p><a href="index.html">Índice</a></p>
+<h1>inboxes</h1>
+</header>
+<main>
+<ul>
+<li><a href="#inboxes/add-thread-labels"><code>inboxes/add-thread-labels</code></a></li>
+<li><a href="#inboxes/create"><code>inboxes/create</code></a></li>
+<li><a href="#inboxes/create-draft"><code>inboxes/create-draft</code></a></li>
+<li><a href="#inboxes/create-label"><code>inboxes/create-label</code></a></li>
+<li><a href="#inboxes/forward-thread-email"><code>inboxes/forward-thread-email</code></a></li>
+<li><a href="#inboxes/get"><code>inboxes/get</code></a></li>
+<li><a href="#inboxes/get-agent"><code>inboxes/get-agent</code></a></li>
+<li><a href="#inboxes/get-draft"><code>inboxes/get-draft</code></a></li>
+<li><a href="#inboxes/get-thread"><code>inboxes/get-thread</code></a></li>
+<li><a href="#inboxes/get-thread-email"><code>inboxes/get-thread-email</code></a></li>
+<li><a href="#inboxes/list"><code>inboxes/list</code></a></li>
+<li><a href="#inboxes/list-drafts"><code>inboxes/list-drafts</code></a></li>
+<li><a href="#inboxes/list-labels"><code>inboxes/list-labels</code></a></li>
+<li><a href="#inboxes/list-thread-emails"><code>inboxes/list-thread-emails</code></a></li>
+<li><a href="#inboxes/list-threads"><code>inboxes/list-threads</code></a></li>
+<li><a href="#inboxes/remove"><code>inboxes/remove</code></a></li>
+<li><a href="#inboxes/remove-draft"><code>inboxes/remove-draft</code></a></li>
+<li><a href="#inboxes/remove-label"><code>inboxes/remove-label</code></a></li>
+<li><a href="#inboxes/remove-thread"><code>inboxes/remove-thread</code></a></li>
+<li><a href="#inboxes/remove-thread-label"><code>inboxes/remove-thread-label</code></a></li>
+<li><a href="#inboxes/reply-thread-email"><code>inboxes/reply-thread-email</code></a></li>
+<li><a href="#inboxes/search-threads"><code>inboxes/search-threads</code></a></li>
+<li><a href="#inboxes/send-draft"><code>inboxes/send-draft</code></a></li>
+<li><a href="#inboxes/set-thread-labels"><code>inboxes/set-thread-labels</code></a></li>
+<li><a href="#inboxes/update"><code>inboxes/update</code></a></li>
+<li><a href="#inboxes/update-agent"><code>inboxes/update-agent</code></a></li>
+<li><a href="#inboxes/update-draft"><code>inboxes/update-draft</code></a></li>
+<li><a href="#inboxes/update-label"><code>inboxes/update-label</code></a></li>
+<li><a href="#inboxes/update-thread"><code>inboxes/update-thread</code></a></li>
+</ul>
+<section id="inboxes/add-thread-labels" data-operation-id="inboxes/add-thread-labels">
+<h2><code>inboxes/add-thread-labels</code></h2>
+<p>Add labels to an inbox thread</p>
+<p><code>POST /inboxes/{inbox_id}/threads/{thread_id}/labels</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/add-thread-labels">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.addThreadLabels(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+  &quot;labels&quot;: [
+    &quot;7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34&quot;
+  ]
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/add-thread-labels">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.add_thread_labels(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+    &quot;labels&quot;: [
+        &quot;7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34&quot;,
+    ],
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/add-thread-labels">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.AddInboxThreadLabelsOptions
+	if err := json.Unmarshal([]byte(`{&quot;labels&quot;:[&quot;7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34&quot;]}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.AddThreadLabels(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/add-thread-labels">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes add-thread-labels --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --thread-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --labels '[&quot;7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34&quot;]'
+</code></pre>
+</section>
+<section id="inboxes/create" data-operation-id="inboxes/create">
+<h2><code>inboxes/create</code></h2>
+<p>Create an inbox</p>
+<p><code>POST /inboxes</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/create">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.create({
+  &quot;email_address&quot;: &quot;support@acme.com&quot;
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/create">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.create({
+    &quot;email_address&quot;: &quot;support@acme.com&quot;,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/create">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.CreateInboxOptions
+	if err := json.Unmarshal([]byte(`{&quot;email_address&quot;:&quot;support@acme.com&quot;}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.Create(ctx, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/create">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes create --email-address support@acme.com
+</code></pre>
+</section>
+<section id="inboxes/create-draft" data-operation-id="inboxes/create-draft">
+<h2><code>inboxes/create-draft</code></h2>
+<p>Create a draft</p>
+<p><code>POST /inboxes/{inbox_id}/drafts</code> — acepta clave de idempotencia</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/create-draft">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.createDraft(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {
+  &quot;to&quot;: [
+    &quot;ada@example.org&quot;
+  ]
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/create-draft">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.create_draft(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {
+    &quot;to&quot;: [
+        &quot;ada@example.org&quot;,
+    ],
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/create-draft">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.CreateInboxDraftOptions
+	if err := json.Unmarshal([]byte(`{&quot;to&quot;:[&quot;ada@example.org&quot;]}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.CreateDraft(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/create-draft">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes create-draft --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --to '[&quot;ada@example.org&quot;]'
+</code></pre>
+</section>
+<section id="inboxes/create-label" data-operation-id="inboxes/create-label">
+<h2><code>inboxes/create-label</code></h2>
+<p>Create a label on an inbox</p>
+<p><code>POST /inboxes/{inbox_id}/labels</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/create-label">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.createLabel(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {
+  &quot;name&quot;: &quot;Urgent&quot;
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/create-label">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.create_label(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {
+    &quot;name&quot;: &quot;Urgent&quot;,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/create-label">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.CreateInboxLabelOptions
+	if err := json.Unmarshal([]byte(`{&quot;name&quot;:&quot;Urgent&quot;}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.CreateLabel(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/create-label">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes create-label --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --name Urgent
+</code></pre>
+</section>
+<section id="inboxes/forward-thread-email" data-operation-id="inboxes/forward-thread-email">
+<h2><code>inboxes/forward-thread-email</code></h2>
+<p>Forward a thread email</p>
+<p><code>POST /inboxes/{inbox_id}/threads/{thread_id}/emails/{email_id}/forward</code> — acepta clave de idempotencia</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/forward-thread-email">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.forwardThreadEmail(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+  &quot;to&quot;: [
+    &quot;colleague@example.org&quot;
+  ]
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/forward-thread-email">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.forward_thread_email(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+    &quot;to&quot;: [
+        &quot;colleague@example.org&quot;,
+    ],
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/forward-thread-email">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.ForwardInboxThreadEmailOptions
+	if err := json.Unmarshal([]byte(`{&quot;to&quot;:[&quot;colleague@example.org&quot;]}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.ForwardThreadEmail(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/forward-thread-email">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes forward-thread-email --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --thread-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --email-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --to '[&quot;colleague@example.org&quot;]'
+</code></pre>
+</section>
+<section id="inboxes/get" data-operation-id="inboxes/get">
+<h2><code>inboxes/get</code></h2>
+<p>Retrieve a single inbox by ID or email address</p>
+<p><code>GET /inboxes/{inbox_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/get">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.get(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/get">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.get(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/get">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Inboxes.Get(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/get">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes get --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+</code></pre>
+</section>
+<section id="inboxes/get-agent" data-operation-id="inboxes/get-agent">
+<h2><code>inboxes/get-agent</code></h2>
+<p>Retrieve the agent settings for an inbox</p>
+<p><code>GET /inboxes/{inbox_id}/agent</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/get-agent">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.getAgent(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/get-agent">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.get_agent(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/get-agent">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Inboxes.GetAgent(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/get-agent">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes get-agent --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+</code></pre>
+</section>
+<section id="inboxes/get-draft" data-operation-id="inboxes/get-draft">
+<h2><code>inboxes/get-draft</code></h2>
+<p>Retrieve a single draft</p>
+<p><code>GET /inboxes/{inbox_id}/drafts/{draft_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/get-draft">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.getDraft(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/get-draft">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.get_draft(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/get-draft">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Inboxes.GetDraft(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/get-draft">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes get-draft --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --draft-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="inboxes/get-thread" data-operation-id="inboxes/get-thread">
+<h2><code>inboxes/get-thread</code></h2>
+<p>Retrieve a single inbox thread</p>
+<p><code>GET /inboxes/{inbox_id}/threads/{thread_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/get-thread">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.getThread(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/get-thread">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.get_thread(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/get-thread">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Inboxes.GetThread(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/get-thread">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes get-thread --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --thread-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="inboxes/get-thread-email" data-operation-id="inboxes/get-thread-email">
+<h2><code>inboxes/get-thread-email</code></h2>
+<p>Retrieve a single thread email</p>
+<p><code>GET /inboxes/{inbox_id}/threads/{thread_id}/emails/{email_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/get-thread-email">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.getThreadEmail(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/get-thread-email">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.get_thread_email(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/get-thread-email">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Inboxes.GetThreadEmail(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/get-thread-email">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes get-thread-email --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --thread-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --email-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="inboxes/list" data-operation-id="inboxes/list">
+<h2><code>inboxes/list</code></h2>
+<p>Retrieve a list of inboxes</p>
+<p><code>GET /inboxes</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/list">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.list({});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/list">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.list({})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/list">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.InboxesListQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.List(ctx, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/list">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes list
+</code></pre>
+</section>
+<section id="inboxes/list-drafts" data-operation-id="inboxes/list-drafts">
+<h2><code>inboxes/list-drafts</code></h2>
+<p>Retrieve a list of drafts</p>
+<p><code>GET /inboxes/{inbox_id}/drafts</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/list-drafts">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.listDrafts(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/list-drafts">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.list_drafts(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/list-drafts">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.InboxesListDraftsQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.ListDrafts(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/list-drafts">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes list-drafts --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+</code></pre>
+</section>
+<section id="inboxes/list-labels" data-operation-id="inboxes/list-labels">
+<h2><code>inboxes/list-labels</code></h2>
+<p>Retrieve a list of inbox labels</p>
+<p><code>GET /inboxes/{inbox_id}/labels</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/list-labels">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.listLabels(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/list-labels">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.list_labels(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/list-labels">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Inboxes.ListLabels(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/list-labels">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes list-labels --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+</code></pre>
+</section>
+<section id="inboxes/list-thread-emails" data-operation-id="inboxes/list-thread-emails">
+<h2><code>inboxes/list-thread-emails</code></h2>
+<p>Retrieve a list of thread emails</p>
+<p><code>GET /inboxes/{inbox_id}/threads/{thread_id}/emails</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/list-thread-emails">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.listThreadEmails(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/list-thread-emails">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.list_thread_emails(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/list-thread-emails">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.InboxesListThreadEmailsQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.ListThreadEmails(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/list-thread-emails">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes list-thread-emails --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --thread-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="inboxes/list-threads" data-operation-id="inboxes/list-threads">
+<h2><code>inboxes/list-threads</code></h2>
+<p>Retrieve a list of inbox threads</p>
+<p><code>GET /inboxes/{inbox_id}/threads</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/list-threads">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.listThreads(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/list-threads">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.list_threads(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/list-threads">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.InboxesListThreadsQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.ListThreads(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/list-threads">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes list-threads --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+</code></pre>
+</section>
+<section id="inboxes/remove" data-operation-id="inboxes/remove">
+<h2><code>inboxes/remove</code></h2>
+<p>Remove an existing inbox by ID or email address</p>
+<p><code>DELETE /inboxes/{inbox_id}</code> — destructiva</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/remove">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.remove(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/remove">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.remove(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/remove">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Inboxes.Remove(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/remove">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes remove --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+</code></pre>
+</section>
+<section id="inboxes/remove-draft" data-operation-id="inboxes/remove-draft">
+<h2><code>inboxes/remove-draft</code></h2>
+<p>Remove an existing draft</p>
+<p><code>DELETE /inboxes/{inbox_id}/drafts/{draft_id}</code> — destructiva</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/remove-draft">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.removeDraft(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/remove-draft">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.remove_draft(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/remove-draft">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Inboxes.RemoveDraft(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/remove-draft">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes remove-draft --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --draft-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="inboxes/remove-label" data-operation-id="inboxes/remove-label">
+<h2><code>inboxes/remove-label</code></h2>
+<p>Remove an existing inbox label</p>
+<p><code>DELETE /inboxes/{inbox_id}/labels/{label_id}</code> — destructiva</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/remove-label">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.removeLabel(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/remove-label">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.remove_label(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/remove-label">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Inboxes.RemoveLabel(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/remove-label">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes remove-label --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --label-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="inboxes/remove-thread" data-operation-id="inboxes/remove-thread">
+<h2><code>inboxes/remove-thread</code></h2>
+<p>Remove an existing inbox thread</p>
+<p><code>DELETE /inboxes/{inbox_id}/threads/{thread_id}</code> — destructiva</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/remove-thread">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.removeThread(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/remove-thread">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.remove_thread(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/remove-thread">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Inboxes.RemoveThread(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/remove-thread">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes remove-thread --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --thread-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="inboxes/remove-thread-label" data-operation-id="inboxes/remove-thread-label">
+<h2><code>inboxes/remove-thread-label</code></h2>
+<p>Remove a label from an inbox thread</p>
+<p><code>DELETE /inboxes/{inbox_id}/threads/{thread_id}/labels/{label_id}</code> — destructiva</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/remove-thread-label">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.removeThreadLabel(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;);
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/remove-thread-label">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.remove_thread_label(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/remove-thread-label">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	result, err := c.Inboxes.RemoveThreadLabel(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/remove-thread-label">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes remove-thread-label --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --thread-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --label-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
+</code></pre>
+</section>
+<section id="inboxes/reply-thread-email" data-operation-id="inboxes/reply-thread-email">
+<h2><code>inboxes/reply-thread-email</code></h2>
+<p>Reply to a thread email</p>
+<p><code>POST /inboxes/{inbox_id}/threads/{thread_id}/emails/{email_id}/reply</code> — acepta clave de idempotencia</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/reply-thread-email">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.replyThreadEmail(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+  &quot;html&quot;: &quot;&lt;p&gt;Refund issued for order 1041.&lt;/p&gt;&quot;
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/reply-thread-email">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.reply_thread_email(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+    &quot;html&quot;: &quot;&lt;p&gt;Refund issued for order 1041.&lt;/p&gt;&quot;,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/reply-thread-email">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.ReplyInboxThreadEmailOptions
+	if err := json.Unmarshal([]byte(`{&quot;html&quot;:&quot;&lt;p&gt;Refund issued for order 1041.&lt;/p&gt;&quot;}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.ReplyThreadEmail(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/reply-thread-email">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes reply-thread-email --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --thread-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --email-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --html '&lt;p&gt;Refund issued for order 1041.&lt;/p&gt;'
+</code></pre>
+</section>
+<section id="inboxes/search-threads" data-operation-id="inboxes/search-threads">
+<h2><code>inboxes/search-threads</code></h2>
+<p>Search the threads of an inbox</p>
+<p><code>GET /inboxes/{inbox_id}/threads/search</code> — paginada</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/search-threads">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.searchThreads(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/search-threads">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.search_threads(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/search-threads">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var query resend.InboxesSearchThreadsQuery
+	if err := json.Unmarshal([]byte(`{}`), &amp;query); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.SearchThreads(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &amp;query)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/search-threads">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes search-threads --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1
+</code></pre>
+</section>
+<section id="inboxes/send-draft" data-operation-id="inboxes/send-draft">
+<h2><code>inboxes/send-draft</code></h2>
+<p>Send a draft</p>
+<p><code>POST /inboxes/{inbox_id}/drafts/{draft_id}/send</code> — acepta clave de idempotencia</p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/send-draft">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.sendDraft(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+  &quot;headers&quot;: {
+    &quot;X-Ticket-Id&quot;: &quot;4821&quot;
+  }
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/send-draft">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.send_draft(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+    &quot;headers&quot;: {
+        &quot;X-Ticket-Id&quot;: &quot;4821&quot;,
+    },
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/send-draft">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.SendInboxDraftOptions
+	if err := json.Unmarshal([]byte(`{&quot;headers&quot;:{&quot;X-Ticket-Id&quot;:&quot;4821&quot;}}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.SendDraft(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/send-draft">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes send-draft --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --draft-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --headers '{&quot;X-Ticket-Id&quot;:&quot;4821&quot;}'
+</code></pre>
+</section>
+<section id="inboxes/set-thread-labels" data-operation-id="inboxes/set-thread-labels">
+<h2><code>inboxes/set-thread-labels</code></h2>
+<p>Set the labels of an inbox thread</p>
+<p><code>PUT /inboxes/{inbox_id}/threads/{thread_id}/labels</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/set-thread-labels">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.setThreadLabels(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+  &quot;labels&quot;: [
+    &quot;7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34&quot;
+  ]
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/set-thread-labels">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.set_thread_labels(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+    &quot;labels&quot;: [
+        &quot;7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34&quot;,
+    ],
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/set-thread-labels">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.SetInboxThreadLabelsOptions
+	if err := json.Unmarshal([]byte(`{&quot;labels&quot;:[&quot;7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34&quot;]}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.SetThreadLabels(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/set-thread-labels">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes set-thread-labels --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --thread-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --labels '[&quot;7f9c1d2e-4a6b-4c3d-8e15-9b0a7c6d5e34&quot;]'
+</code></pre>
+</section>
+<section id="inboxes/update" data-operation-id="inboxes/update">
+<h2><code>inboxes/update</code></h2>
+<p>Update an existing inbox by ID or email address</p>
+<p><code>PATCH /inboxes/{inbox_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/update">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.update(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {
+  &quot;name&quot;: &quot;Customer Support&quot;
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/update">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.update(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {
+    &quot;name&quot;: &quot;Customer Support&quot;,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/update">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.UpdateInboxOptions
+	if err := json.Unmarshal([]byte(`{&quot;name&quot;:&quot;Customer Support&quot;}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.Update(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/update">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes update --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --name 'Customer Support'
+</code></pre>
+</section>
+<section id="inboxes/update-agent" data-operation-id="inboxes/update-agent">
+<h2><code>inboxes/update-agent</code></h2>
+<p>Update the agent settings for an inbox</p>
+<p><code>PATCH /inboxes/{inbox_id}/agent</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/update-agent">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.updateAgent(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {
+  &quot;instructions&quot;: &quot;Answer refund questions yourself. Escalate legal threats.&quot;
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/update-agent">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.update_agent(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, {
+    &quot;instructions&quot;: &quot;Answer refund questions yourself. Escalate legal threats.&quot;,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/update-agent">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.UpdateInboxAgentOptions
+	if err := json.Unmarshal([]byte(`{&quot;instructions&quot;:&quot;Answer refund questions yourself. Escalate legal threats.&quot;}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.UpdateAgent(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/update-agent">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes update-agent --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --instructions 'Answer refund questions yourself. Escalate legal threats.'
+</code></pre>
+</section>
+<section id="inboxes/update-draft" data-operation-id="inboxes/update-draft">
+<h2><code>inboxes/update-draft</code></h2>
+<p>Update an existing draft</p>
+<p><code>PATCH /inboxes/{inbox_id}/drafts/{draft_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/update-draft">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.updateDraft(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+  &quot;to&quot;: [
+    &quot;ada@example.org&quot;
+  ]
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/update-draft">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.update_draft(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+    &quot;to&quot;: [
+        &quot;ada@example.org&quot;,
+    ],
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/update-draft">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.UpdateInboxDraftOptions
+	if err := json.Unmarshal([]byte(`{&quot;to&quot;:[&quot;ada@example.org&quot;]}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.UpdateDraft(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/update-draft">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes update-draft --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --draft-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --to '[&quot;ada@example.org&quot;]'
+</code></pre>
+</section>
+<section id="inboxes/update-label" data-operation-id="inboxes/update-label">
+<h2><code>inboxes/update-label</code></h2>
+<p>Update an existing inbox label</p>
+<p><code>PATCH /inboxes/{inbox_id}/labels/{label_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/update-label">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.updateLabel(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+  &quot;name&quot;: &quot;Billing&quot;
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/update-label">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.update_label(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+    &quot;name&quot;: &quot;Billing&quot;,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/update-label">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.UpdateInboxLabelOptions
+	if err := json.Unmarshal([]byte(`{&quot;name&quot;:&quot;Billing&quot;}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.UpdateLabel(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/update-label">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes update-label --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --label-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --name Billing
+</code></pre>
+</section>
+<section id="inboxes/update-thread" data-operation-id="inboxes/update-thread">
+<h2><code>inboxes/update-thread</code></h2>
+<p>Update an existing inbox thread</p>
+<p><code>PATCH /inboxes/{inbox_id}/threads/{thread_id}</code></p>
+<h3>TypeScript</h3>
+<pre><code class="language-typescript" data-operation-id="inboxes/update-thread">import { Resend } from &quot;paridad-resend&quot;;
+
+// new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
+const resend = new Resend();
+const { data, error } = await resend.inboxes.updateThread(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+  &quot;read&quot;: true
+});
+if (error !== null) {
+  console.error(`${error.code}: ${error.message}`);
+  process.exit(1);
+}
+console.log(JSON.stringify(data, null, 2));
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python" data-operation-id="inboxes/update-thread">import json
+
+from paridad_resend import Resend
+
+# Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
+resend = Resend()
+result = resend.inboxes.update_thread(&quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, {
+    &quot;read&quot;: True,
+})
+print(json.dumps(result, indent=2))
+</code></pre>
+<h3>Go</h3>
+<pre><code class="language-go" data-operation-id="inboxes/update-thread">package main
+
+import (
+	&quot;context&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+
+	resend &quot;github.com/CesarManzoCode/paridad/sdks/go&quot;
+)
+
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, err)
+	os.Exit(1)
+}
+
+func main() {
+	// NewClient reads RESEND_API_KEY and RESEND_BASE_URL.
+	c, err := resend.NewClient()
+	if err != nil {
+		fail(err)
+	}
+	ctx := context.Background()
+	var body resend.UpdateInboxThreadOptions
+	if err := json.Unmarshal([]byte(`{&quot;read&quot;:true}`), &amp;body); err != nil {
+		fail(err)
+	}
+	result, err := c.Inboxes.UpdateThread(ctx, &quot;b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1&quot;, &quot;49a3999c-0ce1-4ea6-ab68-afcd6dc2e794&quot;, &amp;body)
+	if err != nil {
+		fail(err)
+	}
+	out, err := json.MarshalIndent(result, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		fail(err)
+	}
+	fmt.Println(string(out))
+}
+</code></pre>
+<h3>CLI (bash)</h3>
+<pre><code class="language-bash" data-operation-id="inboxes/update-thread">#!/usr/bin/env bash
+# paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
+set -euo pipefail
+paridad inboxes update-thread --inbox-id b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 --thread-id 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 --read true
+</code></pre>
+</section>
+</main>
+</body>
+</html>
