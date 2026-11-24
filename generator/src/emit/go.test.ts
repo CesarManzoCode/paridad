@@ -108,7 +108,7 @@ test("the runtime and its tests are the static templates", () => {
 test("the runtime uses the standard library only", () => {
   const runtime = readFileSync(join(ROOT, "generator/templates/go/runtime.go"), "utf8");
   const imports = runtime.slice(runtime.indexOf("import ("), runtime.indexOf(")", runtime.indexOf("import (")));
-  for (const path of imports.matchAll(/"([^"]+)"/g)) assert.ok(!path[1]!.includes("."), path[1]);
+  for (const [, path] of imports.matchAll(/"([^"]+)"/g)) assert.ok(!path!.includes("."), path!);
 });
 
 test("one method per operation with context.Context, each with its literal operationId in its documentation", () => {
@@ -128,14 +128,15 @@ test("schema and query types come from the IR; the iterator query leaves out the
   const types = readFileSync(join(emit(), "types.go"), "utf8");
   const thing = types.slice(types.indexOf("type Thing struct {"), types.indexOf("}", types.indexOf("type Thing struct {")));
   assert.match(types, /\/\/ A thing\.\ntype Thing struct \{/);
-  assert.match(thing, /\tID \*string `json:"id,omitempty"`/);
-  assert.match(thing, /\tName string `json:"name"`/);
-  assert.match(thing, /\tColor \*string `json:"color,omitempty"`/);
-  assert.match(types, /\tData \[\]Thing `json:"data,omitempty"`/);
+  // gofmt aligns the types and tags of the fields of a struct.
+  assert.match(thing, /\tID +\*string +`json:"id,omitempty"`/);
+  assert.match(thing, /\tName +string +`json:"name"`/);
+  assert.match(thing, /\tColor +\*string +`json:"color,omitempty"`/);
+  assert.match(types, /\tData +\[\]Thing +`json:"data,omitempty"`/);
   const listQuery = types.slice(types.indexOf("type ThingsListQuery struct {"), types.indexOf("}", types.indexOf("type ThingsListQuery struct {")));
-  assert.match(listQuery, /\tLimit \*int `json:"limit,omitempty"`/);
-  assert.match(listQuery, /\tAfter \*string `json:"after,omitempty"`/);
-  assert.match(listQuery, /\tTags \[\]string `json:"tags,omitempty"`/);
+  assert.match(listQuery, /\tLimit +\*int +`json:"limit,omitempty"`/);
+  assert.match(listQuery, /\tAfter +\*string +`json:"after,omitempty"`/);
+  assert.match(listQuery, /\tTags +\[\]string +`json:"tags,omitempty"`/);
   const allQuery = types.slice(types.indexOf("type ThingsListAllQuery struct {"), types.indexOf("}", types.indexOf("type ThingsListAllQuery struct {")));
   assert.match(allQuery, /\tLimit \*int/);
   assert.ok(!allQuery.includes("After") && !allQuery.includes("Before"), allQuery);

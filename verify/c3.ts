@@ -33,9 +33,11 @@ interface Divergence {
   reason: string;
 }
 
+// A method that serves several operations (contacts.list with and without a
+// segment) lists all of them.
 interface CoverageRow {
   method: string;
-  operation: string | null;
+  operation: string | string[] | null;
   reason: string | null;
 }
 
@@ -69,7 +71,9 @@ for (const [operation, entries] of Object.entries(officialMap.operations)) {
 }
 for (const language of LANGUAGES) {
   for (const row of coverage[language]?.methods ?? []) {
-    if (row.operation !== null && !operations.has(row.operation)) problems.push(`oracle-coverage.json: ${language} ${row.method} names unknown operation ${row.operation}`);
+    for (const operation of [row.operation ?? []].flat()) {
+      if (!operations.has(operation)) problems.push(`oracle-coverage.json: ${language} ${row.method} names unknown operation ${operation}`);
+    }
     if (row.operation === null && (row.reason === null || row.reason.trim() === "")) problems.push(`oracle-coverage.json: ${language} ${row.method} has neither operation nor reason`);
   }
 }

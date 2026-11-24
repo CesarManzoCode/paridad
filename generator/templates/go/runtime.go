@@ -10,6 +10,8 @@ package resend
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -18,7 +20,6 @@ import (
 	"maps"
 	"math"
 	"math/rand/v2"
-	"mime/multipart"
 	"net"
 	"net/http"
 	"net/url"
@@ -560,10 +561,15 @@ func encodeJSON(body any) ([]byte, error) {
 }
 
 // encodeMultipart writes each set field of a body struct as a part: []byte as a
-// file named like the field, strings as they are, anything else as JSON.
+// file named like the field, strings as they are, anything else as JSON. Parts go
+// sorted by field name with a boundary derived from their data, so the three SDKs
+// send the same bytes for the same body.
 func encodeMultipart(body any) ([]byte, string, error) {
-	var buf bytes.Buffer
-	writer := multipart.NewWriter(&buf)
+	type part struct {
+		name, head string
+		data       []byte
+	}
+	var parts []part
 	value := reflect.ValueOf(body)
 	for value.Kind() == reflect.Pointer && !value.IsNil() {
 		value = value.Elem()
@@ -578,30 +584,36 @@ func encodeMultipart(body any) ([]byte, string, error) {
 			for field.Kind() == reflect.Pointer {
 				field = field.Elem()
 			}
-			var err error
+			quoted := strings.ReplaceAll(name, `"`, "%22")
+			head := `Content-Disposition: form-data; name="` + quoted + `"`
 			switch data := field.Interface().(type) {
 			case []byte:
-				var part io.Writer
-				if part, err = writer.CreateFormFile(name, name); err == nil {
-					_, err = part.Write(data)
-				}
+				parts = append(parts, part{name, head + `; filename="` + quoted + "\"\r\nContent-Type: application/octet-stream", data})
 			case string:
-				err = writer.WriteField(name, data)
+				parts = append(parts, part{name, head, []byte(data)})
 			default:
-				var encoded []byte
-				if encoded, err = encodeJSON(data); err == nil {
-					err = writer.WriteField(name, string(encoded))
+				encoded, err := encodeJSON(data)
+				if err != nil {
+					return nil, "", err
 				}
-			}
-			if err != nil {
-				return nil, "", err
+				parts = append(parts, part{name, head, encoded})
 			}
 		}
 	}
-	if err := writer.Close(); err != nil {
-		return nil, "", err
+	slices.SortFunc(parts, func(a, b part) int { return strings.Compare(a.name, b.name) })
+	digest := sha256.New()
+	for _, p := range parts {
+		digest.Write(p.data)
 	}
-	return buf.Bytes(), writer.FormDataContentType(), nil
+	boundary := "paridad-" + hex.EncodeToString(digest.Sum(nil)[:16])
+	var buf bytes.Buffer
+	for _, p := range parts {
+		buf.WriteString("--" + boundary + "\r\n" + p.head + "\r\n\r\n")
+		buf.Write(p.data)
+		buf.WriteString("\r\n")
+	}
+	buf.WriteString("--" + boundary + "--\r\n")
+	return buf.Bytes(), "multipart/form-data; boundary=" + boundary, nil
 }
 
 func isNil(value reflect.Value) bool {

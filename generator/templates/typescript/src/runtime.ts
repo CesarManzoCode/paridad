@@ -118,12 +118,12 @@ export class Core {
     const headers: Record<string, string> = { Authorization: `Bearer ${this.#apiKey}`, "User-Agent": USER_AGENT };
     if (key !== undefined) headers[rules.header] = key;
     // The body is serialized once, so every attempt sends the same bytes.
-    let payload: string | FormData | undefined;
+    let payload: string | Uint8Array<ArrayBuffer> | undefined;
     if (op.body === "json") {
       payload = JSON.stringify(op.react === true ? await renderReact(body) : body);
       headers["Content-Type"] = "application/json";
     } else if (op.body === "multipart") {
-      payload = formData(body);
+      [payload, headers["Content-Type"]] = await multipart(body);
     }
     const safe = POLICY.safe_methods.includes(op.method) || (POLICY.safe_with_idempotency_key && key !== undefined);
     const pathname = new URL(url).pathname;
@@ -174,7 +174,7 @@ export class Core {
     return `${this.#baseUrl}${pathname}${encoded === "" ? "" : `?${encoded}`}`;
   }
 
-  async #attempt(method: string, url: string, headers: Record<string, string>, payload: string | FormData | undefined): Promise<Attempt> {
+  async #attempt(method: string, url: string, headers: Record<string, string>, payload: string | Uint8Array<ArrayBuffer> | undefined): Promise<Attempt> {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this.#timeoutMs);
     try {
@@ -273,14 +273,36 @@ async function renderReact(body: unknown): Promise<unknown> {
   return { ...rest, html: await render(react) };
 }
 
-function formData(body: unknown): FormData {
-  const form = new FormData();
-  for (const [name, value] of Object.entries(isRecord(body) ? body : {})) {
+// Parts sorted by field name and a boundary derived from their data, so the three
+// SDKs send the same bytes for the same body: a Blob as a file named like the
+// field, strings as they are, anything else as JSON.
+async function multipart(body: unknown): Promise<[Uint8Array<ArrayBuffer>, string]> {
+  const text = new TextEncoder();
+  const parts: [string, Uint8Array][] = [];
+  const fields = Object.entries(isRecord(body) ? body : {}).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
+  for (const [name, value] of fields) {
     if (value === undefined || value === null) continue;
-    if (value instanceof Blob) form.append(name, value, value instanceof File ? value.name : name);
-    else form.append(name, typeof value === "string" ? value : JSON.stringify(value));
+    const field = name.replaceAll('"', "%22");
+    if (value instanceof Blob) {
+      parts.push([`Content-Disposition: form-data; name="${field}"; filename="${field}"\r\nContent-Type: application/octet-stream`, new Uint8Array(await value.arrayBuffer())]);
+    } else {
+      parts.push([`Content-Disposition: form-data; name="${field}"`, text.encode(typeof value === "string" ? value : JSON.stringify(value))]);
+    }
   }
-  return form;
+  const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", concat(parts.map(([, data]) => data))));
+  const boundary = `paridad-${[...digest.subarray(0, 16)].map((byte) => byte.toString(16).padStart(2, "0")).join("")}`;
+  const chunks = parts.flatMap(([head, data]) => [text.encode(`--${boundary}\r\n${head}\r\n\r\n`), data, text.encode("\r\n")]);
+  return [concat([...chunks, text.encode(`--${boundary}--\r\n`)]), `multipart/form-data; boundary=${boundary}`];
+}
+
+function concat(chunks: Uint8Array[]): Uint8Array<ArrayBuffer> {
+  const result = new Uint8Array(chunks.reduce((total, chunk) => total + chunk.length, 0));
+  let offset = 0;
+  for (const chunk of chunks) {
+    result.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return result;
 }
 
 // The key is never shown: re_... and its last 4 characters.

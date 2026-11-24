@@ -226,7 +226,10 @@
       },
       {
         "method": "contacts.list",
-        "operation": "segments/list-contacts",
+        "operation": [
+          "contacts/list",
+          "segments/list-contacts"
+        ],
         "reason": null
       },
       {
@@ -1252,12 +1255,18 @@
       },
       {
         "method": "Contacts.list",
-        "operation": "segments/list-contacts",
+        "operation": [
+          "contacts/list",
+          "segments/list-contacts"
+        ],
         "reason": null
       },
       {
         "method": "Contacts.list_async",
-        "operation": "segments/list-contacts",
+        "operation": [
+          "contacts/list",
+          "segments/list-contacts"
+        ],
         "reason": "Variante asíncrona de Contacts.list: arma la misma petición con el cliente HTTP asíncrono; el caso corre Contacts.list."
       },
       {
@@ -2763,12 +2772,18 @@
       },
       {
         "method": "ContactsSvcImpl.List",
-        "operation": "segments/list-contacts",
+        "operation": [
+          "contacts/list",
+          "segments/list-contacts"
+        ],
         "reason": null
       },
       {
         "method": "ContactsSvcImpl.ListWithContext",
-        "operation": "segments/list-contacts",
+        "operation": [
+          "contacts/list",
+          "segments/list-contacts"
+        ],
         "reason": "Variante de ContactsSvcImpl.List (con o sin context.Context u opciones) que arma la misma ruta; el caso usa ContactsSvcImpl.List."
       },
       {

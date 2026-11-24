@@ -64,7 +64,10 @@ function rawRequest(port: number, method: string, path: string, headers: string[
 test("records headers in the received order and case, and the body in base64", async () => {
   await withServer(async (server, out) => {
     const body = Buffer.from([0x7b, 0x22, 0x61, 0x22, 0x3a, 0x31, 0x7d, 0x00, 0xff]);
+    // A raw header list gets no Host from Node, and its HTTP/1.1 server answers 400 without one.
     const headers = [
+      "Host",
+      `127.0.0.1:${server.port}`,
       "X-Zeta",
       "1",
       "authorization",

@@ -3,7 +3,8 @@
 // method that names.ts of the IR gives, against RESEND_BASE_URL with RESEND_API_KEY,
 // and prints one results.jsonl line. Run from the repository root.
 import { readFileSync } from "node:fs";
-import type { IR } from "../../generator/src/ir.ts";
+import type { IR, IROperation } from "../../generator/src/ir.ts";
+import { SCHEMAS_REF, isObject } from "../../generator/src/spec.ts";
 
 // The SDK is imported by URL so that the harness type check does not pull the
 // generated SDK under its stricter tsconfig; C4 checks the SDK with its own.
@@ -52,7 +53,7 @@ async function main(): Promise<void> {
       error = thrown;
     }
   } else {
-    if (op.requestBody !== null) args.push(input.body);
+    if (op.requestBody !== null) args.push(filesAsBlobs(ir, op, input.body));
     if (op.queryParams.length > 0) args.push(input.query);
     if (op.idempotency) args.push(input.idempotency_key === null ? undefined : { idempotencyKey: input.idempotency_key });
     const result = (await resource[name]!.apply(resource, args)) as { error: ParidadError | null };
@@ -68,6 +69,21 @@ async function main(): Promise<void> {
     exit_code: null,
   };
   process.stdout.write(`${JSON.stringify(line)}\n`);
+}
+
+// The binary fields of a body (multipart files) are typed Blob in the SDK: they go
+// as a Blob of the text the case gives, as the Python and Go drivers send its bytes.
+function filesAsBlobs(ir: IR, op: IROperation, body: unknown): unknown {
+  const ref = isObject(op.requestBody) ? op.requestBody["$ref"] : undefined;
+  const schema = typeof ref === "string" && ref.startsWith(SCHEMAS_REF) ? ir.schemas[ref.slice(SCHEMAS_REF.length)] : op.requestBody;
+  const properties = isObject(schema) && isObject(schema["properties"]) ? schema["properties"] : {};
+  if (!isObject(body)) return body;
+  return Object.fromEntries(
+    Object.entries(body).map(([name, value]) => {
+      const property = properties[name];
+      return [name, isObject(property) && property["format"] === "binary" && typeof value === "string" ? new Blob([value]) : value];
+    }),
+  );
 }
 
 main().catch((error: unknown) => {

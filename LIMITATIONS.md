@@ -14,6 +14,10 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - `webhooks/list-events` y `webhooks/list-event-attempts` aceptan `limit` y `after` pero no `before`. La regla de paginación exige los tres parámetros, así que esas dos operaciones no tienen `pagination` en la IR ni iterador en las superficies; se paginan pasando `after` a mano.
 - Los valores que la síntesis no puede sacar del esquema (`example`, `default`, `enum`, `format`) son genéricos: la cadena `example` y, en parámetros de ruta, un UUID fijo. Solo las operaciones con ejemplo en `ir/overlay.yaml` llevan valores elegidos a mano.
 
+## SDK TypeScript
+
+- Los archivos de `multipart/form-data` (`contacts/create-import`) se envían con el nombre del campo como nombre de archivo y con `Content-Type: application/octet-stream`: el `name` de un `File` y el `type` de un `Blob` no se usan.
+
 ## SDK Python
 
 - Los `TypedDict` no expresan `additionalProperties` junto a `properties`, ni restricciones como `minLength`, `maxItems` o un `anyOf` que solo exige `required`: esas claves y reglas no se comprueban en el tipo. Un `allOf` sin miembros de objeto toma el primer miembro con tipo, o `Any` si no hay ninguno.
@@ -32,7 +36,7 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 ## Oráculo
 
 - La equivalencia con los SDKs oficiales solo cubre las operaciones que cada SDK oficial expone en su versión fijada. Las demás solo se comparan entre superficies propias y contra la especificación con Prism.
-- `contacts/create-import` no se compara con ningún SDK oficial: el cuerpo `multipart/form-data` lleva una frontera aleatoria por petición, así que su forma normalizada (un sha256 de los bytes) nunca coincide entre dos clientes. Solo la cubren C5 y C8.
+- `contacts/create-import` no se compara con ningún SDK oficial: los oficiales arman el cuerpo `multipart/form-data` con una frontera aleatoria por petición, así que su forma normalizada (un sha256 de los bytes) no coincide con la de otro cliente. Solo la cubren C5 y C8.
 - Los drivers oficiales solo ejecutan los casos `<operationId>#example`; la paginación con iterador no tiene equivalente en los SDKs oficiales y no se compara contra ellos.
 - `resend-go` devuelve errores con solo un mensaje (salvo el de 429), así que en `results.jsonl` el driver oficial de Go no reporta `code` ni `statusCode` de otros errores.
 - Los SDKs oficiales no reintentan solos, así que el comportamiento ante fallos se compara entre las superficies propias y contra la política declarada, no contra los oficiales.

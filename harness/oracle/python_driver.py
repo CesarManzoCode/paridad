@@ -43,7 +43,7 @@ def main() -> None:
             error = raised
     else:
         if op["requestBody"] is not None:
-            args.append(case["body"])
+            args.append(_files_as_bytes(ir, op, case["body"]))
         if op["queryParams"]:
             args.append(case["query"])
         if op["idempotency"] and case["idempotency_key"] is not None:
@@ -62,6 +62,23 @@ def main() -> None:
         "exit_code": None,
     }
     sys.stdout.write(json.dumps(line, ensure_ascii=False, separators=(",", ":")) + "\n")
+
+
+def _files_as_bytes(ir: dict[str, object], op: dict[str, object], body: object) -> object:
+    """The binary fields of a body (multipart files) are typed bytes in the SDK: they
+    go as the UTF-8 bytes of the text the case gives, as the TS and Go drivers send."""
+    schema = op["requestBody"]
+    ref = schema.get("$ref") if isinstance(schema, dict) else None
+    if isinstance(ref, str) and ref.startswith("#/schemas/"):
+        schemas = ir["schemas"]
+        schema = schemas.get(ref[len("#/schemas/"):]) if isinstance(schemas, dict) else None
+    properties = schema.get("properties") if isinstance(schema, dict) else None
+    if not isinstance(body, dict) or not isinstance(properties, dict):
+        return body
+    return {
+        name: value.encode() if isinstance(value, str) and isinstance(properties.get(name), dict) and properties[name].get("format") == "binary" else value
+        for name, value in body.items()
+    }
 
 
 if __name__ == "__main__":

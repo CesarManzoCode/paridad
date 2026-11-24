@@ -16,7 +16,7 @@ const operations = new Set(ir.operations.map((op) => op.id));
 const officialMap = loadOfficialMap(ROOT);
 const coverage = JSON.parse(readFileSync(join(ROOT, "verify/oracle-coverage.json"), "utf8")) as Record<
   Language,
-  { methods: { method: string; operation: string | null; reason: string | null }[] }
+  { methods: { method: string; operation: string | string[] | null; reason: string | null }[] }
 >;
 const divergences = JSON.parse(readFileSync(join(ROOT, "verify/divergences.json"), "utf8")) as {
   operation: string;
@@ -61,11 +61,12 @@ test("every method of the oracle coverage has an operation of the IR or a reason
     assert.ok(rows.length > 0, `${language} lists no methods`);
     assert.equal(new Set(rows.map((row) => row.method)).size, rows.length, `${language} lists a method twice`);
     for (const row of rows) {
-      if (row.operation !== null) assert.ok(operations.has(row.operation), `${language} ${row.method}: ${row.operation} is not in the IR`);
-      else assert.ok(row.reason !== null && row.reason.trim() !== "", `${language} ${row.method} has neither operation nor reason`);
+      const listed = [row.operation ?? []].flat();
+      for (const operation of listed) assert.ok(operations.has(operation), `${language} ${row.method}: ${operation} is not in the IR`);
+      if (row.operation === null) assert.ok(row.reason !== null && row.reason.trim() !== "", `${language} ${row.method} has neither operation nor reason`);
       // A method that corresponds to an operation without a reason must have a case.
-      if (row.operation !== null && row.reason === null) {
-        assert.ok(officialMap.operations[row.operation]?.[language], `${language} ${row.method}: ${row.operation} has no entry in the map`);
+      if (row.reason === null) {
+        for (const operation of listed) assert.ok(officialMap.operations[operation]?.[language], `${language} ${row.method}: ${operation} has no entry in the map`);
       }
     }
   }
@@ -77,7 +78,7 @@ test("the Node and Python methods of the map are the ones the coverage lists for
     for (const [operation, entries] of Object.entries(officialMap.operations)) {
       const entry = entries[language];
       if (entry === undefined) continue;
-      assert.equal(listed.get(entry.method)?.operation, operation, `${language} ${entry.method}`);
+      assert.ok([listed.get(entry.method)?.operation ?? []].flat().includes(operation), `${language} ${entry.method} is not listed for ${operation}`);
     }
   }
 });

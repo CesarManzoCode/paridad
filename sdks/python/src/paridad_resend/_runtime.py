@@ -6,6 +6,7 @@
 # (resources.py).
 from __future__ import annotations
 
+import hashlib
 import http.client
 import json
 import math
@@ -14,7 +15,6 @@ import random
 import re
 import sys
 import time
-import uuid
 from collections.abc import Iterator, Mapping, Sequence
 from dataclasses import dataclass
 from typing import Literal, TypedDict
@@ -326,10 +326,11 @@ def _retry_delay(outcome: _Attempt, safe: bool, attempt: int) -> float | None:
 
 
 def _multipart(body: object) -> tuple[bytes, str]:
-    boundary = f"paridad-{uuid.uuid4().hex}"
-    parts: list[bytes] = []
+    """Parts sorted by field name and a boundary derived from their data, so the
+    three SDKs send the same bytes for the same body."""
+    parts: list[tuple[str, bytes]] = []
     fields: dict[object, object] = body if isinstance(body, dict) else {}
-    for name, value in fields.items():
+    for name, value in sorted(fields.items(), key=lambda item: str(item[0])):
         if value is None:
             continue
         field = str(name).replace('"', "%22")
@@ -339,9 +340,10 @@ def _multipart(body: object) -> tuple[bytes, str]:
         else:
             head = f'Content-Disposition: form-data; name="{field}"'
             data = (value if isinstance(value, str) else json.dumps(value, ensure_ascii=False, separators=(",", ":"))).encode()
-        parts.append(f"--{boundary}\r\n{head}\r\n\r\n".encode() + data + b"\r\n")
-    parts.append(f"--{boundary}--\r\n".encode())
-    return b"".join(parts), f"multipart/form-data; boundary={boundary}"
+        parts.append((head, data))
+    boundary = "paridad-" + hashlib.sha256(b"".join(data for _, data in parts)).hexdigest()[:32]
+    encoded = b"".join(f"--{boundary}\r\n{head}\r\n\r\n".encode() + data + b"\r\n" for head, data in parts)
+    return encoded + f"--{boundary}--\r\n".encode(), f"multipart/form-data; boundary={boundary}"
 
 
 def _text(value: object) -> str:

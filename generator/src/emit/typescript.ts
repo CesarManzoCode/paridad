@@ -77,7 +77,7 @@ function typesModule(ir: IR): string {
     if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name)) throw new Error(`typescript: schema name ${name} is not an identifier`);
     if (RESERVED_TYPE_NAMES.has(name)) throw new Error(`typescript: schema name ${name} collides with an export of the SDK`);
     const schema = ir.schemas[name]!;
-    return `${docComment(schemaDoc(schema), "")}export type ${name} = ${tsType(schema, (ref) => ref, "")};\n`;
+    return `${docComment(isObject(schema) ? schemaDoc(schema) : [], "")}export type ${name} = ${tsType(schema, (ref) => ref, "")};\n`;
   });
   return `${HEADER}// Schemas of the specification (components.schemas), as TypeScript types.\n\n${blocks.join("\n")}`;
 }
