@@ -36,6 +36,8 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 ## Oráculo
 
 - La equivalencia con los SDKs oficiales solo cubre las operaciones que cada SDK oficial expone en su versión fijada. Las demás solo se comparan entre superficies propias y contra la especificación con Prism.
+- Con las versiones fijadas, C3 compara 139 de las 144 operaciones con `resend-node`, 138 con `resend-python` y 100 con `resend-go`.
+- La igualdad con los SDKs oficiales se cumple salvo en las 204 diferencias justificadas de `verify/divergences.json`, que afectan a 102 operaciones (188 contra `resend-python`, 11 contra `resend-go` y 5 contra `resend-node`; 110 en el cuerpo y 94 en `content-type`). En ellas el SDK oficial no sigue la especificación fijada y el propio sí (por ejemplo, `resend-python` envía un cuerpo JSON en operaciones sin `requestBody`), así que quien cambie de un SDK oficial a paridad recibe peticiones distintas en esas operaciones. No se sabe cuál de las dos formas acepta el servidor real.
 - `contacts/create-import` no se compara con ningún SDK oficial: los oficiales arman el cuerpo `multipart/form-data` con una frontera aleatoria por petición, así que su forma normalizada (un sha256 de los bytes) no coincide con la de otro cliente. Solo la cubren C5 y C8.
 - Los drivers oficiales solo ejecutan los casos `<operationId>#example`; la paginación con iterador no tiene equivalente en los SDKs oficiales y no se compara contra ellos.
 - `resend-go` devuelve errores con solo un mensaje (salvo el de 429), así que en `results.jsonl` el driver oficial de Go no reporta `code` ni `statusCode` de otros errores.
