@@ -74,6 +74,19 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - La coincidencia con `oasdiff breaking --fail-on ERR` sobre el corpus no está medida todavía: la mide C18.
 - `paridad contract-check` ejecuta `compat/` del repositorio de paridad; el CLI publicado sin el repositorio responde con el error `compat_missing`.
 
+## Servicio de releases
+
+- Que dos construcciones de la misma copia den los mismos bytes (lo que C22 necesita para comparar sha256) es una hipótesis sin medir: `npm pack` con su fecha fija, hatchling con `SOURCE_DATE_EPOCH` igual a la fecha del commit de `HEAD` y el zip de Go propio con fecha fija.
+- La fecha de `v<versión>.info` es la del commit de `HEAD` al encolar; un árbol con cambios sin confirmar lleva la fecha del último commit.
+- Un SIGKILL del servicio no mata a sus procesos hijos (`npm pack`, `python -m build`, `npm publish`, `twine upload`). Tras publicar, cada paso vuelve a consultar el registro, así que una subida que siguió viva y termina antes cuenta como publicada si sus bytes coinciden. Una construcción cortada a la mitad, en cambio, puede seguir escribiendo en `jobs/<id>/building` mientras el proceso reiniciado la rehace. Los puntos de pausa de C22 están entre pasos y no prueban ese caso.
+- Un trabajo que falla después de publicar en algún registro deja esa versión ocupada. El siguiente calcula la misma versión (la del último trabajo terminado más el salto) y, si sus artefactos cambian, falla igual; no hay recuperación automática.
+- La versión se calcula desde el último trabajo `done` de la tabla `jobs` y su copia en `jobs/<id>/source`, no desde lo que hay en los registros: con una cola nueva y registros con versiones, empieza otra vez en `0.1.0`.
+- A partir de un salto a `2.0.0`, Go exige que la ruta del módulo termine en `/v2`. El servicio publica con la ruta de `sdks/go/go.mod` sin cambiarla, así que esa versión no se puede instalar con `go`.
+- Verdaccio no publica el sha256 de un paquete (solo `shasum` y `integrity`), así que el servicio descarga el tarball para compararlo. Si Verdaccio tiene un uplink que sirve `paridad-resend` desde el registro público, la consulta ve ese paquete.
+- Mientras está en pausa, el proceso queda bloqueado por completo: `/metrics` no responde.
+- Solo puede correr un `serve` sobre la misma cola: dos procesos retomarían el mismo trabajo en estado `running`.
+- El zip de módulo sigue el formato de la referencia de módulos de Go, pero todavía no se instaló con `go` desde el GOPROXY por archivos; lo mide C21.
+
 ## Medición
 
 - La conformidad MCP sobre stdio pasa por un puente que reenvía los mensajes a Streamable HTTP, porque el marco oficial solo prueba servidores por URL.
