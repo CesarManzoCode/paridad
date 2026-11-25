@@ -11,7 +11,9 @@
     "@stoplight/prism-cli": "5.16.0",
     "@types/node": "26.6.6",
     "ajv": "8.20.0",
+    "resend-cli": "2.29.0",
     "typescript": "7.0.2",
+    "vnu-jar": "26.11.20",
     "yaml": "2.9.1"
   }
 }

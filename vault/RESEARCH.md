@@ -32,7 +32,7 @@ Fuentes primarias con su revisión fijada. Todo lo marcado como "ejecutado" se i
 - **F-NODE** npm `resend@6.39.0` (repo `resend/resend-node`). Ejecutado `npm pack` y lectura de `dist/index.mjs`: URL base = opción `baseUrl` o `RESEND_BASE_URL`; `User-Agent` `resend-node:<versión>` o `RESEND_USER_AGENT`; envía `Idempotency-Key` si se pasa `idempotencyKey`; sin lógica de reintento.
 - **F-PY** PyPI `resend==2.55.0`. Ejecutado `pip download` y lectura de `resend/__init__.py` y `request.py`: `api_url = os.environ.get("RESEND_API_URL", "https://api.resend.com")`; `User-Agent: resend-python:<versión>`; lee `statusCode` y `name` del cuerpo de error; sin reintentos.
 - **F-GO** `github.com/resend/resend-go/v3@v3.17.0` (commit `f0f31c6fffa961fa6e4e179aee4366a585c85f7f`). Ejecutado `go mod download` y lectura de `resend.go` y `errors.go`: `defaultBaseURL = getEnv("RESEND_BASE_URL", "https://api.resend.com/")`, `Client.BaseURL`, `Idempotency-Key` solo en POST, `RetryAfter` expuesto en el error de límite, sin reintentos; 127 métodos de servicio sin contar las variantes `WithContext`.
-- **F-CLI** npm `resend-cli@2.29.0` (repo `resend/resend-cli`, binario `resend`). Ejecutado `npm pack` y lectura de `dist/cli.cjs`: usa `RESEND_BASE_URL` (con `https://api.resend.com` por defecto) y las variables `RESEND_API_KEY`, `RESEND_PROFILE`, `RESEND_TELEMETRY_DISABLED`, `RESEND_NO_UPDATE_NOTIFIER`, `RESEND_USER_AGENT`, `RESEND_CREDENTIAL_STORE`.
+- **F-CLI** npm `resend-cli@2.29.0` (repo `resend/resend-cli`, binario `resend`). Ejecutado `npm pack` y lectura de `dist/cli.cjs`: usa `RESEND_BASE_URL` (con `https://api.resend.com` por defecto) y las variables `RESEND_API_KEY`, `RESEND_PROFILE`, `RESEND_TELEMETRY_DISABLED`, `RESEND_NO_UPDATE_NOTIFIER`, `RESEND_USER_AGENT`, `RESEND_CREDENTIAL_STORE`. Instalado en la raíz con pnpm 11.25.0 (24 nov 2026); `resend <grupo> <comando> --help` de la versión instalada dice que, con `--json` o fuera de TTY, el éxito va como JSON a stdout y los errores como `{"error":{"message","code"}}` a **stderr** con salida 1, que `delete` exige `--yes` fuera de TTY y que los identificadores van como argumento posicional; `resend commands` imprime el árbol de comandos en JSON.
 
 ## MCP
 
@@ -48,7 +48,7 @@ Fuentes primarias con su revisión fijada. Todo lo marcado como "ejecutado" se i
 - **F-APIEX** npm `@microsoft/api-extractor@7.60.1`. Ejecutado `api-extractor --help`: comandos `init` y `run`.
 - **F-GRIFFE** PyPI `griffe==2.4.1`. Ejecutado `griffe check --help`: `-a/--against REF`, `-b/--base-ref`, `-s/--search`, formatos `oneline|verbose|markdown|github|azdo`.
 - **F-SCC** `github.com/boyter/scc/v3@v3.7.0` (commit `74d4df231aad307f24149456afb1bd420e0f71be`). Ejecutado: `--format json`, `-M/--not-match`, `--exclude-dir`.
-- **F-VNU** npm `vnu-jar@26.11.20` (Nu Html Checker). Ejecutado `vnu --version`; el jar queda en `node_modules/vnu-jar/build/dist/vnu.jar`.
+- **F-VNU** npm `vnu-jar@26.11.20` (Nu Html Checker). Ejecutado `vnu --version`; el jar queda en `node_modules/vnu-jar/build/dist/vnu.jar`. Instalado en la raíz con pnpm 11.25.0 (24 nov 2026): el jar viene en el paquete; su script `postinstall` (`vnu-java-downloader.js`, descarga un Java) queda desactivado con `vnu-jar: false` en `allowBuilds`, porque se usa el Java 17 del sistema.
 - **F-PROM** promtool 3.16.0 del sistema (`promtool check metrics` lee de stdin).
 
 ## Skill
