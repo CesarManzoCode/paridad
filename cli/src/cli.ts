@@ -255,7 +255,8 @@ function contractCheck(args: string[], io: IO, json: boolean): number {
     return fail(io, json, new ParidadError("compat_missing", `contract-check runs compat/ of the paridad repository, and ${COMPAT_MAIN} does not exist.`, null));
   }
   const forwarded = [...args.filter((arg) => arg !== "--json"), ...(json ? ["--json"] : [])];
-  const child = spawnSync(process.execPath, [COMPAT_MAIN, ...forwarded], { env: io.env, encoding: "utf8" });
+  // The report of a pair with many changes can pass the 1 MiB default of spawnSync.
+  const child = spawnSync(process.execPath, [COMPAT_MAIN, ...forwarded], { env: io.env, encoding: "utf8", maxBuffer: 256 * 1024 * 1024 });
   io.stdout(child.stdout ?? "");
   io.stderr(child.stderr ?? "");
   return child.status ?? 1;

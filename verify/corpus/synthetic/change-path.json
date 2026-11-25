@@ -1,0 +1,7 @@
+[
+  {
+    "op": "move",
+    "from": "/paths/~1domains~1{domain_id}",
+    "path": "/paths/~1domain~1{domain_id}"
+  }
+]

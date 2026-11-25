@@ -1,0 +1,15 @@
+[
+  {
+    "op": "add",
+    "path": "/paths/~1domains/get/parameters/-",
+    "value": {
+      "in": "header",
+      "name": "X-Request-Id",
+      "required": false,
+      "schema": {
+        "type": "string"
+      },
+      "description": "An identifier of the request."
+    }
+  }
+]

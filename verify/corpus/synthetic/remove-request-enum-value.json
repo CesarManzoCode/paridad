@@ -1,0 +1,11 @@
+[
+  {
+    "op": "test",
+    "path": "/components/schemas/CreateDomainRequest/properties/tls/enum/1",
+    "value": "enforced"
+  },
+  {
+    "op": "remove",
+    "path": "/components/schemas/CreateDomainRequest/properties/tls/enum/1"
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "op": "add",
+    "path": "/components/schemas/SendEmailResponse/properties/created_at",
+    "value": {
+      "type": "string",
+      "description": "The date and time the email was created."
+    }
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "op": "remove",
+    "path": "/paths/~1emails~1{email_id}/get/responses/200"
+  },
+  {
+    "op": "add",
+    "path": "/paths/~1emails~1{email_id}/get/responses/default",
+    "value": {
+      "description": "Unexpected error"
+    }
+  }
+]

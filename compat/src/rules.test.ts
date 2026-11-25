@@ -141,10 +141,10 @@ const CASES: Case[] = [
       doc.paths["/emails/{id}"] = item;
       delete doc.paths["/emails/{email_id}"];
     },
-    rule: null,
-    classification: "compatible",
-    operations: [],
-    bump: "patch",
+    rule: "operation-removed",
+    classification: "breaking",
+    operations: [GET],
+    bump: "major",
   },
   {
     name: "add a required request property",

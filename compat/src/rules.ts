@@ -5,8 +5,10 @@
 // `oasdiff checks changelog` and of checker/*.go in the module pinned by tools/go.mod.
 //
 // What it follows from oasdiff:
-// - Endpoints match by method and path with path parameter names ignored, and path
-//   parameters match by position (diff/path_params_map.go).
+// - Endpoints match by method and path with path parameter names included, as
+//   `oasdiff breaking --include-path-params`: by default oasdiff ignores the names and
+//   rejects 19 pairs of the history corpus as "duplicate endpoint" (verify/corpus/), and
+//   in the generated SDKs a path parameter name is part of the public API.
 // - Requests are contravariant and responses covariant: what narrows a request or
 //   widens a response breaks (checker/check_types.go, bound_rules.go).
 // - Without --flatten-allof a change under an allOf branch, or at a schema that has
@@ -312,19 +314,14 @@ interface Side {
   paths: Set<string>;
 }
 
-// `GET /a/{}` for `GET /a/{id}`: oasdiff ignores path parameter names when matching.
 function endpointKey(method: string, path: string): string {
-  return `${method} ${templatePath(path)}`;
-}
-
-function templatePath(path: string): string {
-  return path.replace(/\{[^}]*\}/g, "{}");
+  return `${method} ${path}`;
 }
 
 function side(spec: Spec): Side {
   const map = new Map<string, SpecEndpoint>();
   for (const endpoint of endpoints(spec)) map.set(endpointKey(endpoint.method, endpoint.path), endpoint);
-  return { spec, schemas: componentSchemas(spec), endpoints: map, paths: new Set([...map.values()].map((endpoint) => templatePath(endpoint.path))) };
+  return { spec, schemas: componentSchemas(spec), endpoints: map, paths: new Set([...map.values()].map((endpoint) => endpoint.path)) };
 }
 
 export function compareSpecs(baseSpec: Spec, revisionSpec: Spec): Change[] {
@@ -343,7 +340,7 @@ export function compareSpecs(baseSpec: Spec, revisionSpec: Spec): Change[] {
     const after = revision.endpoints.get(key);
     const label = `${before.method} ${before.path}`;
     if (after === undefined) {
-      removedOperation(emitter(label, before.operationId), before, !revision.paths.has(templatePath(before.path)));
+      removedOperation(emitter(label, before.operationId), before, !revision.paths.has(before.path));
       continue;
     }
     compareOperation(emitter(label, after.operationId ?? before.operationId), base, revision, before, after);
@@ -490,16 +487,13 @@ function compareSecuritySchemes(emit: Emit, base: Spec, revision: Spec): void {
 // --- Parameters -------------------------------------------------------------------
 
 function compareParameters(emit: Emit, base: Side, revision: Side, before: SpecEndpoint, after: SpecEndpoint): void {
-  // Path parameters match by position in the template (path_params_map.go); header
-  // names are case-insensitive (the default --case-insensitive-headers).
-  const templateNames = (path: string): string[] => [...path.matchAll(/\{([^}]*)\}/g)].map((match) => match[1]!);
-  const renamed = new Map(templateNames(before.path).map((name, index) => [name, templateNames(after.path)[index]]));
+  // Both paths are equal, so path parameters match by name; header names are
+  // case-insensitive (the default --case-insensitive-headers).
   const key = (location: string, name: string): string => `${location}:${location === "header" ? name.toLowerCase() : name}`;
   const revised = new Map(after.parameters.map((parameter) => [key(parameter.in, parameter.name), parameter]));
   const matched = new Set<string>();
   for (const parameter of before.parameters) {
-    const name = parameter.in === "path" ? (renamed.get(parameter.name) ?? parameter.name) : parameter.name;
-    const next = revised.get(key(parameter.in, name));
+    const next = revised.get(key(parameter.in, parameter.name));
     const where = `${parameter.in} parameter ${parameter.name}`;
     if (next === undefined) {
       emit("parameter-removed", `${where} removed`);

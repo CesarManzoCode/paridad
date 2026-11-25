@@ -1,0 +1,11 @@
+[
+  {
+    "op": "test",
+    "path": "/components/schemas/CreateDomainResponse/properties/status/enum/5",
+    "value": "partially_failed"
+  },
+  {
+    "op": "remove",
+    "path": "/components/schemas/CreateDomainResponse/properties/status/enum/5"
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "op": "test",
+    "path": "/components/schemas/SendEmailRequest/required/2",
+    "value": "subject"
+  },
+  {
+    "op": "remove",
+    "path": "/components/schemas/SendEmailRequest/required/2"
+  }
+]

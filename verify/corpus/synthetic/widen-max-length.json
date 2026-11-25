@@ -1,0 +1,12 @@
+[
+  {
+    "op": "test",
+    "path": "/paths/~1emails/post/parameters/0/schema/maxLength",
+    "value": 256
+  },
+  {
+    "op": "replace",
+    "path": "/paths/~1emails/post/parameters/0/schema/maxLength",
+    "value": 512
+  }
+]

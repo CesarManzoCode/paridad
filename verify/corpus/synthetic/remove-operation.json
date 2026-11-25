@@ -1,0 +1,6 @@
+[
+  {
+    "op": "remove",
+    "path": "/paths/~1domains~1{domain_id}/delete"
+  }
+]

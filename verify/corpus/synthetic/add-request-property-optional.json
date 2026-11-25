@@ -1,0 +1,10 @@
+[
+  {
+    "op": "add",
+    "path": "/components/schemas/CreateDomainRequest/properties/note",
+    "value": {
+      "type": "string",
+      "description": "A note about the domain."
+    }
+  }
+]

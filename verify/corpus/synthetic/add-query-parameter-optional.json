@@ -1,0 +1,15 @@
+[
+  {
+    "op": "add",
+    "path": "/paths/~1domains/get/parameters/-",
+    "value": {
+      "in": "query",
+      "name": "status",
+      "required": false,
+      "schema": {
+        "type": "string"
+      },
+      "description": "Only domains with this status."
+    }
+  }
+]

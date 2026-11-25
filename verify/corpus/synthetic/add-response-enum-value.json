@@ -1,0 +1,7 @@
+[
+  {
+    "op": "add",
+    "path": "/components/schemas/CreateDomainResponse/properties/status/enum/-",
+    "value": "archived"
+  }
+]

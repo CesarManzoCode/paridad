@@ -1,0 +1,13 @@
+[
+  {
+    "op": "test",
+    "path": "/paths/~1domains/get/parameters/2",
+    "value": {
+      "$ref": "#/components/parameters/PaginationBefore"
+    }
+  },
+  {
+    "op": "remove",
+    "path": "/paths/~1domains/get/parameters/2"
+  }
+]

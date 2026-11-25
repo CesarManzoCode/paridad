@@ -1,0 +1,7 @@
+[
+  {
+    "op": "add",
+    "path": "/components/schemas/CreateDomainRequest/properties/name/maxLength",
+    "value": 253
+  }
+]

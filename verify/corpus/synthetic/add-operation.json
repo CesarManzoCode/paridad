@@ -1,0 +1,38 @@
+[
+  {
+    "op": "add",
+    "path": "/paths/~1emails~1{email_id}~1archive",
+    "value": {
+      "post": {
+        "operationId": "emails/archive",
+        "tags": [
+          "Emails"
+        ],
+        "summary": "Archive an email",
+        "parameters": [
+          {
+            "name": "email_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the email."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendEmailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "op": "test",
+    "path": "/paths/~1emails/post/parameters/0/name",
+    "value": "Idempotency-Key"
+  },
+  {
+    "op": "remove",
+    "path": "/paths/~1emails/post/parameters/0"
+  }
+]

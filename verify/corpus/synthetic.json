@@ -1,0 +1,136 @@
+{
+  "spec": "spec/resend.yaml",
+  "sha256": "084209d12f51f42f1fe71946fee4bce08c0eaf0b07a214c5e87560495d58ef7b",
+  "patches": [
+    {
+      "id": "add-operation",
+      "mutation": "add an operation",
+      "file": "synthetic/add-operation.json"
+    },
+    {
+      "id": "remove-operation",
+      "mutation": "remove an operation",
+      "file": "synthetic/remove-operation.json"
+    },
+    {
+      "id": "add-request-property-optional",
+      "mutation": "add an optional request property",
+      "file": "synthetic/add-request-property-optional.json"
+    },
+    {
+      "id": "add-request-property-required",
+      "mutation": "add a required request property",
+      "file": "synthetic/add-request-property-required.json"
+    },
+    {
+      "id": "remove-request-property",
+      "mutation": "remove a request property",
+      "file": "synthetic/remove-request-property.json"
+    },
+    {
+      "id": "request-property-becomes-required",
+      "mutation": "make a request property required",
+      "file": "synthetic/request-property-becomes-required.json"
+    },
+    {
+      "id": "request-property-becomes-optional",
+      "mutation": "make a request property optional",
+      "file": "synthetic/request-property-becomes-optional.json"
+    },
+    {
+      "id": "change-request-property-type",
+      "mutation": "change the type of a request property",
+      "file": "synthetic/change-request-property-type.json"
+    },
+    {
+      "id": "change-response-property-type",
+      "mutation": "change the type of a response property",
+      "file": "synthetic/change-response-property-type.json"
+    },
+    {
+      "id": "add-response-property",
+      "mutation": "add a response property",
+      "file": "synthetic/add-response-property.json"
+    },
+    {
+      "id": "remove-response-property",
+      "mutation": "remove a response property",
+      "file": "synthetic/remove-response-property.json"
+    },
+    {
+      "id": "add-request-enum-value",
+      "mutation": "add a request enum value",
+      "file": "synthetic/add-request-enum-value.json"
+    },
+    {
+      "id": "remove-request-enum-value",
+      "mutation": "remove a request enum value",
+      "file": "synthetic/remove-request-enum-value.json"
+    },
+    {
+      "id": "add-response-enum-value",
+      "mutation": "add a response enum value",
+      "file": "synthetic/add-response-enum-value.json"
+    },
+    {
+      "id": "remove-response-enum-value",
+      "mutation": "remove a response enum value",
+      "file": "synthetic/remove-response-enum-value.json"
+    },
+    {
+      "id": "add-query-parameter-optional",
+      "mutation": "add an optional query parameter",
+      "file": "synthetic/add-query-parameter-optional.json"
+    },
+    {
+      "id": "add-query-parameter-required",
+      "mutation": "add a required query parameter",
+      "file": "synthetic/add-query-parameter-required.json"
+    },
+    {
+      "id": "remove-query-parameter",
+      "mutation": "remove a query parameter",
+      "file": "synthetic/remove-query-parameter.json"
+    },
+    {
+      "id": "change-query-parameter-type",
+      "mutation": "change the type of a shared query parameter",
+      "file": "synthetic/change-query-parameter-type.json"
+    },
+    {
+      "id": "change-path",
+      "mutation": "change a path",
+      "file": "synthetic/change-path.json"
+    },
+    {
+      "id": "remove-success-response",
+      "mutation": "remove the success response",
+      "file": "synthetic/remove-success-response.json"
+    },
+    {
+      "id": "add-header-optional",
+      "mutation": "add an optional header parameter",
+      "file": "synthetic/add-header-optional.json"
+    },
+    {
+      "id": "remove-idempotency-key-header",
+      "mutation": "remove the Idempotency-Key header",
+      "file": "synthetic/remove-idempotency-key-header.json"
+    },
+    {
+      "id": "reduce-max-length",
+      "mutation": "reduce maxLength",
+      "file": "synthetic/reduce-max-length.json"
+    },
+    {
+      "id": "widen-max-length",
+      "mutation": "widen maxLength",
+      "file": "synthetic/widen-max-length.json"
+    },
+    {
+      "id": "add-request-max-length",
+      "mutation": "add maxLength to a request property",
+      "file": "synthetic/add-request-max-length.json"
+    }
+  ]
+}
