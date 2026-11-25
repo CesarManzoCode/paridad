@@ -3,6 +3,9 @@ import { Core, type ClientOptions } from "./runtime.ts";
 import { ApiKeys, Audiences, Automations, Broadcasts, ContactProperties, Contacts, Domains, Emails, Events, Inboxes, Logs, Oauth, Segments, Suppressions, Templates, Topics, Usage, Webhooks } from "./resources.ts";
 
 export { ParidadError, type ClientOptions, type IdempotentRequestOptions, type Result } from "./runtime.ts";
+// The resource classes are exported as types so that their methods are part of the
+// API report of api-extractor (C19); only Resend builds them.
+export type { ApiKeys, Audiences, Automations, Broadcasts, ContactProperties, Contacts, Domains, Emails, Events, Inboxes, Logs, Oauth, Segments, Suppressions, Templates, Topics, Usage, Webhooks };
 export type * from "./types.ts";
 
 // new Resend(key?, options?): the key defaults to RESEND_API_KEY (vault/CONTRACT.md §5.1).

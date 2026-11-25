@@ -36,6 +36,9 @@ export function emitTypescript(ir: IR, outDir: string): void {
   writeFileSync(join(root, "src/policy.ts"), policyModule(ir));
   writeFileSync(join(root, "src/types.ts"), typesModule(ir));
   const resources = groupResources(ir.operations);
+  for (const resource of resources) {
+    if (resource.className in ir.schemas) throw new Error(`typescript: schema name ${resource.className} collides with the class of resource ${resource.property}`);
+  }
   writeFileSync(join(root, "src/resources.ts"), resourcesModule(resources));
   writeFileSync(join(root, "src/index.ts"), indexModule(resources));
   writeFileSync(join(root, "test/operations.test.ts"), operationsTest(resources));
@@ -345,6 +348,9 @@ function indexModule(resources: Resource[]): string {
 import { ${resources.map((resource) => resource.className).join(", ")} } from "./resources.ts";
 
 export { ParidadError, type ClientOptions, type IdempotentRequestOptions, type Result } from "./runtime.ts";
+// The resource classes are exported as types so that their methods are part of the
+// API report of api-extractor (C19); only Resend builds them.
+export type { ${resources.map((resource) => resource.className).join(", ")} };
 export type * from "./types.ts";
 
 // new Resend(key?, options?): the key defaults to RESEND_API_KEY (vault/CONTRACT.md §5.1).

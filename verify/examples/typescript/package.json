@@ -1,0 +1,12 @@
+{
+  "name": "paridad-example-typescript",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit -p .",
+    "test": "node --test test/notify.test.ts"
+  },
+  "dependencies": {
+    "paridad-resend": "0.0.0-dev"
+  }
+}

@@ -1,7 +1,7 @@
 # Interfaz de verificación de paridad (sección 8 de vault/CONTRACT.md).
 SHELL := /bin/bash
 
-TS_TESTS = $(shell find . \( -name node_modules -o -name .venv -o -name .git -o -name .paridad -o -name vault -o -path ./generator/templates \) -prune -o -name '*.test.ts' -print | sort)
+TS_TESTS = $(shell find . \( -name node_modules -o -name .venv -o -name .git -o -name .paridad -o -name vault -o -path ./generator/templates -o -path ./verify/examples \) -prune -o -name '*.test.ts' -print | sort)
 
 .PHONY: bootstrap generate check verify battery
 

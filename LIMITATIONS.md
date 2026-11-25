@@ -83,6 +83,9 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - La memoria pico se mide con `memory.peak` del cgroup, que incluye caché de páginas: es una cota superior de la memoria residente, no la memoria residente exacta.
 - La tolerancia temporal de los reintentos ante 429 es de −25 ms a +1000 ms sobre `retry-after`, medida en el proxy de fallos.
 - Para TypeScript no existe un clasificador estándar de cambios de API; el salto semver se contrasta con la diferencia entre reportes de api-extractor, que es una aproximación.
+- C19 y C20 no pueden usar 5 de los 37 pares históricos con `operationId` completo (de `h01` a `h05`): su única operación tiene `operationId` `sendEmail`, que no tiene la forma `recurso/accion`, y el generador rechaza esa spec. Quedan 32 pares históricos, y C19 exige al menos 30.
+- En C19 el reporte de api-extractor se compara por líneas, contadas como multiconjunto: si una línea solo cambia de lugar, no cuenta como cambio.
+- `griffe check` no informa agregados, así que en Python solo puede exigir un salto mayor o ninguno.
 - Solo se verifica en x86-64 con Arch Linux.
 
 ## Lo que no es mecánico
