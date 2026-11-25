@@ -14,6 +14,7 @@
     "ajv": "8.20.0",
     "resend-cli": "2.29.0",
     "typescript": "7.0.2",
+    "verdaccio": "7.1.2",
     "vnu-jar": "26.11.20",
     "yaml": "2.9.1"
   }

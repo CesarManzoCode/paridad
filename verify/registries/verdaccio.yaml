@@ -1,0 +1,25 @@
+# Verdaccio 7.1.2 of C21, C22 and C23 (vault/CONTRACT.md §10). verify/registries.ts
+# copies this file to <registries>/verdaccio/config.yaml, so the relative paths below
+# land inside that registries directory, and starts it with --listen 127.0.0.1:<port>.
+# Without uplinks: a package that is not in the storage is a 404, never a fetch from
+# the public registry.
+listen: 127.0.0.1:4873
+storage: ./storage
+auth:
+  htpasswd:
+    file: ./htpasswd
+    max_users: 1000
+packages:
+  '**':
+    access: $all
+    publish: $all
+    unpublish: $all
+web:
+  enable: false
+middlewares:
+  audit:
+    enabled: false
+log:
+  type: stdout
+  format: json
+  level: warn

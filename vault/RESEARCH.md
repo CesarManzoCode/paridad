@@ -65,7 +65,8 @@ Fuentes primarias con su revisión fijada. Todo lo marcado como "ejecutado" se i
 ## Registros y publicación
 
 - **F-VERD** npm `verdaccio@7.1.2` (etiqueta `latest`). Observado: `verdaccio --version` imprime `v9.0.0-next-9.46` aunque el paquete instalado es 7.1.2.
-- **F-PYPISRV** PyPI `pypiserver==2.4.3` (`pypi-server run -p PORT -a AUTH -P PASSWORDS`), `twine==7.0.0`, `build==1.6.1`, `hatchling==1.33.0`.
+- **F-PYPISRV** PyPI `pypiserver==2.4.3` (`pypi-server run -p PORT -a AUTH -P PASSWORDS`), `twine==7.0.0`, `build==1.6.1`, `hatchling==1.33.0`. El 25 nov 2026, `pypi-server run --help` de la versión instalada en `.venv` documenta `-i/-H/--interface/--host HOST` (por defecto `0.0.0.0`), `-p/--port`, `-a . -P .` para no autenticar ninguna acción, `--disable-fallback` (sin redirección a PyPI ante un paquete ausente), `--log-stream stdout|stderr|none` y `--health-endpoint` (ruta de salud que responde 200; `HEALTH_ENDPOINT = "/health"` por defecto en `pypiserver/config.py`).
+- **F-VERDCFG** Leído el 25 nov 2026 en el código instalado de `verdaccio@7.1.2` (que usa `@verdaccio/cli`, `@verdaccio/config` y `@verdaccio/node-api` 9.0.0-next-9.46): `--listen`/`--port` de la línea de comandos tiene prioridad sobre `listen` del archivo (`getListenAddress(port ?? config.listen)`), el archivo `htpasswd` se resuelve relativo al directorio del archivo de configuración, `VERDACCIO_STORAGE_PATH` reemplaza `storage`, y la configuración por defecto trae el uplink `npmjs` y el middleware `audit` habilitado, que paridad no usa.
 - **GOPROXY por archivos**: el protocolo de módulos de Go (`list`, `.info`, `.mod`, `.zip` bajo `@v/`, rutas con mayúsculas escapadas como `!c`). Se verificará al construir el servicio en K3 con `GOPROXY=file://…`.
 
 ## Dependencias de desarrollo fijadas
