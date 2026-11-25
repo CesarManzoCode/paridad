@@ -39,6 +39,7 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - El argumento `idempotency_key` no lleva `maxLength` en su `inputSchema`, para que una clave fuera de 1 a 256 caracteres llegue al SDK y dé `invalid_idempotency_key` como en las demás superficies; así ese esquema no rechaza la clave de 257 caracteres que el esquema de la cabecera en la spec sí rechaza.
 - `format` se trata como anotación al validar los argumentos (vocabulario por defecto de 2020-12): un `uuid` o `email` mal formado pasa la validación del servidor y lo rechaza la API.
 - Por el puente stdio, las notificaciones que el servidor escribe mientras atiende una petición llegan al cliente HTTP solo por el flujo SSE independiente (`GET /mcp`), porque en stdio no hay forma de saber a qué petición pertenecen.
+- C13 pasa con 22 escenarios del marco de conformidad listados en `verify/mcp-conformance-baseline.yml` (contenido de texto, imagen, audio y recursos embebidos en resultados de herramientas, logging y progreso durante una herramienta, sampling, elicitation, lectura y suscripción de recursos, y `prompts/get`). El marco los prueba con sus propias herramientas, prompts y recursos `test_*`, que el servidor no tiene, así que esos comportamientos del protocolo no se comprueban en paridad-mcp.
 
 ## Oráculo
 
@@ -50,6 +51,8 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - `resend-go` devuelve errores con solo un mensaje (salvo el de 429), así que en `results.jsonl` el driver oficial de Go no reporta `code` ni `statusCode` de otros errores.
 - Los SDKs oficiales no reintentan solos, así que el comportamiento ante fallos se compara entre las superficies propias y contra la política declarada, no contra los oficiales.
 - Para el CLI oficial se usa una variable de entorno de URL base presente en su código pero no documentada. Si una versión futura la quita, la comparación con el CLI oficial deja de ser posible.
+- C16 compara con `resend-cli` 2.29.0 solo los 27 pares de `verify/official-cli-map.json` (19 éxitos y 8 errores), y en ellos solo el código de salida y las claves de primer nivel, no los valores. Los demás comandos del CLI propio solo se comprueban contra el contrato documentado (JSON válido o `error.message`, salida 0 o 1).
+- `resend-cli` 2.29.0 escribe sus errores JSON en stderr, como dice su ayuda, y deja stdout vacío. `paridad` los escribe en stdout (sección 5.2 del contrato). C16 compara el stderr oficial con el stdout propio, así que un script que lea los errores de un flujo concreto no funciona igual con los dos CLIs.
 
 ## Arnés
 
@@ -64,6 +67,8 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 
 - La conformidad MCP sobre stdio pasa por un puente que reenvía los mensajes a Streamable HTTP, porque el marco oficial solo prueba servidores por URL.
 - Los fallos de red a nivel de kernel (`tc netem`) necesitan sudo; sin él, ese criterio se omite (código 77) y solo quedan los fallos en espacio de usuario.
+- En el cierre de K2, C12 salió omitido (77) porque `sudo -n true` falla en la máquina de desarrollo: el comportamiento bajo pérdida, latencia y reordenamiento de `tc netem` no se midió.
+- `make verify` devuelve el código del corredor (77 en un criterio omitido) solo si GNU Make tiene Guile. Sin Guile, make convierte el 77 en 2 y el criterio cuenta como fallo. Solo se comprobó en la máquina de desarrollo (GNU Make 4.4.1 con Guile), no en la CI.
 - La memoria pico se mide con `memory.peak` del cgroup, que incluye caché de páginas: es una cota superior de la memoria residente, no la memoria residente exacta.
 - La tolerancia temporal de los reintentos ante 429 es de −25 ms a +1000 ms sobre `retry-after`, medida en el proxy de fallos.
 - Para TypeScript no existe un clasificador estándar de cambios de API; el salto semver se contrasta con la diferencia entre reportes de api-extractor, que es una aproximación.
