@@ -1,11 +1,11 @@
 // The output contract of the CLI (vault/CONTRACT.md §5, §6, D27), with the binary
 // launched as a process against an in-process server and stdout written to a file:
 // JSON and exit 0 on success, the error object and exit 1 on error, the masked key
-// of `config show`, the same idempotency error as the SDK, and the HTML of `render`
-// for --react.
+// of `config show`, the same idempotency error as the SDK, the HTML of `render` for
+// --react, and `contract-check` run through compat/.
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { closeSync, existsSync, mkdtempSync, openSync, readFileSync, rmSync } from "node:fs";
+import { closeSync, mkdtempSync, openSync, readFileSync, rmSync } from "node:fs";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
@@ -141,10 +141,20 @@ test("--react sends as html exactly what render produces for the template and pr
   assert.deepEqual(JSON.parse(received[0]!.body), { ...SEND, html: expected });
 });
 
-const COMPAT = join(import.meta.dirname, "../../compat/src/main.ts");
+const SPEC = join(import.meta.dirname, "../../spec/resend.yaml");
 
-test("contract-check exists and answers not_implemented until compat/ exists", { skip: existsSync(COMPAT) }, async () => {
-  const { code, stdout } = await cli(["contract-check", "a.yaml", "b.yaml"]);
-  assert.equal(code, 1);
-  assert.equal(JSON.parse(stdout).error.code, "not_implemented");
+test("contract-check delegates to compat/: JSON output, exit 0 for the pinned spec against itself", async () => {
+  const { code, stdout } = await cli(["contract-check", SPEC, SPEC]);
+  assert.equal(code, 0, stdout);
+  const result = JSON.parse(stdout);
+  assert.equal(result.classification, "compatible");
+  assert.equal(result.bump, "patch");
+  assert.deepEqual(result.operations, []);
+  assert.deepEqual(result.changes, []);
+});
+
+test("contract-check exits 2 with the error object when a file does not load", async () => {
+  const { code, stdout } = await cli(["contract-check", SPEC, join(dir, "missing.yaml")]);
+  assert.equal(code, 2);
+  assert.equal(JSON.parse(stdout).error.code, "invalid_spec");
 });

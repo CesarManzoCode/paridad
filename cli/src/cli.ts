@@ -14,7 +14,7 @@ import { COMMANDS, USER_AGENT } from "./commands.ts";
 
 const DEFAULT_BASE_URL = "https://api.resend.com";
 const DEFAULT_TIMEOUT_MS = 30000;
-// compat/ (K3) implements `paridad contract-check`; the CLI only delegates to it.
+// compat/ implements `paridad contract-check`; the CLI only delegates to it.
 const COMPAT_MAIN = resolve(import.meta.dirname, "../../compat/src/main.ts");
 
 // How the text of a flag becomes a value: `string` as is, `json` parsed as JSON,
@@ -247,12 +247,15 @@ function configShow(args: string[], io: IO, json: boolean): number {
 }
 
 // `paridad contract-check <base> <revision> [--json]` runs compat/, which prints its
-// own output and exit code. Until compat/ exists it is an error.
+// own output and exit code: 0 compatible, 1 breaking, 2 on a usage or loading error.
+// Its output is JSON whenever the CLI's is. compat/ lives in the paridad repository,
+// not in the published CLI package.
 function contractCheck(args: string[], io: IO, json: boolean): number {
   if (!existsSync(COMPAT_MAIN)) {
-    return fail(io, json, new ParidadError("not_implemented", "contract-check is not implemented yet: compat/ does not exist.", null));
+    return fail(io, json, new ParidadError("compat_missing", `contract-check runs compat/ of the paridad repository, and ${COMPAT_MAIN} does not exist.`, null));
   }
-  const child = spawnSync(process.execPath, [COMPAT_MAIN, ...args], { env: io.env, encoding: "utf8" });
+  const forwarded = [...args.filter((arg) => arg !== "--json"), ...(json ? ["--json"] : [])];
+  const child = spawnSync(process.execPath, [COMPAT_MAIN, ...forwarded], { env: io.env, encoding: "utf8" });
   io.stdout(child.stdout ?? "");
   io.stderr(child.stderr ?? "");
   return child.status ?? 1;

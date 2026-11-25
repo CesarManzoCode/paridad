@@ -4,6 +4,13 @@ Formato basado en Keep a Changelog. Las versiones siguen semver una vez que exis
 
 ## [Sin publicar]
 
+### K3 — Compatibilidad, releases y operación
+
+#### Agregado
+- Herramienta de compatibilidad de contrato `compat/` (`node compat/src/main.ts <base.yaml> <revision.yaml> [--json]`, también `paridad contract-check`). Es una implementación propia, no envuelve `oasdiff`, y reutiliza el cargador del generador para las dos versiones. Empareja operaciones por método y ruta (sin contar los nombres de los parámetros de ruta) y clasifica cada cambio con el nivel ERR, WARN o INFO de la verificación de `oasdiff` v1.39.0 que reproduce; cada regla propia nombra esas verificaciones. Imprime las operaciones afectadas (`MÉTODO /ruta` con su `operationId`), sus superficies (`ts`, `python`, `go`, `cli`, `mcp`, `docs`, `skill`) y el salto semver del contrato. Sale con 0 si la revisión es compatible, con 1 si rompe y con 2 ante un error de uso o de carga.
+- El cargador de la spec expone `endpoints()`, que admite operaciones sin `operationId` (versiones viejas del corpus) y conserva el objeto crudo de cada operación.
+- La skill enseña `paridad contract-check`.
+
 ### K2 — Comportamiento común, CLI, MCP, skill y documentación
 
 #### Agregado

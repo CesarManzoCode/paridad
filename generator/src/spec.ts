@@ -41,6 +41,14 @@ export interface SpecOperation {
   responses: { status: number; schema: JsonSchema | null }[];
 }
 
+// An operation with or without operationId (older versions of the spec in the
+// compatibility corpus lack them), and its raw object for what SpecOperation
+// leaves out: deprecation, security, every media type and response headers.
+export interface SpecEndpoint extends Omit<SpecOperation, "operationId"> {
+  operationId: string | null;
+  source: JsonObject;
+}
+
 const METHODS = ["get", "put", "post", "delete", "options", "head", "patch", "trace"];
 const COMPONENT_SCHEMAS = "#/components/schemas/";
 // Converted schemas point at the `schemas` map of the document they are written into (ir.json).
@@ -119,7 +127,7 @@ export function resolvePointer(root: unknown, ref: string): unknown {
 }
 
 // Follows $ref chains of non-schema objects (path items, parameters, bodies, responses).
-function deref(spec: Spec, value: unknown, what: string): JsonObject {
+export function deref(spec: Spec, value: unknown, what: string): JsonObject {
   let current = value;
   const seen = new Set<string>();
   while (isObject(current) && typeof current["$ref"] === "string") {
@@ -199,9 +207,16 @@ export function componentSchemas(spec: Spec): Record<string, JsonSchema> {
 }
 
 export function operations(spec: Spec): SpecOperation[] {
+  return endpoints(spec).map(({ operationId, source: _source, ...op }) => {
+    if (operationId === null) throw new Error(`spec: ${op.method} ${op.path} has no operationId`);
+    return { operationId, ...op };
+  });
+}
+
+export function endpoints(spec: Spec): SpecEndpoint[] {
   const paths = spec.document["paths"];
   if (!isObject(paths)) throw new Error("spec: paths is missing");
-  const result: SpecOperation[] = [];
+  const result: SpecEndpoint[] = [];
   for (const [path, rawItem] of Object.entries(paths)) {
     const item = deref(spec, rawItem, `path item ${path}`);
     for (const method of METHODS) {
@@ -209,8 +224,7 @@ export function operations(spec: Spec): SpecOperation[] {
       if (op === undefined) continue;
       const where = `${method.toUpperCase()} ${path}`;
       if (!isObject(op)) throw new Error(`spec: ${where} is not an object`);
-      const operationId = op["operationId"];
-      if (typeof operationId !== "string") throw new Error(`spec: ${where} has no operationId`);
+      const operationId = typeof op["operationId"] === "string" ? op["operationId"] : null;
       const parameters = new Map<string, SpecParameter>();
       for (const raw of [...list(item["parameters"]), ...list(op["parameters"])]) {
         const parameter = toParameter(spec, raw, where);
@@ -225,6 +239,7 @@ export function operations(spec: Spec): SpecOperation[] {
         parameters: [...parameters.values()],
         requestBody: op["requestBody"] === undefined ? null : toRequestBody(spec, op["requestBody"], where),
         responses: toResponses(spec, op["responses"], where),
+        source: op,
       });
     }
   }
