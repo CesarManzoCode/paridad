@@ -8,6 +8,8 @@ Lo que paridad quiere demostrar se mide con herramientas externas, no con opinio
 - Fuentes y versiones verificadas: [`vault/RESEARCH.md`](vault/RESEARCH.md)
 - Lo que paridad no demuestra: [`LIMITATIONS.md`](LIMITATIONS.md)
 - Historial de cambios y decisiones: [`CHANGELOG.md`](CHANGELOG.md)
+- Registro de decisiones (problema, alternativas, solución y seguimiento): [`vault/DECISION-LOG.md`](vault/DECISION-LOG.md)
+- Cómo contribuir: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ## Estado
 
@@ -17,6 +19,43 @@ Lo que paridad quiere demostrar se mide con herramientas externas, no con opinio
 | K1 | Spec fijada, representación intermedia y SDKs TS, Python y Go contra los SDKs oficiales (C1, C3, C4) | Cerrada |
 | K2 | Proxy de fallos, CLI, MCP, skill y documentación; comportamiento idéntico en las cinco superficies (C2, C5 a C17, C24) | Cerrada |
 | K3 | Compatibilidad de contrato y de SDKs, servicio de releases, operación y open source (C18 a C23, C25 a C30) | pendiente |
+
+## Criterios
+
+Cada criterio de aceptación se reproduce desde la raíz del repositorio, después de `make bootstrap`. Cuándo pasa cada uno está en la sección 9 del contrato; los artefactos crudos quedan en `.paridad/runs/cN/`. `make battery` corre C1 a C26 en orden y escribe `.paridad/runs/battery.json`.
+
+| Criterio | Qué mide | Comando |
+| --- | --- | --- |
+| C1 | `make generate` es determinista | `make verify C=c1` |
+| C2 | cada operación en las cinco superficies y en `docs/` | `make verify C=c2` |
+| C3 | mismas peticiones que los SDKs oficiales | `make verify C=c3` |
+| C4 | tipos estrictos y pruebas de los tres SDKs | `make verify C=c4` |
+| C5 | mismas peticiones entre las cinco superficies | `make verify C=c5` |
+| C6 | mismos errores en las cinco superficies | `make verify C=c6` |
+| C7 | la clave no aparece en ninguna salida | `make verify C=c7` |
+| C8 | peticiones válidas según la spec (`prism proxy --errors`) | `make verify C=c8` |
+| C9 | esperas ante 429 según `retry-after` | `make verify C=c9` |
+| C10 | idempotencia en reintentos y claves inválidas | `make verify C=c10` |
+| C11 | fallos parciales en espacio de usuario | `make verify C=c11` |
+| C12 | fallos de red con `tc netem` (77 sin `sudo`) | `make verify C=c12` |
+| C13 | conformidad MCP en Streamable HTTP y stdio | `make verify C=c13` |
+| C14 | herramientas MCP ↔ operaciones e `inputSchema` | `make verify C=c14` |
+| C15 | comandos de la skill y `agentskills validate` | `make verify C=c15` |
+| C16 | contrato JSON y de salida del CLI | `make verify C=c16` |
+| C17 | ejemplos de la documentación, `vnu` y enlaces | `make verify C=c17` |
+| C18 | clasificación de compatibilidad contra `oasdiff` | `make verify C=c18` |
+| C19 | salto semver contra `oasdiff`, api-extractor, griffe y apidiff | `make verify C=c19` |
+| C20 | proyectos de ejemplo de N contra N+1 | `make verify C=c20` |
+| C21 | release a los tres registros locales y prueba de humo | `make verify C=c21` |
+| C22 | recuperación tras SIGKILL en cada punto de corte | `make verify C=c22` |
+| C23 | métricas de Prometheus contra la tabla `jobs` | `make verify C=c23` |
+| C24 | HTML de React Email igual al de `render` | `make verify C=c24` |
+| C25 | `paridad contract-check` contra `oasdiff breaking` | `make verify C=c25` |
+| C26 | un clon nuevo pasa `make check` antes y después de agregar una operación | `make verify C=c26` |
+| C27 | archivos para contribuidores y CI con `make check` | `make verify C=c27` |
+| C28 | registro de decisiones con sus cuatro secciones | revisión humana de [`vault/DECISION-LOG.md`](vault/DECISION-LOG.md) |
+| C29 | memoria pico de `make battery` bajo 8 GiB | `make verify C=c29` |
+| C30 | líneas de producto mayores que las de apoyo (`scc`) | `make verify C=c30` |
 
 ## Resultados
 

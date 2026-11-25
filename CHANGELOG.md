@@ -2,6 +2,27 @@
 
 Formato basado en Keep a Changelog. Las versiones siguen semver una vez que exista el primer release.
 
+## [0.1.0] — primera versión (sin fecha: todavía no se publica)
+
+Es la versión que el servicio de releases asigna al primer trabajo de la cola. Los paquetes son npm `paridad-resend`, PyPI `paridad-resend` (módulo `paridad_resend`) y el módulo Go `github.com/CesarManzoCode/paridad/sdks/go` (paquete `resend`), además del CLI `paridad` y el servidor MCP `paridad-mcp`. Las secciones K1 a K3 de abajo detallan cómo se construyó.
+
+### Agregado
+- Las 144 operaciones de la especificación de Resend fijada en `resend/resend-openapi@8c6f120b` en cinco superficies generadas desde una sola IR: SDK TypeScript, SDK Python y SDK Go sin dependencias de ejecución, CLI `paridad <resource> <action>` y servidor MCP con una herramienta `<resource>_<action>` por operación (stdio y Streamable HTTP).
+- Una skill para agentes (`skill/paridad-resend/SKILL.md`) que enseña el CLI, y documentación HTML estática con un ejemplo por operación en TypeScript, Python, Go y bash.
+- Configuración común: `RESEND_API_KEY`, `RESEND_BASE_URL`, `RESEND_TIMEOUT_MS` y `PARIDAD_DEBUG=1`; la clave se muestra siempre enmascarada (`re_...` y sus 4 últimos caracteres).
+- Errores tipados con `code`, `message` y `statusCode` en las cinco superficies, idiomáticos en cada lenguaje.
+- Paginación por cursor con iteradores en los tres SDKs y `--all` en el CLI.
+- React Email: `react` en `emails.send` del SDK TS y `--react <archivo.tsx>` en el CLI.
+- `paridad contract-check <base.yaml> <revision.yaml>`: dice si un cambio de la especificación rompe, qué operaciones y superficies afecta y qué salto semver propone.
+- Servicio local de releases con cola persistente, recuperación tras una caída y métricas de Prometheus, que publica a registros locales de npm, PyPI y Go.
+
+### Decisiones
+- Reintentos: hasta 3 intentos. Un 429 de tasa se reintenta siempre, respetando `retry-after`. Los 5xx, timeouts y cortes solo se reintentan en operaciones seguras (GET, PUT, DELETE o con `Idempotency-Key`). Una escritura sin clave nunca se repite tras un fallo ambiguo.
+- El cliente no genera claves de idempotencia: solo usa la que se le da y rechaza las que no tienen de 1 a 256 caracteres sin enviar la petición.
+- El envío por lotes (`emails/send-batch`) es todo o nada.
+- Donde un SDK oficial de Resend se aparta de la especificación, paridad sigue la especificación; cada diferencia está listada con su motivo en `verify/divergences.json`.
+- Licencia MIT.
+
 ## [Sin publicar]
 
 ### K3 — Compatibilidad, releases y operación
@@ -21,10 +42,15 @@ Formato basado en Keep a Changelog. Las versiones siguen semver una vez que exis
 - Registros locales en `verify/registries.ts`: Verdaccio 7.1.2 (configuración en `verify/registries/verdaccio.yaml`, sin uplinks, publicación anónima, copiada a `<registros>/verdaccio/config.yaml` y arrancada con `--listen 127.0.0.1:<puerto>`), pypiserver 2.4.3 (`pypi-server run` en `127.0.0.1`, subida sin autenticación y sin redirección a pypi.org) y el directorio del GOPROXY. El cálculo de estado de un directorio de registros da paquete, versión, archivo y sha256 de cada artefacto, y reporta versiones sin alguno de sus archivos, archivos sin versión, versiones repetidas en `list` y archivos temporales.
 - Corredores `make verify C=c21` (release completo a `.paridad/registries/` y prueba de humo de instalación limpia en npm, Python y Go contra el servidor de captura, en `c21/smoke.jsonl`), `make verify C=c22` (una corrida de referencia y una por cada punto de corte con SIGKILL y reinicio, comparando el estado de los registros) y `make verify C=c23` (cuatro releases con un trabajo fallido y dos cortes con SIGKILL, `c23/metrics.txt`, `c23/queue.sqlite` y `promtool check metrics`).
 - Dependencias de desarrollo `verdaccio` 7.1.2 (npm) y `pypiserver` 2.4.3 (Python).
+- Archivos para contribuidores externos: `CONTRIBUTING.md`, plantillas de issues en `.github/ISSUE_TEMPLATE/` y `.github/pull_request_template.md`. El README lista cada criterio con el comando que lo reproduce.
+- Registro de decisiones en `vault/DECISION-LOG.md`.
+- `verify/c26/add-operation.patch` agrega `topics/check-name` (`POST /topics/names/check`) a la spec y actualiza el sha256 de `spec/PIN`, con una línea `patch:` que lo marca como parche local.
+- Corredores `make verify C=c26` (clon nuevo, `make bootstrap && make check`, el parche, `make generate && make check` y el `operationId` nuevo en las cinco superficies y en `docs/`), `make verify C=c27` (archivos para contribuidores y CI con `make check`), `make verify C=c29` (`make battery` dentro de un scope `systemd-run --user` y su `memory.peak`) y `make verify C=c30` (líneas de producto y de apoyo con `scc`, sin pruebas).
 
 #### Cambiado
 - `compat/` empareja operaciones con los nombres de los parámetros de ruta incluidos: renombrar un parámetro de ruta ahora rompe (operación quitada y agregada). Con la configuración por defecto, `oasdiff` rechaza 19 pares del historial por "duplicate endpoint" (dos `DELETE /audiences/{audience_id}/contacts/{…}` que solo difieren en el nombre del parámetro); con `--include-path-params` acepta los 91 pares parseables y la clasificación ERR de los otros 72 no cambia. En los SDKs generados el nombre del parámetro de ruta es parte de la API pública.
 - `paridad contract-check` lee la salida de `compat/` con un búfer de 256 MiB en vez del 1 MiB por defecto de `spawnSync`.
+- La prueba de la IR solo exige 144 operaciones cuando `spec/PIN` no marca un parche local, para que `make check` pueda pasar después del parche de C26.
 - El `index.ts` del SDK TS exporta como tipos las clases de recurso (`Emails`, `Domains`…). Sin eso, api-extractor solo reporta `readonly emails: Emails` con un aviso `ae-forgotten-export` y deja los métodos fuera del reporte `.api.md`. El generador falla si un esquema se llama igual que una clase de recurso.
 
 ### K2 — Comportamiento común, CLI, MCP, skill y documentación

@@ -13,6 +13,9 @@ const METHODS = ["get", "put", "post", "delete", "options", "head", "patch", "tr
 const spec = loadSpec(SPEC_FILE);
 const overlay = loadOverlay(join(ROOT, "ir/overlay.yaml"));
 const pin = readPin(join(ROOT, "spec/PIN"));
+// spec/PIN carries a `patch:` line when a local patch changed the pinned file
+// (verify/c26/add-operation.patch); the count of 144 is that of the upstream file.
+const locallyPatched = /^patch: /m.test(readFileSync(join(ROOT, "spec/PIN"), "utf8"));
 
 function build(changes: Partial<Overlay> = {}, ignoreMissingOverlayOperations = false) {
   return buildIR({ spec, overlay: { ...overlay, ...changes }, pin, ignoreMissingOverlayOperations });
@@ -33,7 +36,7 @@ const specOperations = Object.entries(rawSpec.paths).flatMap(([path, item]) =>
 );
 
 test("the IR has every operation of the pinned spec once, with its method and path", () => {
-  assert.equal(specOperations.length, 144);
+  if (!locallyPatched) assert.equal(specOperations.length, 144);
   assert.equal(ir.operations.length, specOperations.length);
   assert.deepEqual(
     ir.operations.map((op) => op.id),

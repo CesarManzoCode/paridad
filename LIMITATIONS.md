@@ -99,6 +99,9 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - C19 y C20 no pueden usar 5 de los 37 pares históricos con `operationId` completo (de `h01` a `h05`): su única operación tiene `operationId` `sendEmail`, que no tiene la forma `recurso/accion`, y el generador rechaza esa spec. Quedan 32 pares históricos, y C19 exige al menos 30.
 - En C19 el reporte de api-extractor se compara por líneas, contadas como multiconjunto: si una línea solo cambia de lugar, no cuenta como cambio.
 - `griffe check` no informa agregados, así que en Python solo puede exigir un salto mayor o ninguno.
+- C29 corre `make battery` como un solo criterio de `make verify`, con su límite anti-cuelgue de 30 minutos, mientras que cada criterio de la batería tiene el suyo. No se midió si la batería completa cabe en 30 minutos; si no cabe, C29 falla sin leer `memory.peak`.
+- C30 suma el `Code` de todos los lenguajes que `scc` reconoce en cada lado, incluidos archivos de datos como el JSON del corpus en `verify/corpus/` y las plantillas de `generator/templates/`. No se midió cuánto pesan en cada total.
+- C26 clona el `HEAD` del repositorio: los cambios sin confirmar no llegan al clon.
 - Solo se verifica en x86-64 con Arch Linux.
 
 ## Lo que no es mecánico

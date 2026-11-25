@@ -1,0 +1,60 @@
+diff --git a/spec/PIN b/spec/PIN
+index e8a2609..0939461 100644
+--- a/spec/PIN
++++ b/spec/PIN
+@@ -1,4 +1,5 @@
+ repository: https://github.com/resend/resend-openapi
+ commit: 8c6f120b3b8a72b749d68c0153a69cf0ca9f5cce
+ path: resend.yaml
+-sha256: 084209d12f51f42f1fe71946fee4bce08c0eaf0b07a214c5e87560495d58ef7b
++sha256: 5b585a36186b773f15be5c8253f9367b77bf6d978e194884a4f0aa1408d40f26
++patch: local, verify/c26/add-operation.patch adds topics/check-name on top of the pinned commit
+diff --git a/spec/resend.yaml b/spec/resend.yaml
+index 0d85263..1f9153c 100644
+--- a/spec/resend.yaml
++++ b/spec/resend.yaml
+@@ -1971,6 +1971,44 @@ paths:
+             application/json:
+               schema:
+                 $ref: '#/components/schemas/RemoveTopicResponseSuccess'
++  /topics/names/check:
++    post:
++      operationId: topics/check-name
++      tags:
++        - Topics
++      summary: Check whether a topic name is available
++      requestBody:
++        required: true
++        content:
++          application/json:
++            schema:
++              type: object
++              required:
++                - name
++              properties:
++                name:
++                  type: string
++                  description: The topic name to check.
++                  example: Weekly Newsletter
++      responses:
++        '200':
++          description: OK
++          content:
++            application/json:
++              schema:
++                type: object
++                required:
++                  - object
++                  - available
++                properties:
++                  object:
++                    type: string
++                    description: The type of object.
++                    example: topic_name_check
++                  available:
++                    type: boolean
++                    description: Whether no topic uses the name.
++                    example: true
+   /contact-properties:
+     post:
+       operationId: contact-properties/create
