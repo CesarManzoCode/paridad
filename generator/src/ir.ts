@@ -389,7 +389,7 @@ function normalizeExample(example: Partial<IRExample>): IRExample {
 }
 
 // The request as one instance: {path, query, headers, body}, each part checked against the spec.
-function requestSchemaOf(op: IROperation): JsonObject {
+export function requestSchemaOf(op: IROperation): JsonObject {
   const group = (parameters: IRParameter[]): JsonObject => ({
     type: "object",
     additionalProperties: false,

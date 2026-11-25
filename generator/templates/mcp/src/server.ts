@@ -9,7 +9,7 @@ import type { AddressInfo } from "node:net";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
-import { CallToolRequestSchema, ErrorCode, ListToolsRequestSchema, McpError, type CallToolResult, type Tool as McpTool } from "@modelcontextprotocol/sdk/types.js";
+import { CallToolRequestSchema, ErrorCode, ListPromptsRequestSchema, ListResourcesRequestSchema, ListToolsRequestSchema, McpError, type CallToolResult, type Tool as McpTool } from "@modelcontextprotocol/sdk/types.js";
 import { Ajv2020 } from "ajv/dist/2020.js";
 import type { ValidateFunction } from "ajv/dist/2020.js";
 import { ParidadError, Resend } from "paridad-resend";
@@ -145,10 +145,14 @@ function failure(error: ParidadError): CallToolResult {
   return { content: [{ type: "text", text: JSON.stringify(structured) }], structuredContent: structured, isError: true };
 }
 
-// One protocol server; each stdio process or HTTP session has its own.
+// One protocol server; each stdio process or HTTP session has its own. The API has
+// no prompts or resources: both are declared and listed empty, so prompts/list and
+// resources/list answer instead of failing with Method not found.
 export function createMcpServer(): Server {
-  const server = new Server({ name: SERVER_NAME, version: SERVER_VERSION }, { capabilities: { tools: {}, logging: {} } });
+  const server = new Server({ name: SERVER_NAME, version: SERVER_VERSION }, { capabilities: { tools: {}, logging: {}, prompts: {}, resources: {} } });
   server.setRequestHandler(ListToolsRequestSchema, () => ({ tools: listTools() }));
+  server.setRequestHandler(ListPromptsRequestSchema, () => ({ prompts: [] }));
+  server.setRequestHandler(ListResourcesRequestSchema, () => ({ resources: [] }));
   server.setRequestHandler(CallToolRequestSchema, (request) => callTool(request.params.name, request.params.arguments));
   return server;
 }

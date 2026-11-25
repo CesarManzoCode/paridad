@@ -1,0 +1,31 @@
+# Fallos esperados del marco de conformidad MCP (@modelcontextprotocol/conformance
+# 0.1.16) en C13 (vault/CONTRACT.md §9, D23). Solo escenarios que fallan porque
+# exigen herramientas, prompts o recursos de prueba del propio marco (test_*,
+# test://…); el servidor no los tiene porque romperían la biyección de C14 con las
+# operaciones de Resend. Nunca server-initialize, ping ni dns-rebinding-protection.
+# La lista sale de correr el marco contra `node mcp/src/main.ts --transport http`
+# el 24 nov 2026 y leer el error de cada escenario en su checks.json. El marco sale
+# con 1 si una entrada de aquí pasa, así que la lista no puede quedar vieja.
+server:
+  - completion-complete  # pide completar el argumento arg1 del prompt de prueba test_prompt_with_arguments
+  - tools-call-simple-text  # llama a la herramienta de prueba test_simple_text
+  - tools-call-image  # llama a la herramienta de prueba test_image_content
+  - tools-call-audio  # llama a la herramienta de prueba test_audio_content
+  - tools-call-embedded-resource  # llama a la herramienta de prueba test_embedded_resource
+  - tools-call-mixed-content  # llama a la herramienta de prueba test_multiple_content_types
+  - tools-call-with-logging  # llama a la herramienta de prueba test_tool_with_logging
+  - tools-call-error  # llama a la herramienta de prueba test_error_handling
+  - tools-call-with-progress  # llama a la herramienta de prueba test_tool_with_progress
+  - tools-call-sampling  # llama a la herramienta de prueba test_sampling
+  - tools-call-elicitation  # llama a la herramienta de prueba test_elicitation
+  - elicitation-sep1034-defaults  # llama a la herramienta de prueba test_elicitation_sep1034_defaults
+  - elicitation-sep1330-enums  # llama a la herramienta de prueba test_elicitation_sep1330_enums
+  - resources-read-text  # lee el recurso de prueba test://static-text
+  - resources-read-binary  # lee el recurso de prueba test://static-binary
+  - resources-templates-read  # lee test://template/123/data de la plantilla de prueba test://template/{id}/data
+  - resources-subscribe  # se suscribe al recurso de prueba test://watched-resource
+  - resources-unsubscribe  # se suscribe y desuscribe del recurso de prueba test://watched-resource
+  - prompts-get-simple  # pide el prompt de prueba test_simple_prompt
+  - prompts-get-with-args  # pide el prompt de prueba test_prompt_with_arguments
+  - prompts-get-embedded-resource  # pide el prompt de prueba test_prompt_with_embedded_resource
+  - prompts-get-with-image  # pide el prompt de prueba test_prompt_with_image

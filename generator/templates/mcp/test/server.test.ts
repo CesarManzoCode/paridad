@@ -83,15 +83,22 @@ after(async () => {
   await new Promise<void>((resolve) => api.close(() => resolve()));
 });
 
-test("initialize answers with protocol 2025-11-25 and the tools and logging capabilities", async () => {
+test("initialize answers with protocol 2025-11-25 and the tools, logging, prompts and resources capabilities", async () => {
   const response = await request("initialize", { protocolVersion: PROTOCOL, capabilities: {}, clientInfo: { name: "paridad-test", version: "0" } });
   assert.equal(response.error, undefined);
   assert.equal(response.result!["protocolVersion"], PROTOCOL);
   const capabilities = response.result!["capabilities"] as Record<string, unknown>;
   assert.ok(capabilities["tools"]);
   assert.ok(capabilities["logging"]);
+  assert.ok(capabilities["prompts"]);
+  assert.ok(capabilities["resources"]);
   assert.equal((response.result!["serverInfo"] as { name: string }).name, "paridad-mcp");
   notify("notifications/initialized");
+});
+
+test("prompts/list and resources/list answer with empty lists", async () => {
+  assert.deepEqual((await request("prompts/list")).result!["prompts"], []);
+  assert.deepEqual((await request("resources/list")).result!["resources"], []);
 });
 
 test("tools/list has one tool per operation, with annotations and a 2020-12 input schema", async () => {
