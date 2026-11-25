@@ -8,8 +8,9 @@
 // request goes through the fault proxy, which answers every attempt of a pair with
 // `respond` with that error, in front of the capture server. Writes scenarios.json,
 // captures.jsonl, traces.jsonl, results.jsonl ({"id","surface","argv","exit_code",
-// "stdout_file"}, with stdout_file the file of the compared output from the
-// repository root), failures.jsonl and out/<id>.<surface>.stdout|stderr. Exits 0 only
+// "stdout_file"}, with argv the arguments after the program name, so argv[0..1] is
+// the resource and the action, and stdout_file the file of the compared output from
+// the repository root), failures.jsonl and out/<id>.<surface>.stdout|stderr. Exits 0 only
 // if every paridad command writes valid JSON and exits 0, or writes JSON with
 // error.message and exits 1, and every pair has the same exit code and the same
 // top-level keys on both CLIs.
@@ -107,7 +108,7 @@ try {
       const line: ResultLine = {
         id,
         surface,
-        argv: [surface === "cli" ? "paridad" : "resend", ...args],
+        argv: args,
         exit_code: code,
         stdout_file: relative(ROOT, `${prefix}.${compared}`),
       };

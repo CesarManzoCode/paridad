@@ -28,6 +28,7 @@ Formato basado en Keep a Changelog. Las versiones siguen semver una vez que exis
 - El servidor de captura responde con todas las propiedades de primer nivel documentadas de la respuesta.
 - `traces.jsonl` escribe `t_recv_ns` y `t_resp_end_ns` como números JSON enteros, no como texto (sección 8), así que un lector externo puede restarlos.
 - `c16/results.jsonl` da `stdout_file` desde la raíz del repositorio, y en el CLI oficial apunta a su stderr cuando su stdout está vacío (sus errores salen por stderr), que es la salida que compara C16.
+- `c16/results.jsonl` escribe en `argv` los argumentos sin el nombre del programa (`paridad`, `resend`), así que `argv[0]` y `argv[1]` son el recurso y la acción; con el nombre delante, ningún comando contaba como ejercitado.
 - Pruebas: `cli/test/cli.test.ts` bajo `tsc --strict` (`child.stderr` puede ser `null`), `flagKind` con el prefijo de `$ref` de la IR, y `docs.test.ts` construye la IR como `make generate` (el orden de claves de `ir/ir.json` no es el de los ejemplos).
 
 ### K1 — Spec fijada, representación intermedia y SDKs TS, Python y Go
