@@ -65,7 +65,8 @@ export interface IROperation {
   queryParams: IRParameter[];
   headerParams: IRParameter[];
   requestBody: JsonSchema | null;
-  response: { status: number; schema: JsonSchema | null };
+  // status null: the operation documents no 2xx response (only in the compatibility corpus).
+  response: { status: number | null; schema: JsonSchema | null };
   pagination: Pagination | null;
   idempotency: boolean;
   readOnly: boolean;
@@ -108,8 +109,10 @@ export interface BuildOptions {
   overlay: Overlay;
   // Pinned origin of the spec; null for any other spec (compatibility corpus).
   pin: Pin | null;
-  // With --spec, overlay entries for operations the spec lacks are skipped instead of failing.
-  ignoreMissingOverlayOperations: boolean;
+  // With --spec, the overlay was written for another spec: entries for operations the
+  // spec lacks are skipped, and overlay examples that do not validate against it give
+  // way to a synthesized one, instead of failing.
+  lenientOverlay: boolean;
 }
 
 const PAGINATION: Pagination = {
@@ -201,7 +204,7 @@ export function buildIR(options: BuildOptions): IR {
   }
   for (const [id, entry] of Object.entries(overlay.operations)) {
     if (!byId.has(id)) {
-      if (options.ignoreMissingOverlayOperations) continue;
+      if (options.lenientOverlay) continue;
       throw new Error(`overlay: operationId ${id} does not exist in the spec`);
     }
     checkOverlayOperation(id, entry);
@@ -214,10 +217,11 @@ export function buildIR(options: BuildOptions): IR {
   const validate = createValidator(schemas, built);
   const synthesize = createSynthesizer(schemas, validate);
   for (const op of built) {
-    const overlayExamples = overlay.operations[op.id]?.examples;
-    const source = overlayExamples ? "ir/overlay.yaml" : "synthesized";
-    op.examples = overlayExamples ? overlayExamples.map(normalizeExample) : [synthesizeExample(op, synthesize, validate)];
     const requestSchema = requestSchemaOf(op);
+    let overlayExamples = overlay.operations[op.id]?.examples?.map(normalizeExample);
+    if (options.lenientOverlay && overlayExamples?.some((example) => validate(requestSchema, example) !== null)) overlayExamples = undefined;
+    const source = overlayExamples ? "ir/overlay.yaml" : "synthesized";
+    op.examples = overlayExamples ?? [synthesizeExample(op, synthesize, validate)];
     op.examples.forEach((example, index) => {
       const problem = validate(requestSchema, example);
       if (problem !== null) {
@@ -295,12 +299,12 @@ function buildOperation(op: SpecOperation, entry: OverlayOperation, schemas: Rec
   const headerParams = params("header");
 
   const success = op.responses.filter((response) => response.status >= 200 && response.status < 300).sort((a, b) => a.status - b.status)[0];
-  if (success === undefined) throw new Error(`spec: ${op.operationId} has no 2xx response`);
 
   const queryNames = new Set(queryParams.map((parameter) => parameter.name));
   const paginated =
     op.method === "GET" &&
     ["limit", "after", "before"].every((name) => queryNames.has(name)) &&
+    success !== undefined &&
     success.schema !== null &&
     ["data", "has_more"].every((name) => propertyNames(success.schema!, schemas).has(name));
 
@@ -325,7 +329,7 @@ function buildOperation(op: SpecOperation, entry: OverlayOperation, schemas: Rec
     queryParams,
     headerParams,
     requestBody,
-    response: { status: success.status, schema: success.schema },
+    response: { status: success?.status ?? null, schema: success?.schema ?? null },
     pagination: paginated ? { ...PAGINATION } : null,
     idempotency: headerParams.some((parameter) => parameter.name.toLowerCase() === IDEMPOTENCY_HEADER),
     readOnly: op.method === "GET",

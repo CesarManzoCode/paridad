@@ -33,6 +33,8 @@ export interface Tool {
   sdk: [string, string];
   pathParams: string[];
   queryParams: string[];
+  // Header parameters other than Idempotency-Key, whose arguments are named as the header.
+  headerParams: string[];
   body: boolean;
   // Top-level body properties of format binary, sent as files of a multipart body.
   binary: string[];
@@ -112,6 +114,13 @@ async function execute(entry: Tool, args: Record<string, unknown>): Promise<Call
   if (entry.idempotency) {
     const key = args["idempotency_key"];
     call.push(typeof key === "string" ? { idempotencyKey: key } : undefined);
+  }
+  if (entry.headerParams.length > 0) {
+    const headers: Record<string, unknown> = {};
+    for (const name of entry.headerParams) if (args[name] !== undefined) headers[name] = args[name];
+    // The SDK method takes its options (Idempotency-Key) before the headers.
+    if (!entry.idempotency) call.push(undefined);
+    call.push(headers);
   }
   const resource = (sdk as unknown as Record<string, Record<string, (...values: unknown[]) => Promise<{ data: unknown; error: ParidadError | null }>>>)[entry.sdk[0]]!;
   try {

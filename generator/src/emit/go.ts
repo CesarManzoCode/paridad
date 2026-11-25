@@ -463,8 +463,8 @@ function groupServices(operations: IROperation[]): Service[] {
       throw new Error(`go: names.go ${op.names.go} of ${op.id} is not Resource.Method`);
     }
     const [field, name] = parts as [string, string];
-    for (const parameter of op.headerParams) {
-      if (parameter.name.toLowerCase() !== IDEMPOTENCY_HEADER) throw new Error(`go: header ${parameter.name} of ${op.id} is not supported`);
+    for (const parameter of extraHeaders(op)) {
+      if (parameter.required) throw new Error(`go: required header ${parameter.name} of ${op.id} is not supported`);
     }
     for (const parameter of op.queryParams) {
       if (parameter.style !== "form") throw new Error(`go: query parameter ${parameter.name} of ${op.id} has style ${parameter.style}`);
@@ -534,6 +534,11 @@ function pageItem(types: GoTypes, service: Service, method: Method): string {
 }
 
 // The values() method of a query struct: each set parameter as its query values.
+// Header parameters other than Idempotency-Key: optional, by their header name.
+function extraHeaders(op: IROperation): IRParameter[] {
+  return op.headerParams.filter((parameter) => parameter.name.toLowerCase() !== IDEMPOTENCY_HEADER);
+}
+
 function queryValues(name: string, parameters: IRParameter[], types: GoTypes): string {
   const lines = parameters.map((parameter) => {
     const field = fieldName(parameter.name);
@@ -584,11 +589,20 @@ function methodSource(service: Service, method: Method, types: GoTypes): string 
     params.push(`query *${name}`);
     query = "query.values()";
   }
+  let options = op.idempotency ? "options" : "nil";
+  const headers = extraHeaders(op);
+  if (headers.length > 0) {
+    const name = `${service.field}${method.name}Headers`;
+    types.query(name, headers);
+    types.append(queryValues(name, headers, types));
+    params.push(`headers *${name}`);
+    options = op.idempotency ? "append(options, withHeaders(headers.values()))" : "[]RequestOption{withHeaders(headers.values())}";
+  }
   if (op.idempotency) params.push("options ...RequestOption");
   const response = responseType(types, service, method);
   const doc = [`${method.name} calls ${op.id}.`, ...(op.summary === null ? [] : ["", op.summary]), "", `operationId: \`${op.id}\` — \`${op.method} ${op.path}\``];
   let source = `${comment(doc, "")}${receiver} ${method.name}(${params.join(", ")}) (*${response}, error) {
-	return request[${response}](ctx, s.core, ${opVar(service, method)}, ${path}, ${query}, ${body}, ${op.idempotency ? "options" : "nil"})
+	return request[${response}](ctx, s.core, ${opVar(service, method)}, ${path}, ${query}, ${body}, ${options})
 }
 `;
 
@@ -716,6 +730,8 @@ function exampleCall(types: GoTypes, service: Service, method: Method): GoExampl
     decls.push({ name: "query", type: `${service.field}${method.name}Query`, json: JSON.stringify(example.query) });
     args.push("&query");
   }
+  // Only optional headers are supported, and the examples carry required values only.
+  if (extraHeaders(op).length > 0) args.push("nil");
   return { decls, call: `c.${service.field}.${method.name}(${args.join(", ")})` };
 }
 

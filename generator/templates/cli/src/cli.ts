@@ -40,6 +40,8 @@ export interface Command {
   sdk: [string, string];
   pathParams: Flag[];
   queryParams: Flag[];
+  // Header parameters other than Idempotency-Key.
+  headerParams: Flag[];
   // Flags of the top-level body properties; null when the operation has no body.
   body: { flags: Flag[] } | null;
   idempotency: boolean;
@@ -102,6 +104,11 @@ async function execute(command: Command, args: string[], io: IO, json: boolean):
     }
     query[flag.name] = flagValue(flag, value);
   }
+  const headers: Record<string, unknown> = {};
+  for (const flag of command.headerParams) {
+    const value = text(flag.flag);
+    if (value !== undefined) headers[flag.name] = flagValue(flag, value);
+  }
   let body: unknown;
   if (command.body !== null) {
     const whole = text("body");
@@ -152,6 +159,11 @@ async function execute(command: Command, args: string[], io: IO, json: boolean):
     // An empty key is still a key: the SDK rejects it like any key out of range.
     call.push(key === undefined ? undefined : { idempotencyKey: key });
   }
+  if (command.headerParams.length > 0) {
+    // The SDK method takes its options (Idempotency-Key) before the headers.
+    if (!command.idempotency) call.push(undefined);
+    call.push(headers);
+  }
   const result = (await resource[command.sdk[1]]!.call(resource, ...call)) as { data: unknown; error: ParidadError | null };
   if (result.error !== null) return fail(io, json, result.error);
   return succeed(io, result.data);
@@ -163,7 +175,7 @@ function commandOptions(command: Command): ParseArgsOptionsConfig {
     help: { type: "boolean", short: "h" },
     "timeout-ms": { type: "string" },
   };
-  for (const flag of [...command.pathParams, ...command.queryParams, ...(command.body?.flags ?? [])]) options[flag.flag] = { type: "string" };
+  for (const flag of [...command.pathParams, ...command.queryParams, ...command.headerParams, ...(command.body?.flags ?? [])]) options[flag.flag] = { type: "string" };
   if (command.body !== null) options["body"] = { type: "string" };
   if (command.idempotency) options["idempotency-key"] = { type: "string" };
   if (command.paginated) options["all"] = { type: "boolean" };
@@ -313,6 +325,7 @@ function commandUsage(command: Command): string {
     "Flags:",
     ...command.pathParams.map((flag) => line(flag, "text")),
     ...command.queryParams.map((flag) => line(flag, value(flag))),
+    ...command.headerParams.map((flag) => line(flag, value(flag))),
   ];
   if (command.body !== null) {
     lines.push("  --body <json>  the whole request body; the flags below replace its top-level properties");

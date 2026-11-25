@@ -439,6 +439,45 @@ const CASES: Case[] = [
     operations: [LIST, GET, SEND],
     bump: "major",
   },
+  {
+    // The keyword decides before the type array: the request no longer reads as nullable.
+    name: "a request property trades the nullable keyword for a null type",
+    base: (doc) => (send(doc).properties.subject = { type: "string", nullable: true }),
+    mutate: (doc) => (send(doc).properties.subject = { type: ["string", "null"] }),
+    rule: "request-type-changed",
+    classification: "breaking",
+    operations: [SEND],
+    bump: "major",
+  },
+  {
+    name: "a response property gets the nullable keyword in 3.1",
+    mutate: (doc) => (email(doc).properties.created_at.nullable = true),
+    rule: "response-type-changed",
+    classification: "breaking",
+    operations: [GET, SEND],
+    bump: "major",
+  },
+  {
+    name: "a webhook present on both sides compares as the operation webhook:<name>",
+    base: (doc) =>
+      (doc.webhooks = {
+        "email.sent": {
+          post: {
+            requestBody: { required: true, content: { "application/json": { schema: { type: "object", properties: { id: { type: "string" } } } } } },
+            responses: { "200": { description: "OK" } },
+          },
+        },
+      }),
+    mutate: (doc) => {
+      const schema = doc.webhooks["email.sent"].post.requestBody.content["application/json"].schema;
+      schema.properties.created_at = { type: "string" };
+      schema.required = ["created_at"];
+    },
+    rule: "request-property-added-required",
+    classification: "breaking",
+    operations: ["POST webhook:email.sent"],
+    bump: "major",
+  },
 ];
 
 function load(doc: Doc): ReturnType<typeof parseSpec> {

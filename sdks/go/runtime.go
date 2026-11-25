@@ -91,12 +91,19 @@ type RequestOption func(*requestOptions)
 
 type requestOptions struct {
 	idempotencyKey *string
+	headers        map[string][]string
 }
 
 // WithIdempotencyKey sends key as Idempotency-Key, the same on every attempt; it
 // must have 1 to 256 characters. The client never makes one up.
 func WithIdempotencyKey(key string) RequestOption {
 	return func(o *requestOptions) { o.idempotencyKey = &key }
+}
+
+// withHeaders sends the header parameters other than Idempotency-Key, by their name in
+// the spec; the generated methods pass it from their headers argument.
+func withHeaders(values map[string][]string) RequestOption {
+	return func(o *requestOptions) { o.headers = values }
 }
 
 // Ptr returns a pointer to value, for the optional fields of the request types.
@@ -342,6 +349,9 @@ func (c *core) do(ctx context.Context, op *operation, path []string, query map[s
 	header.Set("User-Agent", UserAgent)
 	if key != nil {
 		header.Set(rules.header, *key)
+	}
+	for name, values := range opts.headers {
+		header[http.CanonicalHeaderKey(name)] = values
 	}
 	// The body is serialized once, so every attempt sends the same bytes.
 	var payload []byte

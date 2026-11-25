@@ -2,9 +2,10 @@
 // C2 (contract §9): every operationId of the spec must appear in the captures of C5
 // of ts, python, go, cli and mcp, matched by method and path template, and as a
 // data-operation-id in docs/. Uses .paridad/runs/c5/captures.jsonl, running
-// `make verify C=c5` first (output in out/c5.stdout|stderr) when it does not exist,
-// and copies it to captures.jsonl. Writes missing.jsonl ({"operation","where"}, where
-// is a surface or docs); prints faltantes=<n> and exits 0 only if n = 0.
+// `make verify C=c5` first (output in out/c5.stdout|stderr) when it does not exist or
+// lacks one of the five surfaces, and copies it to captures.jsonl. Writes missing.jsonl
+// ({"operation","where"}, where is a surface or docs); prints faltantes=<n> and exits 0
+// only if n = 0.
 import { copyFileSync, existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import type { IR, IROperation } from "../generator/src/ir.ts";
@@ -19,7 +20,16 @@ const C5_CAPTURES = join(ROOT, ".paridad/runs/c5/captures.jsonl");
 const runDir = process.argv[2]!;
 const ir = JSON.parse(readFileSync(join(ROOT, "ir/ir.json"), "utf8")) as IR;
 
-if (!existsSync(C5_CAPTURES)) {
+// Captures of an earlier `make verify C=c5 SURFACES=…` lack some surface: C2 runs c5 again.
+function capturedSurfaces(): Set<string> {
+  const surfaces = new Set<string>();
+  for (const text of readFileSync(C5_CAPTURES, "utf8").split("\n")) {
+    if (text !== "") surfaces.add(String((JSON.parse(text) as CaseCapture).surface));
+  }
+  return surfaces;
+}
+
+if (!existsSync(C5_CAPTURES) || !ALL_SURFACES.every((surface) => capturedSurfaces().has(surface))) {
   // Every surface, whatever SURFACES says: C2 needs the five.
   const env = { ...process.env };
   delete env["SURFACES"];

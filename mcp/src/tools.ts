@@ -2238,6 +2238,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -2283,6 +2284,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2319,6 +2321,7 @@ export const TOOLS: readonly Tool[] = [
       "api_key_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2361,6 +2364,7 @@ export const TOOLS: readonly Tool[] = [
       "api_key_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -2396,6 +2400,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -2432,6 +2437,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2458,6 +2464,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2494,6 +2501,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2538,6 +2546,7 @@ export const TOOLS: readonly Tool[] = [
       "run_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2575,6 +2584,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -2612,6 +2622,7 @@ export const TOOLS: readonly Tool[] = [
       "automation_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2649,6 +2660,7 @@ export const TOOLS: readonly Tool[] = [
       "automation_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2693,6 +2705,7 @@ export const TOOLS: readonly Tool[] = [
       "run_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2747,6 +2760,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2807,6 +2821,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2844,6 +2859,7 @@ export const TOOLS: readonly Tool[] = [
       "automation_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2881,6 +2897,7 @@ export const TOOLS: readonly Tool[] = [
       "automation_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2926,6 +2943,7 @@ export const TOOLS: readonly Tool[] = [
       "automation_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -2963,6 +2981,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -2998,6 +3017,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -3035,6 +3055,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3071,6 +3092,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3116,6 +3138,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3171,6 +3194,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3257,6 +3281,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3293,6 +3318,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3335,6 +3361,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -3377,6 +3404,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -3412,6 +3440,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -3448,6 +3477,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3493,6 +3523,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3529,6 +3560,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3571,6 +3603,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -3613,6 +3646,7 @@ export const TOOLS: readonly Tool[] = [
       "segment_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3648,6 +3682,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -3684,6 +3719,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [
       "file"
@@ -3722,6 +3758,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3759,6 +3796,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3804,6 +3842,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3860,6 +3899,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3914,6 +3954,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -3968,6 +4009,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4004,6 +4046,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4046,6 +4089,7 @@ export const TOOLS: readonly Tool[] = [
       "segment_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4088,6 +4132,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -4130,6 +4175,7 @@ export const TOOLS: readonly Tool[] = [
       "contact_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -4166,6 +4212,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -4201,6 +4248,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -4243,6 +4291,7 @@ export const TOOLS: readonly Tool[] = [
       "domain_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -4279,6 +4328,7 @@ export const TOOLS: readonly Tool[] = [
       "domain_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4315,6 +4365,7 @@ export const TOOLS: readonly Tool[] = [
       "domain_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4360,6 +4411,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4396,6 +4448,7 @@ export const TOOLS: readonly Tool[] = [
       "domain_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4439,6 +4492,7 @@ export const TOOLS: readonly Tool[] = [
       "domain_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -4481,6 +4535,7 @@ export const TOOLS: readonly Tool[] = [
       "domain_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -4517,6 +4572,7 @@ export const TOOLS: readonly Tool[] = [
       "domain_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4553,6 +4609,7 @@ export const TOOLS: readonly Tool[] = [
       "email_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4589,6 +4646,7 @@ export const TOOLS: readonly Tool[] = [
       "email_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4633,6 +4691,7 @@ export const TOOLS: readonly Tool[] = [
       "attachment_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4670,6 +4729,7 @@ export const TOOLS: readonly Tool[] = [
       "email_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4714,6 +4774,7 @@ export const TOOLS: readonly Tool[] = [
       "attachment_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4759,6 +4820,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4814,6 +4876,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4859,6 +4922,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -4914,6 +4978,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -5043,6 +5108,7 @@ export const TOOLS: readonly Tool[] = [
       "email_id",
       "broadcast_id"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -5085,6 +5151,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": true
@@ -5130,6 +5197,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": true
@@ -5172,6 +5240,7 @@ export const TOOLS: readonly Tool[] = [
       "email_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -5208,6 +5277,7 @@ export const TOOLS: readonly Tool[] = [
       "email_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -5243,6 +5313,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -5279,6 +5350,7 @@ export const TOOLS: readonly Tool[] = [
       "identifier"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -5324,6 +5396,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -5360,6 +5433,7 @@ export const TOOLS: readonly Tool[] = [
       "identifier"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -5395,6 +5469,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -5437,6 +5512,7 @@ export const TOOLS: readonly Tool[] = [
       "identifier"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -5489,6 +5565,7 @@ export const TOOLS: readonly Tool[] = [
       "thread_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -5524,6 +5601,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -5574,6 +5652,7 @@ export const TOOLS: readonly Tool[] = [
       "inbox_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": true
@@ -5619,6 +5698,7 @@ export const TOOLS: readonly Tool[] = [
       "inbox_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -5683,6 +5763,7 @@ export const TOOLS: readonly Tool[] = [
       "email_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": true
@@ -5722,6 +5803,7 @@ export const TOOLS: readonly Tool[] = [
       "inbox_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -5761,6 +5843,7 @@ export const TOOLS: readonly Tool[] = [
       "inbox_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -5807,6 +5890,7 @@ export const TOOLS: readonly Tool[] = [
       "draft_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -5853,6 +5937,7 @@ export const TOOLS: readonly Tool[] = [
       "thread_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -5906,6 +5991,7 @@ export const TOOLS: readonly Tool[] = [
       "email_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -5951,6 +6037,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -6008,6 +6095,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -6047,6 +6135,7 @@ export const TOOLS: readonly Tool[] = [
       "inbox_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -6111,6 +6200,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -6209,6 +6299,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -6248,6 +6339,7 @@ export const TOOLS: readonly Tool[] = [
       "inbox_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -6294,6 +6386,7 @@ export const TOOLS: readonly Tool[] = [
       "draft_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -6340,6 +6433,7 @@ export const TOOLS: readonly Tool[] = [
       "label_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -6386,6 +6480,7 @@ export const TOOLS: readonly Tool[] = [
       "thread_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -6439,6 +6534,7 @@ export const TOOLS: readonly Tool[] = [
       "label_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -6503,6 +6599,7 @@ export const TOOLS: readonly Tool[] = [
       "email_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": true
@@ -6673,6 +6770,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -6729,6 +6827,7 @@ export const TOOLS: readonly Tool[] = [
       "draft_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": true
@@ -6781,6 +6880,7 @@ export const TOOLS: readonly Tool[] = [
       "thread_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -6826,6 +6926,7 @@ export const TOOLS: readonly Tool[] = [
       "inbox_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -6871,6 +6972,7 @@ export const TOOLS: readonly Tool[] = [
       "inbox_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -6924,6 +7026,7 @@ export const TOOLS: readonly Tool[] = [
       "draft_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -6976,6 +7079,7 @@ export const TOOLS: readonly Tool[] = [
       "label_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -7028,6 +7132,7 @@ export const TOOLS: readonly Tool[] = [
       "thread_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -7065,6 +7170,7 @@ export const TOOLS: readonly Tool[] = [
       "log_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7110,6 +7216,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7155,6 +7262,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7191,6 +7299,7 @@ export const TOOLS: readonly Tool[] = [
       "oauth_grant_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7226,6 +7335,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -7262,6 +7372,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7307,6 +7418,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7362,6 +7474,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7398,6 +7511,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7440,6 +7554,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -7475,6 +7590,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -7510,6 +7626,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -7545,6 +7662,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -7581,6 +7699,7 @@ export const TOOLS: readonly Tool[] = [
       "suppression"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7636,6 +7755,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7672,6 +7792,7 @@ export const TOOLS: readonly Tool[] = [
       "suppression"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7708,6 +7829,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -7744,6 +7866,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7780,6 +7903,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7825,6 +7949,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7861,6 +7986,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7897,6 +8023,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -7940,6 +8067,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -7975,6 +8103,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -8011,6 +8140,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -8056,6 +8186,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -8092,6 +8223,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -8134,6 +8266,7 @@ export const TOOLS: readonly Tool[] = [
       "id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -8160,6 +8293,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -8195,6 +8329,7 @@ export const TOOLS: readonly Tool[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false
@@ -8232,6 +8367,7 @@ export const TOOLS: readonly Tool[] = [
       "webhook_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -8275,6 +8411,7 @@ export const TOOLS: readonly Tool[] = [
       "event_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -8320,6 +8457,7 @@ export const TOOLS: readonly Tool[] = [
       "after",
       "before"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -8376,6 +8514,7 @@ export const TOOLS: readonly Tool[] = [
       "limit",
       "after"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -8426,6 +8565,7 @@ export const TOOLS: readonly Tool[] = [
       "limit",
       "after"
     ],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -8463,6 +8603,7 @@ export const TOOLS: readonly Tool[] = [
       "webhook_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -8506,6 +8647,7 @@ export const TOOLS: readonly Tool[] = [
       "event_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -8543,6 +8685,7 @@ export const TOOLS: readonly Tool[] = [
       "webhook_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": false,
     "binary": [],
     "idempotency": false
@@ -8586,6 +8729,7 @@ export const TOOLS: readonly Tool[] = [
       "webhook_id"
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": true,
     "binary": [],
     "idempotency": false

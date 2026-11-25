@@ -14,7 +14,7 @@ const ir = buildIR({
   spec: loadSpec(join(ROOT, "spec/resend.yaml")),
   overlay: loadOverlay(join(ROOT, "ir/overlay.yaml")),
   pin: readPin(join(ROOT, "spec/PIN")),
-  ignoreMissingOverlayOperations: false,
+  lenientOverlay: false,
 });
 
 const dirs: string[] = [];

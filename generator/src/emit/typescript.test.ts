@@ -49,6 +49,7 @@ paths:
       operationId: things/remove
       parameters:
         - { name: thing_id, in: path, required: true, schema: { type: string } }
+        - { name: X-Trace, in: header, schema: { type: string } }
       responses:
         '200':
           description: OK
@@ -72,7 +73,7 @@ components:
         has_more: { type: boolean }
         data: { type: array, items: { $ref: '#/components/schemas/Thing' } }
 `);
-const ir = buildIR({ spec, overlay: { ...loadOverlay(join(ROOT, "ir/overlay.yaml")), operations: {} }, pin: null, ignoreMissingOverlayOperations: false });
+const ir = buildIR({ spec, overlay: { ...loadOverlay(join(ROOT, "ir/overlay.yaml")), operations: {} }, pin: null, lenientOverlay: false });
 
 const dirs: string[] = [];
 after(() => {
@@ -119,7 +120,8 @@ test("one method per operation, each with its literal operationId in its documen
   assert.match(resources, /\n {2}list\(query\?: \{/);
   assert.match(resources, /\n {2}listAll\(query\?: \{\n(.*\n)* {2}\}\): AsyncGenerator<NonNullable<\(T\.ThingList\)\["data"\]>\[number\], void, undefined>/);
   assert.match(resources, /\n {2}create\(body: T\.Thing, options\?: IdempotentRequestOptions\): Promise<Result<T\.Thing>>/);
-  assert.match(resources, /\n {2}remove\(thingId: string\): Promise<Result<\{/);
+  assert.match(resources, /\n {2}remove\(thingId: string, headers\?: \{\n {4}"X-Trace"\?: string;\n {2}\}\): Promise<Result<\{/);
+  assert.match(resources, /return this\.#core\.request\(op_things_remove, \[thingId\], undefined, undefined, undefined, headers\);/);
   // The iterator takes limit but not the cursors it manages.
   const listAll = resources.slice(resources.indexOf("listAll("));
   assert.ok(!listAll.slice(0, listAll.indexOf("AsyncGenerator")).includes("after?"));
@@ -168,14 +170,16 @@ test("emitting twice gives the same tree and removes files the emitter no longer
   ]);
 });
 
-test("the generated client sends the request of an operation", async () => {
+test("the generated client sends the request of an operation, with a header parameter other than Idempotency-Key", async () => {
   const out = emit();
   const { Resend } = (await import(pathToFileURL(join(out, "src/index.ts")).href)) as {
-    Resend: new (key: string, options: { baseUrl: string }) => { things: { remove(id: string): Promise<{ data: unknown; error: unknown }> } };
+    Resend: new (key: string, options: { baseUrl: string }) => {
+      things: { remove(id: string, headers?: { "X-Trace"?: string }): Promise<{ data: unknown; error: unknown }> };
+    };
   };
-  const seen: { method: string; url: string; authorization: string }[] = [];
+  const seen: { method: string; url: string; authorization: string; trace: string | undefined }[] = [];
   const server = createServer((req, res) => {
-    seen.push({ method: req.method ?? "", url: req.url ?? "", authorization: req.headers.authorization ?? "" });
+    seen.push({ method: req.method ?? "", url: req.url ?? "", authorization: req.headers.authorization ?? "", trace: req.headers["x-trace"] as string | undefined });
     res.writeHead(200, { "content-type": "application/json" });
     res.end('{"deleted":true}');
   });
@@ -183,7 +187,11 @@ test("the generated client sends the request of an operation", async () => {
   try {
     const resend = new Resend("re_emitter_test_1234", { baseUrl: `http://127.0.0.1:${(server.address() as AddressInfo).port}` });
     assert.deepEqual(await resend.things.remove("a b"), { data: { deleted: true }, error: null });
-    assert.deepEqual(seen, [{ method: "DELETE", url: "/things/a%20b", authorization: "Bearer re_emitter_test_1234" }]);
+    assert.deepEqual(await resend.things.remove("a b", { "X-Trace": "t-1" }), { data: { deleted: true }, error: null });
+    assert.deepEqual(seen, [
+      { method: "DELETE", url: "/things/a%20b", authorization: "Bearer re_emitter_test_1234", trace: undefined },
+      { method: "DELETE", url: "/things/a%20b", authorization: "Bearer re_emitter_test_1234", trace: "t-1" },
+    ]);
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }

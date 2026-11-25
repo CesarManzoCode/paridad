@@ -12,6 +12,9 @@ export interface Spec {
   openapi: string;
   version: string;
   sha256: string;
+  // compat/ only: keeps the `nullable` keyword on converted schemas, which oasdiff reads
+  // in 3.0 and 3.1 alike. The IR never carries it.
+  nullableKeyword?: boolean;
 }
 
 export interface Pin {
@@ -166,7 +169,7 @@ function convert(spec: Spec, schema: unknown, legacy: boolean): JsonSchema {
     else out[key] = structuredClone(value);
   }
   if (schema["example"] !== undefined && out["examples"] === undefined) out["examples"] = [structuredClone(schema["example"])];
-  if (!legacy) return out;
+  if (!legacy) return withNullable(spec, schema, out);
   for (const [bound, exclusive] of [
     ["minimum", "exclusiveMinimum"],
     ["maximum", "exclusiveMaximum"],
@@ -179,7 +182,11 @@ function convert(spec: Spec, schema: unknown, legacy: boolean): JsonSchema {
       delete out[bound];
     }
   }
-  return schema["nullable"] === true ? allowNull(out) : out;
+  return withNullable(spec, schema, schema["nullable"] === true ? allowNull(out) : out);
+}
+
+function withNullable(spec: Spec, schema: JsonObject, out: JsonObject): JsonObject {
+  return spec.nullableKeyword === true && typeof schema["nullable"] === "boolean" ? { ...out, nullable: schema["nullable"] } : out;
 }
 
 function allowNull(schema: JsonObject): JsonObject {

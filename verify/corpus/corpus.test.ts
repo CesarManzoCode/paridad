@@ -4,7 +4,7 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { after, test } from "node:test";
@@ -17,9 +17,20 @@ const BUNDLE = join(ROOT, "verify/corpus/resend-openapi.bundle");
 const scratch = mkdtempSync(join(tmpdir(), "paridad-corpus-test-"));
 after(() => rmSync(scratch, { recursive: true, force: true }));
 
+// The bytes of the pinned spec. spec/PIN carries a `patch:` line when the local patch of
+// C26 (verify/c26/add-operation.patch) changed spec/resend.yaml: then they come from a
+// copy of spec/ with that patch reverted.
+function pinnedSpec(file: string): Buffer {
+  if (!/^patch: /m.test(readFileSync(join(ROOT, "spec/PIN"), "utf8"))) return readFileSync(join(ROOT, file));
+  const copy = mkdtempSync(join(scratch, "pinned-"));
+  cpSync(join(ROOT, "spec"), join(copy, "spec"), { recursive: true });
+  execFileSync("git", ["apply", "--reverse", join(ROOT, "verify/c26/add-operation.patch")], { cwd: copy });
+  return readFileSync(join(copy, file));
+}
+
 test("synthetic.json lists at least 24 patches over the pinned spec", () => {
   const synthetic = readSynthetic();
-  const spec = readFileSync(join(ROOT, synthetic.spec));
+  const spec = pinnedSpec(synthetic.spec);
   assert.equal(createHash("sha256").update(spec).digest("hex"), synthetic.sha256);
   assert.ok(synthetic.patches.length >= 24, `${synthetic.patches.length} patches`);
   assert.equal(new Set(synthetic.patches.map((patch) => patch.id)).size, synthetic.patches.length);

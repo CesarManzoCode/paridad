@@ -19,6 +19,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -83,6 +84,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -109,6 +111,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -135,6 +138,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -163,6 +167,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -199,6 +204,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -217,6 +223,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -243,6 +250,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -276,6 +284,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -294,6 +303,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -351,6 +361,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -377,6 +388,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -410,6 +422,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -457,6 +470,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -512,6 +526,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -538,6 +553,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -564,6 +580,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -590,6 +607,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -647,6 +665,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -665,6 +684,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -778,6 +798,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -804,6 +825,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -844,6 +866,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -892,6 +915,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -961,6 +985,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -987,6 +1012,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -1013,6 +1039,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -1049,6 +1076,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -1140,6 +1168,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -1190,6 +1219,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -1230,6 +1260,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -1256,6 +1287,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -1282,6 +1314,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -1325,6 +1358,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -1343,6 +1377,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -1420,6 +1455,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -1484,6 +1520,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -1510,6 +1547,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -1550,6 +1588,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -1597,6 +1636,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -1645,6 +1685,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -1693,6 +1734,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -1719,6 +1761,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -1752,6 +1795,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -1778,6 +1822,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -1842,6 +1887,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -1870,6 +1916,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -1947,6 +1994,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -2018,6 +2066,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -2054,6 +2103,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -2080,6 +2130,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -2120,6 +2171,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -2146,6 +2198,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -2172,6 +2225,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -2236,6 +2290,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -2272,6 +2327,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -2298,6 +2354,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -2324,6 +2381,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -2357,6 +2415,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -2383,6 +2442,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -2416,6 +2476,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -2456,6 +2517,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -2504,6 +2566,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Pagination cursor to fetch results before this attachment ID. Cannot be used with 'after'."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -2544,6 +2607,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Pagination cursor to fetch results before this email ID. Cannot be used with 'after'."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -2592,6 +2656,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Pagination cursor to fetch results before this attachment ID. Cannot be used with 'after'."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -2674,6 +2739,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "List of broadcast IDs to restrict the response to, up to 100. Cannot be combined with the `email` dimension or `email_id`. Accepts a comma-separated value, the parameter repeated, or a mix of both."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -2692,6 +2758,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -2811,6 +2878,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": []
     },
@@ -2839,6 +2907,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -2875,6 +2944,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -2893,6 +2963,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -2936,6 +3007,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -2976,6 +3048,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -3002,6 +3075,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -3020,6 +3094,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -3077,6 +3152,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -3120,6 +3196,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -3148,6 +3225,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -3205,6 +3283,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -3297,6 +3376,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -3354,6 +3434,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -3439,6 +3520,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -3465,6 +3547,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -3498,6 +3581,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -3531,6 +3615,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -3571,6 +3656,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -3611,6 +3697,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -3659,6 +3746,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -3685,6 +3773,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -3740,6 +3829,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -3809,6 +3899,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -3835,6 +3926,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -3868,6 +3960,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -3901,6 +3994,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -3934,6 +4028,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -3974,6 +4069,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -4014,6 +4110,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -4198,6 +4295,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -4231,6 +4329,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -4274,6 +4373,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -4310,6 +4410,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -4353,6 +4454,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -4410,6 +4512,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -4495,6 +4598,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -4545,6 +4649,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -4588,6 +4693,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -4628,6 +4734,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -4668,6 +4775,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -4694,6 +4802,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -4712,6 +4821,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -4762,6 +4872,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -4802,6 +4913,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -4850,6 +4962,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -4876,6 +4989,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -4902,6 +5016,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -4930,6 +5045,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -4958,6 +5074,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -4986,6 +5103,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -5029,6 +5147,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5076,6 +5195,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -5102,6 +5222,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5120,6 +5241,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -5205,6 +5327,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5231,6 +5354,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5271,6 +5395,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -5297,6 +5422,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5323,6 +5449,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5349,6 +5476,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -5426,6 +5554,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -5483,6 +5612,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5523,6 +5653,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items before this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -5549,6 +5680,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5575,6 +5707,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -5617,6 +5750,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5635,6 +5769,7 @@ export const COMMANDS: readonly Command[] = [
     ],
     "pathParams": [],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {
@@ -5678,6 +5813,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5711,6 +5847,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5751,6 +5888,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Pagination cursor to fetch results before this webhook ID. Cannot be used with 'after'."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": true,
@@ -5799,6 +5937,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items after this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5840,6 +5979,7 @@ export const COMMANDS: readonly Command[] = [
         "description": "Return items after this cursor."
       }
     ],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5866,6 +6006,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5899,6 +6040,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5925,6 +6067,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": null,
     "idempotency": false,
     "paginated": false,
@@ -5951,6 +6094,7 @@ export const COMMANDS: readonly Command[] = [
       }
     ],
     "queryParams": [],
+    "headerParams": [],
     "body": {
       "flags": [
         {

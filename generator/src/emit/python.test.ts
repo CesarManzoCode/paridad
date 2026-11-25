@@ -50,6 +50,7 @@ paths:
       operationId: things/remove
       parameters:
         - { name: thing_id, in: path, required: true, schema: { type: string } }
+        - { name: X-Trace, in: header, schema: { type: string } }
       responses:
         '200':
           description: OK
@@ -73,7 +74,7 @@ components:
         has_more: { type: boolean }
         data: { type: array, items: { $ref: '#/components/schemas/Thing' } }
 `);
-const ir = buildIR({ spec, overlay: { ...loadOverlay(join(ROOT, "ir/overlay.yaml")), operations: {} }, pin: null, ignoreMissingOverlayOperations: false });
+const ir = buildIR({ spec, overlay: { ...loadOverlay(join(ROOT, "ir/overlay.yaml")), operations: {} }, pin: null, lenientOverlay: false });
 
 const dirs: string[] = [];
 after(() => {
@@ -120,7 +121,7 @@ test("one method per operation, each with its literal operationId in its docstri
   assert.match(resources, /\n {4}def list\(self, query: schemas\.ThingsListQuery \| None = None\) -> schemas\.ThingList:\n/);
   assert.match(resources, /\n {4}def list_all\(self, query: schemas\.ThingsListAllQuery \| None = None\) -> Iterator\[schemas\.Thing\]:\n/);
   assert.match(resources, /\n {4}def create\(self, body: schemas\.Thing, \*, idempotency_key: str \| None = None\) -> schemas\.Thing:\n/);
-  assert.match(resources, /\n {4}def remove\(self, thing_id: str\) -> schemas\.ThingsRemoveResponse:\n/);
+  assert.match(resources, /\n {4}def remove\(self, thing_id: str, \*, headers: schemas\.ThingsRemoveHeaders \| None = None\) -> schemas\.ThingsRemoveResponse:\n/);
   const init = readFileSync(join(emit(), "src/paridad_resend/__init__.py"), "utf8");
   assert.match(init, /\n {4}things: resources\.Things\n/);
   assert.match(init, /\n {8}self\.things = resources\.Things\(core\)\n/);
@@ -209,11 +210,17 @@ test("emitting twice gives the same tree and removes files the emitter no longer
   ]);
 });
 
-test("the generated client sends the request of an operation", async () => {
+test("the generated client sends the request of an operation, with a header parameter other than Idempotency-Key", async () => {
   const out = emit();
-  const seen: { method: string; url: string; authorization: string; userAgent: string }[] = [];
+  const seen: { method: string; url: string; authorization: string; userAgent: string; trace: string | undefined }[] = [];
   const server = createServer((req, res) => {
-    seen.push({ method: req.method ?? "", url: req.url ?? "", authorization: req.headers.authorization ?? "", userAgent: req.headers["user-agent"] ?? "" });
+    seen.push({
+      method: req.method ?? "",
+      url: req.url ?? "",
+      authorization: req.headers.authorization ?? "",
+      userAgent: req.headers["user-agent"] ?? "",
+      trace: req.headers["x-trace"] as string | undefined,
+    });
     res.writeHead(200, { "content-type": "application/json" });
     res.end('{"deleted":true}');
   });
@@ -222,13 +229,13 @@ test("the generated client sends the request of an operation", async () => {
     const script = `import json, sys
 from paridad_resend import Resend
 resend = Resend("re_emitter_test_1234", base_url=sys.argv[1])
-print(json.dumps(resend.things.remove("a b")))
+print(json.dumps(resend.things.remove("a b", headers={"X-Trace": "t-1"})))
 `;
     const { stdout } = await promisify(execFile)("python3", ["-c", script, `http://127.0.0.1:${(server.address() as AddressInfo).port}`], {
       env: { ...process.env, PYTHONPATH: join(out, "src"), PYTHONDONTWRITEBYTECODE: "1" },
     });
     assert.deepEqual(JSON.parse(stdout), { deleted: true });
-    assert.deepEqual(seen, [{ method: "DELETE", url: "/things/a%20b", authorization: "Bearer re_emitter_test_1234", userAgent: "paridad-python/0.0.0-dev" }]);
+    assert.deepEqual(seen, [{ method: "DELETE", url: "/things/a%20b", authorization: "Bearer re_emitter_test_1234", userAgent: "paridad-python/0.0.0-dev", trace: "t-1" }]);
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }

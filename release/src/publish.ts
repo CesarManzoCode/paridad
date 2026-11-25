@@ -62,13 +62,15 @@ export async function npmTarball(registry: string, name: string, version: string
 }
 
 // A token from the registry's user endpoint (what `npm adduser` uses), which in
-// Verdaccio creates the local user or logs it in.
+// Verdaccio creates the local user or, when Basic credentials of that user come with
+// the request, logs it in (without them, an existing user answers 409).
 async function npmToken(registry: string): Promise<string> {
   const user = "paridad";
+  const password = "paridad-release";
   const response = await fetch(new URL(`-/user/org.couchdb.user:${user}`, withSlash(registry)), {
     method: "PUT",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ _id: `org.couchdb.user:${user}`, name: user, password: "paridad-release", type: "user", roles: [], date: new Date().toISOString() }),
+    headers: { "content-type": "application/json", authorization: `Basic ${Buffer.from(`${user}:${password}`).toString("base64")}` },
+    body: JSON.stringify({ _id: `org.couchdb.user:${user}`, name: user, password, type: "user", roles: [], date: new Date().toISOString() }),
   });
   const body = (await response.json().catch(() => ({}))) as { token?: unknown };
   if (!response.ok || typeof body.token !== "string") throw new Error(`login to ${registry} answered ${response.status}`);

@@ -1,0 +1,6 @@
+# oasdiff options of this project (docs/CONFIG-FILES.md of oasdiff v1.39.0): every
+# oasdiff run from the repository root compares like C18, C19 and C25, which also pass
+# them as flags. Without include-path-params, oasdiff rejects 19 history pairs of the
+# corpus as "duplicate endpoint" (vault/DECISION-LOG.md); external refs are never read.
+include-path-params: true
+allow-external-refs: false

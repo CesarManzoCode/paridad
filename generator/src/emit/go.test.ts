@@ -48,6 +48,7 @@ paths:
       operationId: things/remove
       parameters:
         - { name: thing_id, in: path, required: true, schema: { type: string } }
+        - { name: X-Trace, in: header, schema: { type: string } }
       responses:
         '200':
           description: OK
@@ -72,7 +73,7 @@ components:
         data: { type: array, items: { $ref: '#/components/schemas/Thing' } }
 `);
 const overlay = loadOverlay(join(ROOT, "ir/overlay.yaml"));
-const ir = buildIR({ spec, overlay: { ...overlay, operations: {} }, pin: null, ignoreMissingOverlayOperations: false });
+const ir = buildIR({ spec, overlay: { ...overlay, operations: {} }, pin: null, lenientOverlay: false });
 
 const dirs: string[] = [];
 after(() => {
@@ -118,7 +119,8 @@ test("one method per operation with context.Context, each with its literal opera
   assert.match(services, /\nfunc \(s \*ThingsService\) List\(ctx context\.Context, query \*ThingsListQuery\) \(\*ThingList, error\) \{/);
   assert.match(services, /\nfunc \(s \*ThingsService\) ListAll\(ctx context\.Context, query \*ThingsListAllQuery\) iter\.Seq2\[Thing, error\] \{/);
   assert.match(services, /\nfunc \(s \*ThingsService\) Create\(ctx context\.Context, body \*Thing, options \.\.\.RequestOption\) \(\*Thing, error\) \{/);
-  assert.match(services, /\nfunc \(s \*ThingsService\) Remove\(ctx context\.Context, thingID string\) \(\*ThingsRemoveResponse, error\) \{/);
+  assert.match(services, /\nfunc \(s \*ThingsService\) Remove\(ctx context\.Context, thingID string, headers \*ThingsRemoveHeaders\) \(\*ThingsRemoveResponse, error\) \{/);
+  assert.match(services, /\[\]RequestOption\{withHeaders\(headers\.values\(\)\)\}\)/);
   const client = readFileSync(join(emit(), "client.go"), "utf8");
   assert.match(client, /\tThings \*ThingsService\n/);
   assert.match(client, /func NewClient\(options \.\.\.Option\) \(\*Client, error\)/);
@@ -200,5 +202,5 @@ test("the generated operation tests cover every operation with its example", () 
   const source = readFileSync(join(emit(), "operations_test.go"), "utf8");
   for (const op of ir.operations) assert.ok(source.includes(`{${JSON.stringify(op.id)}, ${JSON.stringify(op.method)}, `), op.id);
   assert.ok(source.includes(`if len(ids) != ${ir.operations.length} {`));
-  assert.match(source, /_, err := c\.Things\.Remove\(ctx, "[^"]+"\)/);
+  assert.match(source, /_, err := c\.Things\.Remove\(ctx, "[^"]+", nil\)/);
 });

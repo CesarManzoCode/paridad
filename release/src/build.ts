@@ -2,11 +2,12 @@
 //
 // `enqueue` copies what a release needs from the tree into <job>/source: the pinned
 // spec and the IR (to compute the next bump against this release) and the three SDKs.
-// The build works on a copy of that snapshot, writes the version only there and leaves
-// in <job>/build the seven artifacts that the publish steps upload unchanged:
-// paridad-resend-<v>.tgz, paridad_resend-<v>.tar.gz, paridad_resend-<v>-py3-none-any.whl,
-// v<v>.mod, v<v>.zip and v<v>.info. A build cut halfway is redone from scratch, and
-// every artifact depends only on the snapshot and the version, so it gives the same bytes.
+// The build works on a copy of that snapshot, writes the version only there, compiles
+// the TypeScript SDK to dist/ and leaves in <job>/build the seven artifacts that the
+// publish steps upload unchanged: paridad-resend-<v>.tgz, paridad_resend-<v>.tar.gz,
+// paridad_resend-<v>-py3-none-any.whl, v<v>.mod, v<v>.zip and v<v>.info. A build cut
+// halfway is redone from scratch, and every artifact depends only on the snapshot and
+// the version, so it gives the same bytes.
 import { execFileSync, spawn } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { join, relative, sep } from "node:path";
@@ -27,6 +28,11 @@ const VERSION_FILES = [
   "sdks/python/src/paridad_resend/_policy.py",
   "sdks/go/policy.go",
 ];
+
+// Node does not strip types under node_modules, so the npm package ships the JavaScript
+// and declarations that tsc emits into dist/, with the tsc and @types/node of release/.
+const TSC = join(import.meta.dirname, "../node_modules/.bin/tsc");
+const TYPE_ROOTS = join(import.meta.dirname, "../node_modules/@types");
 
 // Never copied into the snapshot: installed packages, caches and build outputs.
 const SKIPPED = new Set(["node_modules", "__pycache__", ".pytest_cache", ".mypy_cache", "dist", "build", ".git"]);
@@ -115,7 +121,15 @@ export async function build(dir: string, version: string, tools: Tools): Promise
   const env = { ...process.env, SOURCE_DATE_EPOCH: epoch };
   const names = artifacts(source, version);
 
-  await run("npm", ["pack", "--pack-destination", out, "--ignore-scripts"], { cwd: join(building, "sdks/typescript"), env });
+  const typescript = join(building, "sdks/typescript");
+  rmSync(join(typescript, "test"), { recursive: true, force: true });
+  await run(TSC, ["-p", ".", "--noEmit", "false", "--rootDir", "src", "--outDir", "dist", "--declaration", "--rewriteRelativeImportExtensions", "--typeRoots", TYPE_ROOTS], { cwd: typescript, env });
+  const manifestFile = join(typescript, "package.json");
+  const manifest = JSON.parse(readFileSync(manifestFile, "utf8")) as Record<string, unknown>;
+  manifest["exports"] = { ".": { types: "./dist/index.d.ts", default: "./dist/index.js" } };
+  manifest["files"] = ["dist"];
+  writeFileSync(manifestFile, `${JSON.stringify(manifest, null, 2)}\n`);
+  await run("npm", ["pack", "--pack-destination", out, "--ignore-scripts"], { cwd: typescript, env });
   // Without isolation, so the build uses the pinned hatchling of .venv and needs no network.
   await run(tools.python, ["-m", "build", "--no-isolation", "--outdir", out, "."], { cwd: join(building, "sdks/python"), env });
 

@@ -17,8 +17,8 @@ const pin = readPin(join(ROOT, "spec/PIN"));
 // (verify/c26/add-operation.patch); the count of 144 is that of the upstream file.
 const locallyPatched = /^patch: /m.test(readFileSync(join(ROOT, "spec/PIN"), "utf8"));
 
-function build(changes: Partial<Overlay> = {}, ignoreMissingOverlayOperations = false) {
-  return buildIR({ spec, overlay: { ...overlay, ...changes }, pin, ignoreMissingOverlayOperations });
+function build(changes: Partial<Overlay> = {}, lenientOverlay = false) {
+  return buildIR({ spec, overlay: { ...overlay, ...changes }, pin, lenientOverlay });
 }
 
 const ir = build();
@@ -107,6 +107,24 @@ test("an overlay entry for an operationId that does not exist fails", () => {
 test("an example that does not validate against the request schema fails", () => {
   const operations = { ...overlay.operations, "emails/send": { examples: [{ body: { subject: "No sender" } }] } };
   assert.throws(() => build({ operations }), /example 0 of emails\/send .*does not validate/);
+  // With --spec (compatibility corpus) a synthesized example takes its place.
+  const synthesized = build({ operations }, true).operations.find((op) => op.id === "emails/send");
+  assert.notDeepEqual(synthesized?.examples[0]?.body, { subject: "No sender" });
+});
+
+test("an operation without a 2xx response has a null status and no response schema", () => {
+  const bare = parseSpec(`openapi: 3.1.0
+info: { title: Things, version: 0.0.1 }
+paths:
+  /things:
+    get:
+      operationId: things/list
+      responses:
+        default: { description: Unexpected error }
+`);
+  const [op] = buildIR({ spec: bare, overlay: { ...overlay, operations: {} }, pin: null, lenientOverlay: true }).operations;
+  assert.deepEqual(op?.response, { status: null, schema: null });
+  assert.equal(op?.pagination, null);
 });
 
 test("an OpenAPI 3.0 fragment with nullable becomes JSON Schema 2020-12", () => {
@@ -143,7 +161,7 @@ components:
       properties:
         id: { type: string }
 `);
-  const built = buildIR({ spec: legacy, overlay: { ...overlay, operations: {} }, pin: null, ignoreMissingOverlayOperations: false });
+  const built = buildIR({ spec: legacy, overlay: { ...overlay, operations: {} }, pin: null, lenientOverlay: false });
   assert.equal(built.spec.openapi, "3.0.3");
   assert.deepEqual(built.schemas["Thing"], {
     type: "object",

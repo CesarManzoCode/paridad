@@ -318,15 +318,28 @@ function endpointKey(method: string, path: string): string {
   return `${method} ${path}`;
 }
 
-function side(spec: Spec): Side {
+// The operations of the webhooks present on both sides count as operations under the
+// path `webhook:<name>`, as oasdiff merges modified webhooks into its paths
+// (checker/checker.go, mergeWebhookOperationsIntoPathsDiff); an added or removed
+// webhook is only webhook-added or webhook-removed.
+function side(document: Spec, webhooks: string[]): Side {
+  // oasdiff reads the nullable keyword in 3.0 and 3.1 alike (checker/nullable_type_utils.go).
+  const spec: Spec = { ...document, nullableKeyword: true };
+  const hooks = mapping(spec.document["webhooks"]);
+  const paths = Object.fromEntries(webhooks.map((name) => [`webhook:${name}`, hooks[name]]));
   const map = new Map<string, SpecEndpoint>();
-  for (const endpoint of endpoints(spec)) map.set(endpointKey(endpoint.method, endpoint.path), endpoint);
+  for (const endpoint of [...endpoints(spec), ...endpoints({ ...spec, document: { ...spec.document, paths } })]) {
+    map.set(endpointKey(endpoint.method, endpoint.path), endpoint);
+  }
   return { spec, schemas: componentSchemas(spec), endpoints: map, paths: new Set([...map.values()].map((endpoint) => endpoint.path)) };
 }
 
 export function compareSpecs(baseSpec: Spec, revisionSpec: Spec): Change[] {
-  const base = side(baseSpec);
-  const revision = side(revisionSpec);
+  const webhooksBefore = mapping(baseSpec.document["webhooks"]);
+  const webhooksAfter = mapping(revisionSpec.document["webhooks"]);
+  const common = Object.keys(webhooksBefore).filter((name) => Object.hasOwn(webhooksAfter, name));
+  const base = side(baseSpec, common);
+  const revision = side(revisionSpec, common);
   const changes: Change[] = [];
   const emitter =
     (operation: string | null, operationId: string | null): Emit =>
@@ -350,8 +363,6 @@ export function compareSpecs(baseSpec: Spec, revisionSpec: Spec): Change[] {
   }
 
   const emitGlobal = emitter(null, null);
-  const webhooksBefore = mapping(baseSpec.document["webhooks"]);
-  const webhooksAfter = mapping(revisionSpec.document["webhooks"]);
   for (const name of Object.keys(webhooksBefore)) if (!Object.hasOwn(webhooksAfter, name)) emitGlobal("webhook-removed", `webhook ${name} removed`);
   for (const name of Object.keys(webhooksAfter)) if (!Object.hasOwn(webhooksBefore, name)) emitGlobal("webhook-added", `webhook ${name} added`);
   compareGlobalSecurity(emitGlobal, base, revision);
@@ -698,7 +709,7 @@ function compareNode(w: Walk, rawBase: JsonSchema, rawRevision: JsonSchema, wher
   compareBounds(w, b, r, where, ceiling);
   compareKeywords(w, b, r, where, ceiling, root);
   if (w.scope !== "body") return;
-  compareProperties(w, b, r, where, underAllOf, root, wrapping?.moved ?? []);
+  compareProperties(w, b, r, where, underAllOf, wrapping?.moved ?? []);
   compareSubschemas(w, b, r, where, underAllOf, wrapping !== null, root);
   for (const keyword of ["items", "additionalProperties", "not", "contains", "propertyNames", "if", "then", "else", "unevaluatedItems", "unevaluatedProperties", "contentSchema"]) {
     const old = b[keyword];
@@ -783,8 +794,18 @@ function difference(a: string[], b: string[]): string[] {
 // requestTypeFormatBreaking and responseTypeFormatBreaking (check_types.go). A null
 // type is one more type, which also covers the nullability checks.
 function compareType(w: Walk, b: JsonObject, r: JsonObject, where: string, ceiling: Level | null): void {
-  const oldTypes = types(b);
-  const nextTypes = types(r);
+  // A change of the nullable keyword decides the nullability alone, and then `null` in
+  // the type arrays does not count (checker/nullable_type_utils.go, nullabilityChange).
+  const oldNullable = b["nullable"] === true;
+  const nextNullable = r["nullable"] === true;
+  const keyword = oldNullable !== nextNullable;
+  const oldTypes = keyword ? types(b).filter((type) => type !== "null") : types(b);
+  const nextTypes = keyword ? types(r).filter((type) => type !== "null") : types(r);
+  if (keyword) {
+    const detail = `${where} became ${nextNullable ? "nullable" : "not nullable"}`;
+    if (w.direction === "request") w.emit(nextNullable ? "request-type-generalized" : "request-type-changed", detail, ceiling);
+    else w.emit(nextNullable ? "response-type-changed" : "response-type-specialized", detail, ceiling);
+  }
   const typeChanged = difference(oldTypes, nextTypes).length > 0 || difference(nextTypes, oldTypes).length > 0;
   const oldFormat = typeof b["format"] === "string" ? b["format"] : "";
   const nextFormat = typeof r["format"] === "string" ? r["format"] : "";
@@ -939,7 +960,7 @@ function list(value: unknown): string[] {
 
 // moved: properties that went into the alternatives of a oneOf wrapping, which are not
 // removed from the contract (oasdiff#702).
-function compareProperties(w: Walk, b: JsonObject, r: JsonObject, where: string, underAllOf: boolean, root: boolean, moved: string[]): void {
+function compareProperties(w: Walk, b: JsonObject, r: JsonObject, where: string, underAllOf: boolean, moved: string[]): void {
   const old = mapping(b["properties"]);
   const next = mapping(r["properties"]);
   const oldRequired = list(b["required"]);

@@ -1,7 +1,8 @@
 // node generator/src/main.ts [--spec <file>] [--out <dir>]
 // Without arguments: spec/resend.yaml + ir/overlay.yaml -> ir/ir.json, then every emitter.
-// With --spec (compatibility corpus) the spec is not the pinned one, and overlay
-// entries for operations it lacks are skipped.
+// With --spec (compatibility corpus) the spec is not the pinned one: overlay entries
+// for operations it lacks are skipped, and overlay examples that do not validate
+// against it are replaced by synthesized ones.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { parseArgs } from "node:util";
@@ -31,7 +32,7 @@ function main(): void {
     spec: loadSpec(specFile),
     overlay: loadOverlay(join(ROOT, "ir/overlay.yaml")),
     pin: values.spec === undefined ? readPin(join(ROOT, "spec/PIN")) : null,
-    ignoreMissingOverlayOperations: values.spec !== undefined,
+    lenientOverlay: values.spec !== undefined,
   });
   const irFile = join(outDir, "ir/ir.json");
   mkdirSync(dirname(irFile), { recursive: true });

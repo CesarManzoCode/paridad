@@ -33,6 +33,8 @@ export interface Tool {
   sdk: [string, string];
   pathParams: string[];
   queryParams: string[];
+  // Header parameters other than Idempotency-Key, whose arguments are named as the header.
+  headerParams: string[];
   body: boolean;
   // Top-level body properties of format binary, sent as files of a multipart body.
   binary: string[];
@@ -94,7 +96,6 @@ export function tool(op: IROperation, schemas: Record<string, JsonSchema>, safeM
   const sdk = op.names.ts.split(".");
   if (sdk.length !== 2) throw new Error(`mcp: names.ts ${op.names.ts} of ${op.id} is not resource.method`);
   const headers = op.headerParams.filter((parameter) => parameter.name.toLowerCase() !== "idempotency-key");
-  if (headers.length > 0) throw new Error(`mcp: header ${headers[0]!.name} of ${op.id} has no tool argument`);
 
   const properties: Record<string, JsonSchema> = {};
   const required: string[] = [];
@@ -105,6 +106,7 @@ export function tool(op: IROperation, schemas: Record<string, JsonSchema>, safeM
   };
   for (const parameter of op.pathParams) add(parameter.name, parameterSchema(parameter), true);
   for (const parameter of op.queryParams) add(parameter.name, parameterSchema(parameter), parameter.required);
+  for (const parameter of headers) add(parameter.name, parameterSchema(parameter), parameter.required);
   if (op.idempotency) {
     // No maxLength here: a key out of 1 to 256 characters reaches the SDK, which
     // answers invalid_idempotency_key like every other surface (§5.2, C10).
@@ -130,6 +132,7 @@ export function tool(op: IROperation, schemas: Record<string, JsonSchema>, safeM
     sdk: sdk as [string, string],
     pathParams: op.pathParams.map((parameter) => parameter.name),
     queryParams: op.queryParams.map((parameter) => parameter.name),
+    headerParams: headers.map((parameter) => parameter.name),
     body: op.requestBody !== null,
     binary,
     idempotency: op.idempotency,

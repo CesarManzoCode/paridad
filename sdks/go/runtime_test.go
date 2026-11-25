@@ -233,6 +233,16 @@ func TestEveryRequestCarriesAuthorizationAndUserAgent(t *testing.T) {
 	}
 }
 
+func TestHeaderParametersOtherThanIdempotencyKeyAreSent(t *testing.T) {
+	s := serve(t, list, ok)
+	c := client(t, s)
+	_, err := request[json.RawMessage](context.Background(), c.Domains.core, opDomainsList, nil, nil, nil, []RequestOption{withHeaders(map[string][]string{"X-Trace": {"t-1"}})})
+	noError(t, err)
+	if got := s.requests()[0].header.Get("X-Trace"); got != "t-1" {
+		t.Fatalf("X-Trace %q", got)
+	}
+}
+
 func TestConfigurationFromEnvironment(t *testing.T) {
 	s := serve(t, hang, list)
 	t.Setenv("RESEND_API_KEY", testKey)

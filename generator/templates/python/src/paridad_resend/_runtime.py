@@ -155,6 +155,7 @@ class Core:
         query: Mapping[str, object] | None,
         body: object,
         idempotency_key: str | None = None,
+        extra_headers: Mapping[str, object] | None = None,
     ) -> object:
         rules = POLICY["idempotency_key"]
         if idempotency_key is not None and not rules["min_length"] <= len(idempotency_key) <= rules["max_length"]:
@@ -163,6 +164,10 @@ class Core:
         headers = {"Authorization": f"Bearer {self._api_key}", "User-Agent": USER_AGENT}
         if idempotency_key is not None:
             headers[rules["header"]] = idempotency_key
+        # Header parameters other than Idempotency-Key, by their name in the spec.
+        for name, value in (extra_headers or {}).items():
+            if value is not None:
+                headers[name] = str(value)
         # The body is serialized once, so every attempt sends the same bytes.
         payload: bytes | None = None
         if op.body == "json":

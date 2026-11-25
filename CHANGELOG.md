@@ -53,6 +53,18 @@ Es la versión que el servicio de releases asigna al primer trabajo de la cola. 
 - La prueba de la IR solo exige 144 operaciones cuando `spec/PIN` no marca un parche local, para que `make check` pueda pasar después del parche de C26.
 - El `index.ts` del SDK TS exporta como tipos las clases de recurso (`Emails`, `Domains`…). Sin eso, api-extractor solo reporta `readonly emails: Emails` con un aviso `ae-forgotten-export` y deja los métodos fuera del reporte `.api.md`. El generador falla si un esquema se llama igual que una clase de recurso.
 
+#### Corregido
+- `make check` volvía a fallar: `compat/src/rules.ts` tenía un parámetro sin usar (`root` de `compareProperties`) y `verify/tsconfig.json` también revisaba `verify/examples/`, que son proyectos aparte con su propio `tsconfig.json`.
+- El paquete npm que construye el servicio de releases trae el JavaScript y las declaraciones que `tsc` emite en `dist/` (`exports` apunta a `./dist/index.js` y `./dist/index.d.ts`), solo en la copia de construcción. Con las fuentes `.ts`, Node no quita tipos dentro de `node_modules` y la prueba de humo de C21 fallaba con `ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING`.
+- El servicio de releases envía las credenciales Basic del usuario al pedir su token a Verdaccio. Sin ellas, desde el segundo release Verdaccio respondía 409 (el usuario ya existe) y el trabajo fallaba (C23).
+- `compat/` lee la palabra clave `nullable` como oasdiff v1.39.0, también en OpenAPI 3.1, y compara los webhooks presentes en los dos lados como operaciones `<MÉTODO> webhook:<nombre>`. Con eso los pares `h46`, `h48`, `h86` y `h88` dan la misma clasificación y las mismas operaciones que oasdiff en C18 y C25.
+- El generador admite cabeceras opcionales distintas de `Idempotency-Key` (parámetro `headers` en los SDKs TS y Python, struct `<Servicio><Método>Headers` en Go, banderas en el CLI y argumentos en el MCP) y operaciones sin respuesta 2xx (`response.status` nulo en la IR). Con `--spec`, un ejemplo del overlay que no valida contra esa spec se reemplaza por uno sintetizado. Así el generador acepta los 26 parches sintéticos del corpus, que C19 y C20 necesitan.
+- El semver de los SDKs (`compat/src/semver.ts`) cuenta esas cabeceras en la firma de cada método.
+- C2 vuelve a correr C5 cuando sus capturas no traen las cinco superficies.
+- Un `go.mod` en la raíz, sin paquetes ni dependencias, permite correr `go tool -modfile=tools/go.mod <herramienta>` desde la raíz.
+- `.oasdiff.yaml` en la raíz (archivo de configuración de oasdiff v1.39.0) fija `include-path-params: true` y `allow-external-refs: false`: oasdiff corrido desde la raíz compara con las mismas opciones que C18, C19 y C25, que además las pasan como banderas.
+- Dos pruebas de `verify/` (`corpus.test.ts` y `oss.test.ts`) fallaban después de aplicar el parche de C26 porque comparaban contra `spec/resend.yaml` sin parchear. Con el parche aplicado (línea `patch:` en `spec/PIN`), ahora revierten el parche en una copia de `spec/` y hacen las mismas comprobaciones sobre la spec fijada.
+
 ### K2 — Comportamiento común, CLI, MCP, skill y documentación
 
 #### Agregado

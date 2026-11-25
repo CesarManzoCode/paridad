@@ -112,6 +112,7 @@ export class Core {
     query: object | undefined,
     body: unknown,
     options?: IdempotentRequestOptions,
+    extraHeaders?: object,
   ): Promise<Result<T>> {
     const rules = POLICY.idempotency_key;
     const key = options?.idempotencyKey;
@@ -122,6 +123,8 @@ export class Core {
     const url = this.#url(op, path, query);
     const headers: Record<string, string> = { Authorization: `Bearer ${this.#apiKey}`, "User-Agent": this.#userAgent };
     if (key !== undefined) headers[rules.header] = key;
+    // Header parameters other than Idempotency-Key, by their name in the spec.
+    for (const [name, value] of Object.entries(extraHeaders ?? {})) if (value !== undefined && value !== null) headers[name] = String(value);
     // The body is serialized once, so every attempt sends the same bytes.
     let payload: string | Uint8Array<ArrayBuffer> | undefined;
     if (op.body === "json") {

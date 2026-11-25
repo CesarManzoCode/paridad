@@ -70,7 +70,7 @@ components:
         data: { type: array, items: { $ref: '#/components/schemas/Thing' } }
 `);
 const overlay = loadOverlay(join(ROOT, "ir/overlay.yaml"));
-const ir = buildIR({ spec, overlay: { ...overlay, operations: {} }, pin: null, ignoreMissingOverlayOperations: false });
+const ir = buildIR({ spec, overlay: { ...overlay, operations: {} }, pin: null, lenientOverlay: false });
 const byId = (id: string) => ir.operations.find((op) => op.id === id)!;
 
 const dirs: string[] = [];
@@ -192,7 +192,7 @@ test("emitting twice gives the same tree and removes files the emitter no longer
 });
 
 test("every operation of the pinned specification gets a command and an example command line", () => {
-  const pinned = buildIR({ spec: loadSpec(join(ROOT, "spec/resend.yaml")), overlay, pin: null, ignoreMissingOverlayOperations: false });
+  const pinned = buildIR({ spec: loadSpec(join(ROOT, "spec/resend.yaml")), overlay, pin: null, lenientOverlay: false });
   const names = new Set<string>();
   for (const op of pinned.operations) {
     const cmd = command(op, pinned.schemas);

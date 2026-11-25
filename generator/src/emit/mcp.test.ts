@@ -87,7 +87,7 @@ components:
         data: { type: array, items: { $ref: '#/components/schemas/Thing' } }
 `);
 const overlay = loadOverlay(join(ROOT, "ir/overlay.yaml"));
-const ir = buildIR({ spec, overlay: { ...overlay, operations: {} }, pin: null, ignoreMissingOverlayOperations: false });
+const ir = buildIR({ spec, overlay: { ...overlay, operations: {} }, pin: null, lenientOverlay: false });
 const byId = (id: string) => ir.operations.find((op) => op.id === id)!;
 const SAFE = new Set(["GET", "PUT", "DELETE"]);
 
@@ -189,12 +189,15 @@ test("the input schema is valid 2020-12 and accepts the example and rejects bad 
   assert.equal(ajv.compile(fullSchema(create))({ body: { part: { label: "x" } } }), false);
 });
 
-test("an argument name that collides or a header without argument is an error", () => {
+test("an argument name that collides is an error, and a header other than Idempotency-Key is an argument named as the header", () => {
   const create = byId("things/create");
   const clash = { ...create, queryParams: [{ name: "body", required: false, description: null, style: "form", explode: true, schema: { type: "string" } }] };
   assert.throws(() => tool(clash, ir.schemas, SAFE), /argument body of things\/create collides/);
   const header = { ...create, headerParams: [{ name: "X-Trace", required: false, description: null, style: "simple", explode: false, schema: { type: "string" } }] };
-  assert.throws(() => tool(header, ir.schemas, SAFE), /header X-Trace of things\/create has no tool argument/);
+  const traced = tool(header, ir.schemas, SAFE);
+  assert.deepEqual(traced.headerParams, ["X-Trace"]);
+  assert.deepEqual((traced.inputSchema["properties"] as JsonObject)["X-Trace"], { type: "string" });
+  assert.ok(!((traced.inputSchema["required"] as string[] | undefined) ?? []).includes("X-Trace"));
 });
 
 test("emitting twice gives the same tree and removes files the emitter no longer writes", () => {
@@ -210,7 +213,7 @@ test("emitting twice gives the same tree and removes files the emitter no longer
 });
 
 test("every operation of the pinned specification gets a tool whose schema accepts its example", () => {
-  const pinned = buildIR({ spec: loadSpec(join(ROOT, "spec/resend.yaml")), overlay, pin: null, ignoreMissingOverlayOperations: false });
+  const pinned = buildIR({ spec: loadSpec(join(ROOT, "spec/resend.yaml")), overlay, pin: null, lenientOverlay: false });
   const safe = new Set(pinned.policy["safe_methods"] as string[]);
   const ajv = new Ajv2020({ strict: false, validateFormats: false });
   const names = new Set<string>();

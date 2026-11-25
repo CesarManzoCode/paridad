@@ -129,7 +129,8 @@ export async function startCaptureServer(options: CaptureOptions): Promise<Captu
       send(response, 404, { statusCode: 404, name: "not_found", message: `No operation for ${method} ${path}.` });
       return;
     }
-    send(response, op.response.status, successBody(op, new URLSearchParams(mark === -1 ? "" : target.slice(mark + 1))));
+    // An operation without a documented 2xx exists only in the compatibility corpus.
+    send(response, op.response.status ?? 200, successBody(op, new URLSearchParams(mark === -1 ? "" : target.slice(mark + 1))));
   };
 
   const control = async (request: IncomingMessage, response: ServerResponse): Promise<void> => {

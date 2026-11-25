@@ -101,9 +101,13 @@ function operationApi(add: Add, op: IROperation, language: Language): void {
     `body:${bodyKind(op)}`,
     `query:${queryKind(op.queryParams)}`,
     `idempotency:${op.idempotency}`,
+    `headers:${queryKind(op.headerParams.filter((parameter) => parameter.name.toLowerCase() !== "idempotency-key"))}`,
     `response:${op.response.schema === null ? "none" : "some"}`,
   ];
   add(`method ${method}`, signature.join(" "));
+  for (const parameter of op.headerParams) {
+    if (parameter.name.toLowerCase() !== "idempotency-key") flatten(add, `method ${method} header ${parameter.name}`, parameter.schema, "request", parameter.required);
+  }
   for (const parameter of op.pathParams) flatten(add, `method ${method} path ${language === "go" ? op.pathParams.indexOf(parameter) : parameter.name}`, parameter.schema, "request", null);
   if (op.requestBody !== null) flatten(add, `method ${method} body`, withoutMedia(op.requestBody), "request", null);
   for (const parameter of op.queryParams) queryElement(add, `method ${method} query`, parameter);

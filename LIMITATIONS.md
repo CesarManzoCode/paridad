@@ -13,6 +13,9 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - `emails/update` (`PATCH /emails/{email_id}`) no declara cuerpo de petición en la especificación fijada: `UpdateEmailOptions` aparece como esquema de su respuesta. La IR sigue a la especificación, así que las superficies propias no envían cuerpo en esa operación.
 - `webhooks/list-events` y `webhooks/list-event-attempts` aceptan `limit` y `after` pero no `before`. La regla de paginación exige los tres parámetros, así que esas dos operaciones no tienen `pagination` en la IR ni iterador en las superficies; se paginan pasando `after` a mano.
 - Los valores que la síntesis no puede sacar del esquema (`example`, `default`, `enum`, `format`) son genéricos: la cadena `example` y, en parámetros de ruta, un UUID fijo. Solo las operaciones con ejemplo en `ir/overlay.yaml` llevan valores elegidos a mano.
+- Las cabeceras de una operación distintas de `Idempotency-Key` solo se admiten opcionales: el generador rechaza una requerida. Los SDKs las reciben en `headers` (TS y Python) o en un struct `<Servicio><Método>Headers` (Go), el CLI como banderas y el MCP como argumentos con el nombre de la cabecera; los iteradores (`<método>All`, `--all`), los ejemplos de la documentación y la skill no las llevan. La spec fijada no declara ninguna: solo aparecen en el corpus de compatibilidad (`s-add-header-optional`).
+- Una operación sin respuesta 2xx queda en la IR con `response.status` nulo y sin esquema, así que los SDKs no tipan su respuesta y el servidor de captura respondería 200. La spec fijada no tiene ninguna: solo aparece en el corpus (`s-remove-success-response`).
+- Con `--spec` (corpus de C19 y C20), un ejemplo de `ir/overlay.yaml` que no valida contra esa spec se reemplaza por uno sintetizado. Solo con la spec fijada el generador falla por un ejemplo inválido.
 
 ## SDK TypeScript
 
@@ -58,7 +61,7 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 
 - Los mensajes de error que fuerza C6 los escribe el propio arnés (`Forced by the paridad fault proxy: <estado> <name>.`), no son los textos de la página oficial de errores: C6 comprueba que cada superficie los muestra sin cambios, no que coincidan con los del servidor real.
 - El driver del MCP pagina él mismo cuando un caso itera (llama otra vez a la herramienta con `after` igual al id del último elemento), porque el servidor MCP devuelve una sola página; esa iteración es del cliente de prueba, no del producto.
-- C2 toma las capturas de `.paridad/runs/c5/` tal como estén; si C5 se corrió con un subconjunto de `SURFACES`, C2 cuenta como faltantes las superficies que no corrieron. Solo corre C5 por su cuenta cuando ese archivo no existe.
+- C2 toma las capturas de `.paridad/runs/c5/` tal como estén cuando traen las cinco superficies; solo corre C5 por su cuenta cuando ese archivo no existe o le falta alguna. No comprueba que esas capturas sean de la generación actual.
 - El servidor de captura responde con todas las propiedades de primer nivel que documenta el esquema de la respuesta, así que C16 compara claves de primer nivel con respuestas completas. Con una respuesta que solo traía `deleted`, `domains remove` del CLI oficial imprimió `deleted`, `id` y `object` y el propio solo `deleted`: si el servidor real omite propiedades documentadas, las claves de los dos CLIs pueden diferir.
 - `traces.jsonl` escribe los tiempos de `process.hrtime.bigint()` como números JSON: son exactos al nanosegundo hasta 2^53 ns (unos 104 días de reloj monotónico, que en Linux cuenta desde el arranque); pasado eso se redondean a unos pocos nanosegundos.
 
@@ -71,7 +74,9 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - La equivalencia de dos esquemas (ramas de `oneOf`/`anyOf`/`allOf` emparejadas por contrato y la alternativa que conserva la base en una envoltura) se decide comparando el JSON canónico sin anotaciones, no con el diff de oasdiff: dos esquemas equivalentes escritos distinto cuentan como distintos.
 - Las reglas con `x-sunset` comparan contra la fecha local del día en que se corre, como oasdiff: el mismo par puede cambiar de clasificación con el paso de los días.
 - Un cambio de nivel WARN de oasdiff (lo que puede romper) no rompe en la clasificación, pero propone salto mayor.
-- La coincidencia con `oasdiff breaking --fail-on ERR` sobre el corpus no está medida todavía: la mide C18.
+- La coincidencia con `oasdiff breaking --fail-on ERR` solo está medida sobre los 117 pares del corpus de C18 (91 históricos y 26 sintéticos).
+- La palabra clave `nullable` se lee como oasdiff, también en OpenAPI 3.1: si cambia, decide sola si el esquema acepta `null`, aunque `null` aparezca o desaparezca en la lista de `type`. La IR no la conserva en 3.1, así que las superficies generadas no la usan.
+- Un webhook que está en los dos lados se compara como las operaciones `<MÉTODO> webhook:<nombre>`, igual que oasdiff; uno agregado o quitado solo se informa como `webhook-added` o `webhook-removed`, sin operaciones afectadas.
 - `paridad contract-check` ejecuta `compat/` del repositorio de paridad; el CLI publicado sin el repositorio responde con el error `compat_missing`.
 
 ## Servicio de releases
@@ -85,7 +90,8 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - Verdaccio no publica el sha256 de un paquete (solo `shasum` y `integrity`), así que el servicio descarga el tarball para compararlo. Si Verdaccio tiene un uplink que sirve `paridad-resend` desde el registro público, la consulta ve ese paquete.
 - Mientras está en pausa, el proceso queda bloqueado por completo: `/metrics` no responde.
 - Solo puede correr un `serve` sobre la misma cola: dos procesos retomarían el mismo trabajo en estado `running`.
-- El zip de módulo sigue el formato de la referencia de módulos de Go, pero todavía no se instaló con `go` desde el GOPROXY por archivos; lo mide C21.
+- El zip de módulo sigue el formato de la referencia de módulos de Go; solo se comprobó que `go get` lo instala desde el GOPROXY por archivos (C21), no con otros clientes de GOPROXY.
+- Las pruebas del SDK TS corren sobre `src/`. El JavaScript y las declaraciones que publica el release (`dist/`, emitidos por `tsc` al construir, porque Node no quita tipos dentro de `node_modules`) solo los ejercita la prueba de humo de C21.
 
 ## Medición
 

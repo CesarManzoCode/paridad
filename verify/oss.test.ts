@@ -25,6 +25,12 @@ test("the C26 patch applies cleanly on a copy of spec/ and adds exactly one oper
   const work = mkdtempSync(join(tmpdir(), "paridad-oss-"));
   try {
     cpSync(join(ROOT, "spec"), join(work, "spec"), { recursive: true });
+    // After `git apply` of the patch (C26), spec/PIN carries a `patch:` line: the copy
+    // goes back to the pinned spec first.
+    if (/^patch: /m.test(readFileSync(join(work, "spec/PIN"), "utf8"))) {
+      const reverted = spawnSync("git", ["apply", "--reverse", PATCH], { cwd: work, encoding: "utf8" });
+      assert.equal(reverted.status, 0, reverted.stderr);
+    }
     const before = operationIds(join(work, "spec/resend.yaml"));
     const applied = spawnSync("git", ["apply", PATCH], { cwd: work, encoding: "utf8" });
     assert.equal(applied.status, 0, applied.stderr);

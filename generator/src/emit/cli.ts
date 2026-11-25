@@ -40,6 +40,8 @@ export interface Command {
   sdk: [string, string];
   pathParams: Flag[];
   queryParams: Flag[];
+  // Header parameters other than Idempotency-Key.
+  headerParams: Flag[];
   // Flags of the top-level body properties; null when the operation has no body.
   body: { flags: Flag[] } | null;
   idempotency: boolean;
@@ -97,6 +99,7 @@ export function command(op: IROperation, schemas: Record<string, JsonSchema>): C
   if (sdk.length !== 2) throw new Error(`cli: names.ts ${op.names.ts} of ${op.id} is not resource.method`);
   const pathParams = op.pathParams.map((parameter) => parameterFlag(parameter, schemas));
   const queryParams = op.queryParams.map((parameter) => parameterFlag(parameter, schemas));
+  const headerParams = op.headerParams.filter((parameter) => parameter.name.toLowerCase() !== "idempotency-key").map((parameter) => parameterFlag(parameter, schemas));
   let body: Command["body"] = null;
   if (op.requestBody !== null) {
     const { properties, required } = topLevel(op.requestBody, schemas);
@@ -110,7 +113,7 @@ export function command(op: IROperation, schemas: Record<string, JsonSchema>): C
       })),
     };
   }
-  const flags = [...pathParams, ...queryParams, ...(body?.flags ?? [])].map((flag) => flag.flag);
+  const flags = [...pathParams, ...queryParams, ...headerParams, ...(body?.flags ?? [])].map((flag) => flag.flag);
   for (const flag of flags) {
     if (RESERVED_FLAGS.has(flag) || flags.indexOf(flag) !== flags.lastIndexOf(flag)) throw new Error(`cli: flag --${flag} of ${op.id} collides with another flag`);
   }
@@ -124,6 +127,7 @@ export function command(op: IROperation, schemas: Record<string, JsonSchema>): C
     sdk: sdk as [string, string],
     pathParams,
     queryParams,
+    headerParams,
     body,
     idempotency: op.idempotency,
     paginated: op.pagination !== null,
