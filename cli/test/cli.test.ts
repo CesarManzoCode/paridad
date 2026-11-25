@@ -63,7 +63,7 @@ async function cli(argv: string[], env: Record<string, string> = {}): Promise<{ 
     stdio: ["ignore", fd, "pipe"],
   });
   let stderr = "";
-  child.stderr.on("data", (chunk: Buffer) => (stderr += chunk.toString()));
+  child.stderr!.on("data", (chunk: Buffer) => (stderr += chunk.toString()));
   const code = await new Promise<number | null>((resolve) => child.on("close", resolve));
   closeSync(fd);
   return { code, stdout: readFileSync(file, "utf8"), stderr };

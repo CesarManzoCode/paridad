@@ -1,8 +1,9 @@
 // node harness/capture/server.ts --port <p> --control-port <c> --out <captures.jsonl> [--ir ir/ir.json]
 // Capture server (contract §7): records every request it receives in captures.jsonl
-// (§8) and answers with the success response of the matched operation. The control
-// port takes POST /__paridad/session to attribute the following requests, and
-// GET /__paridad/health. Port 0 picks a free port; the bound ports are printed on stdout.
+// (§8) and answers with the success response of the matched operation, with every
+// top-level property its schema documents. The control port takes POST
+// /__paridad/session to attribute the following requests, and GET /__paridad/health.
+// Port 0 picks a free port; the bound ports are printed on stdout.
 import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import type { AddressInfo } from "node:net";
@@ -54,7 +55,8 @@ interface Route {
 
 export async function startCaptureServer(options: CaptureOptions): Promise<CaptureServer> {
   const { ir, out } = options;
-  const synthesize = createSynthesizer(ir.schemas, createValidator(ir.schemas, ir.operations));
+  const validate = createValidator(ir.schemas, ir.operations);
+  const synthesize = createSynthesizer(ir.schemas, validate);
   const routes: Route[] = ir.operations.map((op) => ({
     op,
     segments: op.path.split("/").map((segment) => (segment.includes("{") ? null : segment)),
@@ -68,10 +70,22 @@ export async function startCaptureServer(options: CaptureOptions): Promise<Captu
 
   const successBody = (op: IROperation, query: URLSearchParams): unknown => {
     if (op.response.schema === null) return undefined;
-    if (!bodies.has(op.id)) bodies.set(op.id, synthesize(op.response.schema));
+    if (!bodies.has(op.id)) bodies.set(op.id, documented(op.response.schema));
     const body = bodies.get(op.id);
     if (op.pagination === null || session?.listItems == null || !isObject(body)) return body;
     return page(op, body, session.listItems, query);
+  };
+
+  // The synthesized body with every top-level property the schema documents, as the
+  // API answers (the synthesizer alone keeps only required properties, or the first
+  // one); the synthesized body as is when the full one does not validate.
+  const documented = (schema: JsonSchema): unknown => {
+    const body = synthesize(schema);
+    const resolved = deref(ir, schema);
+    if (!isObject(body) || !isObject(resolved) || !isObject(resolved["properties"])) return body;
+    const full: JsonObject = { ...body };
+    for (const [name, property] of Object.entries(resolved["properties"])) if (!(name in full)) full[name] = synthesize(property as JsonSchema);
+    return validate(schema, full) === null ? full : body;
   };
 
   // A deterministic set of n items, served by limit and after with has_more.

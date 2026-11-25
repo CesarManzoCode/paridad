@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { after, test } from "node:test";
 import { parse } from "yaml";
 import type { IR } from "../ir.ts";
-import { exampleCommand, emitSkill, shellWord } from "./skill.ts";
+import { CONTRACT_CHECK, exampleCommand, emitSkill, shellWord } from "./skill.ts";
 
 const ROOT = join(import.meta.dirname, "../../..");
 const ir = JSON.parse(readFileSync(join(ROOT, "ir/ir.json"), "utf8")) as IR;
@@ -69,9 +69,9 @@ test("every operation has its command, with its first example, in a bash block, 
   }
 });
 
-test("contract-check and config show have their own bash blocks", () => {
+test("config show, and contract-check once compat/ exists, have their own bash blocks", () => {
   const lines = bashLines(skill);
-  assert.ok(lines.includes("paridad contract-check spec/resend.yaml spec/resend.yaml"));
+  assert.equal(lines.includes("paridad contract-check spec/resend.yaml spec/resend.yaml"), CONTRACT_CHECK);
   assert.ok(lines.includes("paridad config show"));
 });
 

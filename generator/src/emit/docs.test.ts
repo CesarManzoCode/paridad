@@ -3,11 +3,19 @@ import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from "node
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { after, test } from "node:test";
-import type { IR } from "../ir.ts";
+import { buildIR, loadOverlay } from "../ir.ts";
+import { loadSpec, readPin } from "../spec.ts";
 import { LANGUAGES, emitDocs, pageFile } from "./docs.ts";
 
 const ROOT = join(import.meta.dirname, "../../..");
-const ir = JSON.parse(readFileSync(join(ROOT, "ir/ir.json"), "utf8")) as IR;
+// Built as `make generate` builds it: ir/ir.json sorts the keys, and the order of
+// the keys of an example body is the order of its literal in the docs.
+const ir = buildIR({
+  spec: loadSpec(join(ROOT, "spec/resend.yaml")),
+  overlay: loadOverlay(join(ROOT, "ir/overlay.yaml")),
+  pin: readPin(join(ROOT, "spec/PIN")),
+  ignoreMissingOverlayOperations: false,
+});
 
 const dirs: string[] = [];
 after(() => {

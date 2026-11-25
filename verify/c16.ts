@@ -8,7 +8,8 @@
 // request goes through the fault proxy, which answers every attempt of a pair with
 // `respond` with that error, in front of the capture server. Writes scenarios.json,
 // captures.jsonl, traces.jsonl, results.jsonl ({"id","surface","argv","exit_code",
-// "stdout_file"}), failures.jsonl and out/<id>.<surface>.stdout|stderr. Exits 0 only
+// "stdout_file"}, with stdout_file the file of the compared output from the
+// repository root), failures.jsonl and out/<id>.<surface>.stdout|stderr. Exits 0 only
 // if every paridad command writes valid JSON and exits 0, or writes JSON with
 // error.message and exits 1, and every pair has the same exit code and the same
 // top-level keys on both CLIs.
@@ -19,7 +20,7 @@
 import { spawn } from "node:child_process";
 import { closeSync, mkdirSync, mkdtempSync, openSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
 import type { IR } from "../generator/src/ir.ts";
 import { startCaptureServer } from "../harness/capture/server.ts";
 import { startFaultProxy, type Action, type Scenarios } from "../harness/faults/proxy.ts";
@@ -98,16 +99,21 @@ try {
       }
       const prefix = join(out, `${caseFile(id)}.${surface}`);
       const code = await runToFiles([process.execPath, surface === "cli" ? PARIDAD : RESEND, ...args], surface === "cli" ? env : officialEnv, prefix);
+      const stdout = readFileSync(`${prefix}.stdout`, "utf8");
+      const stderr = readFileSync(`${prefix}.stderr`, "utf8");
+      // The file of the output compared, from the repository root: the official
+      // errors go to stderr, so its stderr when its stdout is empty.
+      const compared = surface === "official-cli" && stdout.trim() === "" ? "stderr" : "stdout";
       const line: ResultLine = {
         id,
         surface,
         argv: [surface === "cli" ? "paridad" : "resend", ...args],
         exit_code: code,
-        stdout_file: `out/${caseFile(id)}.${surface}.stdout`,
+        stdout_file: relative(ROOT, `${prefix}.${compared}`),
       };
       writeFileSync(resultsFile, `${JSON.stringify(line)}\n`, { flag: "a" });
       results.push(line);
-      return { code, stdout: readFileSync(`${prefix}.stdout`, "utf8"), stderr: readFileSync(`${prefix}.stderr`, "utf8") };
+      return { code, stdout, stderr };
     };
 
     for (const item of exampleCases(ir)) {

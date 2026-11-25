@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { after, test } from "node:test";
 import { buildIR, loadOverlay } from "../ir.ts";
-import { loadSpec, parseSpec } from "../spec.ts";
+import { SCHEMAS_REF, loadSpec, parseSpec } from "../spec.ts";
 import { command, emitCli, exampleArgv, flagKind } from "./cli.ts";
 
 const ROOT = join(import.meta.dirname, "../../..");
@@ -150,7 +150,7 @@ test("flagKind tells how the text of a flag becomes a value", () => {
   assert.equal(flagKind({ enum: [1, 2] }, {}), "json");
   assert.equal(flagKind({ oneOf: [{ type: "string" }, { type: "object" }] }, {}), "auto");
   assert.equal(flagKind({ type: "string", format: "binary" }, {}), "binary");
-  assert.equal(flagKind({ $ref: "#/components/schemas/S" }, { S: { type: "string" } }), "string");
+  assert.equal(flagKind({ $ref: `${SCHEMAS_REF}S` }, { S: { type: "string" } }), "string");
   assert.equal(flagKind({}, {}), "auto");
 });
 

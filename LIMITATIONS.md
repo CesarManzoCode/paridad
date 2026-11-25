@@ -56,6 +56,9 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - Los mensajes de error que fuerza C6 los escribe el propio arnés (`Forced by the paridad fault proxy: <estado> <name>.`), no son los textos de la página oficial de errores: C6 comprueba que cada superficie los muestra sin cambios, no que coincidan con los del servidor real.
 - El driver del MCP pagina él mismo cuando un caso itera (llama otra vez a la herramienta con `after` igual al id del último elemento), porque el servidor MCP devuelve una sola página; esa iteración es del cliente de prueba, no del producto.
 - C2 toma las capturas de `.paridad/runs/c5/` tal como estén; si C5 se corrió con un subconjunto de `SURFACES`, C2 cuenta como faltantes las superficies que no corrieron. Solo corre C5 por su cuenta cuando ese archivo no existe.
+- El servidor de captura responde con todas las propiedades de primer nivel que documenta el esquema de la respuesta, así que C16 compara claves de primer nivel con respuestas completas. Con una respuesta que solo traía `deleted`, `domains remove` del CLI oficial imprimió `deleted`, `id` y `object` y el propio solo `deleted`: si el servidor real omite propiedades documentadas, las claves de los dos CLIs pueden diferir.
+- `traces.jsonl` escribe los tiempos de `process.hrtime.bigint()` como números JSON: son exactos al nanosegundo hasta 2^53 ns (unos 104 días de reloj monotónico, que en Linux cuenta desde el arranque); pasado eso se redondean a unos pocos nanosegundos.
+- Mientras `compat/` no exista (K3), `paridad contract-check` responde `not_implemented`: la skill no lo enseña y C15 no lo cuenta entre los comandos del CLI que deben aparecer en ella.
 
 ## Medición
 

@@ -32,8 +32,8 @@ export interface Trace {
   case: string | null;
   surface: string | null;
   attempt: number;
-  t_recv_ns: string;
-  t_resp_end_ns: string;
+  t_recv_ns: number;
+  t_resp_end_ns: number;
   method: string;
   target: string;
   headers: [string, string][];
@@ -130,8 +130,8 @@ export async function startFaultProxy(options: ProxyOptions): Promise<FaultProxy
       case: current?.case ?? null,
       surface: current?.surface ?? null,
       attempt,
-      t_recv_ns: String(t_recv_ns),
-      t_resp_end_ns: String(t_resp_end_ns),
+      t_recv_ns: Number(t_recv_ns),
+      t_resp_end_ns: Number(t_resp_end_ns),
       method,
       target,
       headers,

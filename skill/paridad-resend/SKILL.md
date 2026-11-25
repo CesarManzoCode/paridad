@@ -1,6 +1,6 @@
 ---
 name: paridad-resend
-description: "Envía emails y administra recursos de Resend (dominios, contactos, difusiones, plantillas, webhooks y el resto de la API de Resend) desde la terminal con el CLI paridad. Úsala cuando una tarea necesite llamar a la API de Resend o comparar dos versiones de su contrato OpenAPI."
+description: "Envía emails y administra recursos de Resend (dominios, contactos, difusiones, plantillas, webhooks y el resto de la API de Resend) desde la terminal con el CLI paridad. Úsala cuando una tarea necesite llamar a la API de Resend."
 ---
 
 # paridad-resend
@@ -53,14 +53,6 @@ Los comandos de listado devuelven una página: `{"object":"list","has_more":…,
 
 ```bash
 paridad api-keys list --all
-```
-
-## Chequeo de contrato
-
-`paridad contract-check` compara dos versiones de la especificación OpenAPI (base y revisión, con `--json` opcional): lista los cambios que rompen, las operaciones y superficies afectadas y el salto semver propuesto, y sale con 0 si la revisión es compatible y con 1 si rompe. Desde la raíz del repositorio, comparando la especificación fijada consigo misma:
-
-```bash
-paridad contract-check spec/resend.yaml spec/resend.yaml
 ```
 
 ## Comandos

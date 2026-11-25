@@ -6,9 +6,11 @@
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { IR, IROperation } from "../ir.ts";
+import { isObject } from "../spec.ts";
+import { command, exampleArgv, flagText } from "./cli.ts";
 import { goExampleCalls, goString, type GoExampleCall } from "./go.ts";
 import { pyLiteral } from "./python.ts";
-import { exampleCommand } from "./skill.ts";
+import { exampleCommand, shellWord } from "./skill.ts";
 import { TS_PACKAGE } from "./typescript.ts";
 
 export const LANGUAGES = ["typescript", "python", "go", "bash"] as const;
@@ -90,8 +92,8 @@ function resourcePage(ir: IR, resource: string, ops: IROperation[], goCalls: Map
     const goCall = goCalls.get(op.id);
     if (goCall === undefined) throw new Error(`docs: ${op.id} has no Go example`);
     const examples: Record<Language, string> = {
-      typescript: typescriptExample(op),
-      python: pythonExample(op),
+      typescript: typescriptExample(op, ir),
+      python: pythonExample(op, ir),
       go: goExample(ir, goCall),
       bash: bashExample(op, ir),
     };
@@ -134,11 +136,30 @@ function pathArgs(op: IROperation): string[] {
   return op.pathParams.map((parameter) => String(example.path[parameter.name]));
 }
 
-export function typescriptExample(op: IROperation): string {
+// The file fields of a multipart body (binary flags of the CLI) that the example
+// gives as text; the SDKs take them as Blob or bytes and send them as a file part.
+function fileFields(op: IROperation, ir: IR): Set<string> {
+  const body = exampleOf(op).body;
+  const flags = command(op, ir.schemas).body?.flags ?? [];
+  return new Set(flags.filter((flag) => flag.kind === "binary" && isObject(body) && typeof body[flag.name] === "string").map((flag) => flag.name));
+}
+
+// The body as a literal, with each file field written by `file` from its text.
+function bodyLiteral(op: IROperation, ir: IR, literal: (value: unknown) => string, file: (text: string) => string, indent: string): string {
+  const body = exampleOf(op).body;
+  const files = fileFields(op, ir);
+  if (files.size === 0 || !isObject(body)) return literal(body);
+  const entries = Object.entries(body).map(([name, value]) => `${indent}${JSON.stringify(name)}: ${files.has(name) ? file(value as string) : literal(value).replace(/\n/g, `\n${indent}`)},`);
+  return `{\n${entries.join("\n")}\n}`;
+}
+
+export function typescriptExample(op: IROperation, ir: IR): string {
   const example = exampleOf(op);
   const [property, method] = op.names.ts.split(".") as [string, string];
   const args = pathArgs(op).map((arg) => JSON.stringify(arg));
-  if (op.requestBody !== null) args.push(JSON.stringify(example.body, null, 2));
+  if (op.requestBody !== null) {
+    args.push(bodyLiteral(op, ir, (value) => JSON.stringify(value, null, 2), (text) => `new Blob([${JSON.stringify(text)}])`, "  ").replace(/,\n\}$/, "\n}"));
+  }
   if (op.queryParams.length > 0) args.push(JSON.stringify(example.query, null, 2));
   return `import { Resend } from "${TS_PACKAGE}";
 
@@ -153,11 +174,11 @@ console.log(JSON.stringify(data, null, 2));
 `;
 }
 
-export function pythonExample(op: IROperation): string {
+export function pythonExample(op: IROperation, ir: IR): string {
   const example = exampleOf(op);
   const [attribute, method] = op.names.python.split(".") as [string, string];
   const args = pathArgs(op).map((arg) => JSON.stringify(arg));
-  if (op.requestBody !== null) args.push(pyLiteral(example.body, ""));
+  if (op.requestBody !== null) args.push(bodyLiteral(op, ir, (value) => pyLiteral(value, ""), (text) => `${JSON.stringify(text)}.encode()`, "    "));
   if (op.queryParams.length > 0) args.push(pyLiteral(example.query, ""));
   return `import json
 
@@ -223,6 +244,23 @@ export function bashExample(op: IROperation, ir: IR): string {
   return `#!/usr/bin/env bash
 # paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
 set -euo pipefail
-${exampleCommand(op, ir)}
+${bashCommand(op, ir)}
 `;
+}
+
+// With file fields the body goes as flags, and a file flag reads the text of the
+// example through process substitution; otherwise the command of the skill.
+function bashCommand(op: IROperation, ir: IR): string {
+  const files = fileFields(op, ir);
+  if (files.size === 0) return exampleCommand(op, ir);
+  const cmd = command(op, ir.schemas);
+  const flags = new Map(cmd.body!.flags.map((flag) => [flag.name, flag]));
+  const words = exampleArgv({ ...cmd, body: null }, op).map(shellWord);
+  for (const [name, value] of Object.entries(exampleOf(op).body as Record<string, unknown>)) {
+    const flag = flags.get(name);
+    const text = flag === undefined ? null : files.has(name) ? (value as string) : flagText(flag.kind, value);
+    if (flag === undefined || text === null) throw new Error(`docs: the example of ${op.id} cannot give ${name} as a flag`);
+    words.push(`--${flag.flag}`, files.has(name) ? `<(printf '%s' ${shellWord(text)})` : shellWord(text));
+  }
+  return ["paridad", ...words].join(" ");
 }

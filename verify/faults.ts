@@ -148,7 +148,7 @@ export async function runFaultCases(options: FaultRunOptions): Promise<FaultRun>
         controlPorts: [capture.controlPort, proxy.controlPort],
         goDriver: options.goDriver,
         listItems,
-        prefix: options.prefix?.(env),
+        ...(options.prefix === undefined ? {} : { prefix: options.prefix(env) }),
       });
       // A delayed response ends after its driver gave up; its trace is written then.
       await settleDelays(scenarios);
@@ -185,8 +185,8 @@ function header(headers: [string, string][], name: string): string | undefined {
 }
 
 // The expected table on the result lines and traces: outcome and code, number of
-// requests, unique items, the same key and body on every attempt, and no repeated
-// write without a key.
+// requests, unique items, the same key and body on every attempt, and no write
+// without a key repeated after an answer other than 429.
 export function checkExpected(ir: IR, table: Record<string, Expected>, surfaces: string[], lines: ResultLine[], traces: Trace[]): Failure[] {
   const failures: Failure[] = [];
   for (const [id, expected] of Object.entries(table)) {
@@ -208,7 +208,9 @@ export function checkExpected(ir: IR, table: Record<string, Expected>, surfaces:
 
       const attempts = attemptsOf(traces, id, surface);
       if (attempts.length !== expected.requests) fail(`${attempts.length} requests, expected ${expected.requests}`);
-      if (write && scenario.idempotency_key === null && attempts.length > 1) fail(`write without a key sent ${attempts.length} times`);
+      // A 429 is never processed, so only a repeat after any other answer is a repeated write (§5.3).
+      const ambiguous = attempts.slice(0, -1).filter((trace) => trace.status !== 429).length;
+      if (write && scenario.idempotency_key === null && ambiguous > 0) fail(`write without a key sent again after ${ambiguous} ambiguous failures`);
       if (expected.sameKeyAndBody) {
         const keys = new Set(attempts.map((trace) => header(trace.headers, "idempotency-key")));
         const bodies = new Set(attempts.map((trace) => trace.body_sha256));
@@ -263,7 +265,7 @@ export function checkRateLimitWaits(attempts: Trace[], maxAttempts: number): str
     if (retryAfter !== "1") problems.push(`attempt ${trace.attempt}: retry-after ${JSON.stringify(retryAfter)}, expected "1"`);
     const next = attempts[index + 1];
     if (next === undefined || retryAfter === undefined || !/^\d+$/.test(retryAfter)) return;
-    const waitMs = Number(BigInt(next.t_recv_ns) - BigInt(trace.t_resp_end_ns)) / 1e6;
+    const waitMs = (next.t_recv_ns - trace.t_resp_end_ns) / 1e6;
     const target = Number(retryAfter) * 1000;
     if (waitMs < target - WAIT_BELOW_MS || waitMs > target + WAIT_ABOVE_MS) {
       problems.push(`attempt ${next.attempt} came ${waitMs.toFixed(1)} ms after the 429, outside [${target - WAIT_BELOW_MS}, ${target + WAIT_ABOVE_MS}] ms`);

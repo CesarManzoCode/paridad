@@ -22,4 +22,4 @@ Un archivo JSON por corrida, que lee `harness/faults/proxy.ts --scenarios <archi
   - `delay`: reenvía y retiene la respuesta `delay_ms` milisegundos.
   - `cut`: reenvía, envía el estado, las cabeceras con el `content-length` completo y la primera mitad del cuerpo, y destruye el socket.
 - El 429 de tasa se construye con `rateLimitResponse({ limit, retryAfter })` de `harness/faults/proxy.ts`: cabeceras `ratelimit-limit`, `ratelimit-remaining: 0`, `ratelimit-reset` y `retry-after` (por defecto 1) y `name` `rate_limit_exceeded`.
-- Cada intento escribe una línea en `traces.jsonl` (sección 8 del contrato); `t_recv_ns` y `t_resp_end_ns` son `process.hrtime.bigint()` en texto decimal.
+- Cada intento escribe una línea en `traces.jsonl` (sección 8 del contrato); `t_recv_ns` y `t_resp_end_ns` son `process.hrtime.bigint()` escritos como números JSON enteros.

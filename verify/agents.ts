@@ -2,6 +2,7 @@
 // the reader of the conformance baseline, the corpus of C14 (the example of an
 // operation and its invalid variants, as a request of the spec and as tool
 // arguments) and the extractor of `paridad …` invocations from the skill.
+import { CONTRACT_CHECK } from "../generator/src/emit/skill.ts";
 import type { IRExample, IROperation } from "../generator/src/ir.ts";
 import { SCHEMAS_REF, isObject, type JsonObject, type JsonSchema } from "../generator/src/spec.ts";
 
@@ -181,7 +182,8 @@ export function skillCommands(markdown: string): SkillCommand[] {
   return commands;
 }
 
-// The commands of the CLI (contract §6): one per operation, config show and contract-check.
+// The commands of the CLI (contract §6): one per operation, config show and
+// contract-check, which counts once compat/ (K3) implements it.
 export function cliCommands(operations: IROperation[]): string[] {
-  return [...operations.map((op) => op.names.cli), "paridad config show", "paridad contract-check"];
+  return [...operations.map((op) => op.names.cli), "paridad config show", ...(CONTRACT_CHECK ? ["paridad contract-check"] : [])];
 }

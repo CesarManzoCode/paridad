@@ -2,14 +2,16 @@
 // the Agent Skills format. It teaches an agent the CLI; every command of the CLI is
 // shown in a bash block run with the first example of its operation, so each one
 // runs without edits.
-import { mkdirSync, rmSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { join, resolve } from "node:path";
 import type { IR, IROperation } from "../ir.ts";
 import { command, exampleArgv } from "./cli.ts";
 
 export const SKILL_NAME = "paridad-resend";
-export const SKILL_DESCRIPTION =
-  "Envía emails y administra recursos de Resend (dominios, contactos, difusiones, plantillas, webhooks y el resto de la API de Resend) desde la terminal con el CLI paridad. Úsala cuando una tarea necesite llamar a la API de Resend o comparar dos versiones de su contrato OpenAPI.";
+// `paridad contract-check` delegates to compat/ (K3, contract D03); until compat/
+// exists the command fails, so the skill teaches it only once it does.
+export const CONTRACT_CHECK = existsSync(resolve(import.meta.dirname, "../../../compat/src/main.ts"));
+export const SKILL_DESCRIPTION = `Envía emails y administra recursos de Resend (dominios, contactos, difusiones, plantillas, webhooks y el resto de la API de Resend) desde la terminal con el CLI paridad. Úsala cuando una tarea necesite llamar a la API de Resend${CONTRACT_CHECK ? " o comparar dos versiones de su contrato OpenAPI" : ""}.`;
 
 export function emitSkill(ir: IR, outDir: string): void {
   const root = join(outDir, "skill", SKILL_NAME);
@@ -37,6 +39,14 @@ function resources(ir: IR): Map<string, IROperation[]> {
 function bash(line: string): string {
   return `\`\`\`bash\n${line}\n\`\`\``;
 }
+
+const CONTRACT_CHECK_SECTION = `
+## Chequeo de contrato
+
+\`paridad contract-check\` compara dos versiones de la especificación OpenAPI (base y revisión, con \`--json\` opcional): lista los cambios que rompen, las operaciones y superficies afectadas y el salto semver propuesto, y sale con 0 si la revisión es compatible y con 1 si rompe. Desde la raíz del repositorio, comparando la especificación fijada consigo misma:
+
+${bash("paridad contract-check spec/resend.yaml spec/resend.yaml")}
+`;
 
 function skillMarkdown(ir: IR): string {
   const paginated = ir.operations.find((op) => op.pagination !== null && op.pathParams.length === 0);
@@ -107,13 +117,7 @@ ${bash(`${exampleCommand(idempotent, ir)} --idempotency-key welcome-user-42`)}
 Los comandos de listado devuelven una página: \`{"object":"list","has_more":…,"data":[…]}\`. \`--limit\`, \`--after\` y \`--before\` eligen la página; \`--all\` junta todos los elementos de todas las páginas en un solo arreglo \`data\` (el CLI sigue \`after\` mientras \`has_more\` sea verdadero).
 
 ${bash(`${exampleCommand(paginated, ir)} --all`)}
-
-## Chequeo de contrato
-
-\`paridad contract-check\` compara dos versiones de la especificación OpenAPI (base y revisión, con \`--json\` opcional): lista los cambios que rompen, las operaciones y superficies afectadas y el salto semver propuesto, y sale con 0 si la revisión es compatible y con 1 si rompe. Desde la raíz del repositorio, comparando la especificación fijada consigo misma:
-
-${bash("paridad contract-check spec/resend.yaml spec/resend.yaml")}
-
+${CONTRACT_CHECK ? CONTRACT_CHECK_SECTION : ""}
 ## Comandos
 
 Una sección por recurso. Cada comando lleva valores de ejemplo que la API acepta.

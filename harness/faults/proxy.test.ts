@@ -147,7 +147,7 @@ test("delay forwards and holds the response for delay_ms", async () => {
     assert.equal(received.length, 1);
     const [trace] = traces(out);
     assert.equal(trace?.action, "delay");
-    assert.ok(Number(BigInt(trace!.t_resp_end_ns) - BigInt(trace!.t_recv_ns)) / 1e6 >= 300);
+    assert.ok((trace!.t_resp_end_ns - trace!.t_recv_ns) / 1e6 >= 300);
   });
 });
 
@@ -203,10 +203,10 @@ test("trace times are monotonic and increasing", async () => {
     for (let index = 0; index < 4; index++) await send(proxy.port, "GET", "/domains");
     const list = traces(out);
     assert.equal(list.length, 4);
-    let previousEnd = 0n;
+    let previousEnd = 0;
     for (const trace of list) {
-      const received = BigInt(trace.t_recv_ns);
-      const ended = BigInt(trace.t_resp_end_ns);
+      const received = trace.t_recv_ns;
+      const ended = trace.t_resp_end_ns;
       assert.ok(received > previousEnd, "each attempt is received after the previous response ended");
       assert.ok(ended >= received, "a response ends after its request was received");
       previousEnd = ended;

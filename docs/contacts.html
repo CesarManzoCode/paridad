@@ -186,7 +186,7 @@ paridad contacts create --email steve.wozniak@gmail.com
 // new Resend() reads RESEND_API_KEY and RESEND_BASE_URL.
 const resend = new Resend();
 const { data, error } = await resend.contacts.createImport({
-  &quot;file&quot;: &quot;example&quot;
+  &quot;file&quot;: new Blob([&quot;example&quot;])
 });
 if (error !== null) {
   console.error(`${error.code}: ${error.message}`);
@@ -202,7 +202,7 @@ from paridad_resend import Resend
 # Resend() reads RESEND_API_KEY and RESEND_BASE_URL; an API error raises ParidadError.
 resend = Resend()
 result = resend.contacts.create_import({
-    &quot;file&quot;: &quot;example&quot;,
+    &quot;file&quot;: &quot;example&quot;.encode(),
 })
 print(json.dumps(result, indent=2))
 </code></pre>
@@ -249,7 +249,7 @@ func main() {
 <pre><code class="language-bash" data-operation-id="contacts/create-import">#!/usr/bin/env bash
 # paridad reads RESEND_API_KEY and RESEND_BASE_URL; it exits 1 on error.
 set -euo pipefail
-paridad contacts create-import --body '{&quot;file&quot;:&quot;example&quot;}'
+paridad contacts create-import --file &lt;(printf '%s' example)
 </code></pre>
 </section>
 <section id="contacts/get" data-operation-id="contacts/get">
