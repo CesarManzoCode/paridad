@@ -46,6 +46,17 @@ Es la versión que el servicio de releases asigna al primer trabajo de la cola. 
 - Registro de decisiones en `vault/DECISION-LOG.md`.
 - `verify/c26/add-operation.patch` agrega `topics/check-name` (`POST /topics/names/check`) a la spec y actualiza el sha256 de `spec/PIN`, con una línea `patch:` que lo marca como parche local.
 - Corredores `make verify C=c26` (clon nuevo, `make bootstrap && make check`, el parche, `make generate && make check` y el `operationId` nuevo en las cinco superficies y en `docs/`), `make verify C=c27` (archivos para contribuidores y CI con `make check`), `make verify C=c29` (`make battery` dentro de un scope `systemd-run --user` y su `memory.peak`) y `make verify C=c30` (líneas de producto y de apoyo con `scc`, sin pruebas).
+- Resultados medidos en el cierre de K3, en la máquina de desarrollo:
+  - `paridad contract-check` clasifica igual que `oasdiff breaking --fail-on ERR` los 117 pares del corpus (91 históricos y 26 sintéticos) (C18). En los pares que rompen, también lista las mismas operaciones afectadas (C25).
+  - El salto semver propuesto nunca es menor que el que exigen `oasdiff`, api-extractor, `griffe` y `apidiff` en 58 pares, 32 históricos y 26 sintéticos (C19).
+  - Los proyectos de ejemplo en TypeScript, Python y Go pasan sin cambios contra la versión siguiente en los 25 pares sin salto mayor (C20).
+  - El servicio de releases publica la versión 0.1.0 en Verdaccio, pypiserver y el GOPROXY por archivos, y se instala limpia con npm, en un venv nuevo y con Go (C21).
+  - Tras un SIGKILL en cada uno de los 8 puntos de corte, el servicio reiniciado deja los registros en el mismo estado que una corrida sin cortes (C22).
+  - Las métricas de `/metrics` son válidas según `promtool check metrics`, y sus contadores cuadran con la tabla `jobs` en 4 trabajos (C23).
+  - Un clon nuevo pasa `make bootstrap` y `make check`. Después de agregar una operación a la spec, `make generate` la lleva a las cinco superficies y a la documentación, y `make check` sigue pasando (C26).
+  - La batería completa (`make battery`, C1 a C26) alcanza un `memory.peak` de 4.03 GiB, bajo el límite de 8 GiB (C29).
+  - El código de producto suma 22 896 líneas, contra 12 347 de apoyo, sin contar pruebas (C30).
+  - La skill enseña 148 comandos, incluido `paridad contract-check`, y todos salen 0 (C15).
 
 #### Cambiado
 - `compat/` empareja operaciones con los nombres de los parámetros de ruta incluidos: renombrar un parámetro de ruta ahora rompe (operación quitada y agregada). Con la configuración por defecto, `oasdiff` rechaza 19 pares del historial por "duplicate endpoint" (dos `DELETE /audiences/{audience_id}/contacts/{…}` que solo difieren en el nombre del parámetro); con `--include-path-params` acepta los 91 pares parseables y la clasificación ERR de los otros 72 no cambia. En los SDKs generados el nombre del parámetro de ruta es parte de la API pública.
@@ -64,6 +75,11 @@ Es la versión que el servicio de releases asigna al primer trabajo de la cola. 
 - Un `go.mod` en la raíz, sin paquetes ni dependencias, permite correr `go tool -modfile=tools/go.mod <herramienta>` desde la raíz.
 - `.oasdiff.yaml` en la raíz (archivo de configuración de oasdiff v1.39.0) fija `include-path-params: true` y `allow-external-refs: false`: oasdiff corrido desde la raíz compara con las mismas opciones que C18, C19 y C25, que además las pasan como banderas.
 - Dos pruebas de `verify/` (`corpus.test.ts` y `oss.test.ts`) fallaban después de aplicar el parche de C26 porque comparaban contra `spec/resend.yaml` sin parchear. Con el parche aplicado (línea `patch:` en `spec/PIN`), ahora revierten el parche en una copia de `spec/` y hacen las mismas comprobaciones sobre la spec fijada.
+
+#### Decisiones
+- En C19, una entrada ERR o WARN de `oasdiff changelog` exige salto mayor, igual que el salto de contrato de `compat/`, y cualquier otra entrada exige salto menor. El contrato no dice qué salto exige cada nivel.
+- La pausa en el punto `enqueued` ocurre en el comando `enqueue`, que es el proceso que confirma ese punto; las otras siete ocurren en `serve`.
+- El servicio de releases construye el paquete de Python sin aislamiento (`python -m build --no-isolation`), para no descargar `hatchling` en cada release.
 
 ### K2 — Comportamiento común, CLI, MCP, skill y documentación
 

@@ -77,11 +77,12 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - La coincidencia con `oasdiff breaking --fail-on ERR` solo está medida sobre los 117 pares del corpus de C18 (91 históricos y 26 sintéticos).
 - La palabra clave `nullable` se lee como oasdiff, también en OpenAPI 3.1: si cambia, decide sola si el esquema acepta `null`, aunque `null` aparezca o desaparezca en la lista de `type`. La IR no la conserva en 3.1, así que las superficies generadas no la usan.
 - Un webhook que está en los dos lados se compara como las operaciones `<MÉTODO> webhook:<nombre>`, igual que oasdiff; uno agregado o quitado solo se informa como `webhook-added` o `webhook-removed`, sin operaciones afectadas.
+- La comparación con oasdiff depende de `.oasdiff.yaml` en la raíz, que fija `include-path-params` y `allow-external-refs=false`. oasdiff corrido desde otro directorio usa sus opciones por defecto y rechaza 19 pares del historial por "duplicate endpoint" (salida 104).
 - `paridad contract-check` ejecuta `compat/` del repositorio de paridad; el CLI publicado sin el repositorio responde con el error `compat_missing`.
 
 ## Servicio de releases
 
-- Que dos construcciones de la misma copia den los mismos bytes (lo que C22 necesita para comparar sha256) es una hipótesis sin medir: `npm pack` con su fecha fija, hatchling con `SOURCE_DATE_EPOCH` igual a la fecha del commit de `HEAD` y el zip de Go propio con fecha fija.
+- Que dos construcciones de la misma copia den los mismos bytes (`npm pack` con su fecha fija, hatchling con `SOURCE_DATE_EPOCH` igual a la fecha del commit de `HEAD` y el zip de Go propio con fecha fija) solo se midió en C22, en la máquina de desarrollo y con la versión 0.1.0: la referencia y los 8 cortes dieron el mismo estado en el cierre de K3. No se midió en otra máquina ni con otras versiones de npm, hatchling o Go.
 - La fecha de `v<versión>.info` es la del commit de `HEAD` al encolar; un árbol con cambios sin confirmar lleva la fecha del último commit.
 - Un SIGKILL del servicio no mata a sus procesos hijos (`npm pack`, `python -m build`, `npm publish`, `twine upload`). Tras publicar, cada paso vuelve a consultar el registro, así que una subida que siguió viva y termina antes cuenta como publicada si sus bytes coinciden. Una construcción cortada a la mitad, en cambio, puede seguir escribiendo en `jobs/<id>/building` mientras el proceso reiniciado la rehace. Los puntos de pausa de C22 están entre pasos y no prueban ese caso.
 - Un trabajo que falla después de publicar en algún registro deja esa versión ocupada. El siguiente calcula la misma versión (la del último trabajo terminado más el salto) y, si sus artefactos cambian, falla igual; no hay recuperación automática.
@@ -90,6 +91,7 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - Verdaccio no publica el sha256 de un paquete (solo `shasum` y `integrity`), así que el servicio descarga el tarball para compararlo. Si Verdaccio tiene un uplink que sirve `paridad-resend` desde el registro público, la consulta ve ese paquete.
 - Mientras está en pausa, el proceso queda bloqueado por completo: `/metrics` no responde.
 - Solo puede correr un `serve` sobre la misma cola: dos procesos retomarían el mismo trabajo en estado `running`.
+- La prueba de humo de instalación limpia (C21) solo se midió con la primera versión, 0.1.0. Los releases siguientes de C23 se publican, pero no se instalan.
 - El zip de módulo sigue el formato de la referencia de módulos de Go; solo se comprobó que `go get` lo instala desde el GOPROXY por archivos (C21), no con otros clientes de GOPROXY.
 - Las pruebas del SDK TS corren sobre `src/`. El JavaScript y las declaraciones que publica el release (`dist/`, emitidos por `tsc` al construir, porque Node no quita tipos dentro de `node_modules`) solo los ejercita la prueba de humo de C21.
 
@@ -97,9 +99,10 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 
 - La conformidad MCP sobre stdio pasa por un puente que reenvía los mensajes a Streamable HTTP, porque el marco oficial solo prueba servidores por URL.
 - Los fallos de red a nivel de kernel (`tc netem`) necesitan sudo; sin él, ese criterio se omite (código 77) y solo quedan los fallos en espacio de usuario.
-- En el cierre de K2, C12 salió omitido (77) porque `sudo -n true` falla en la máquina de desarrollo: el comportamiento bajo pérdida, latencia y reordenamiento de `tc netem` no se midió.
-- `make verify` devuelve el código del corredor (77 en un criterio omitido) solo si GNU Make tiene Guile. Sin Guile, make convierte el 77 en 2 y el criterio cuenta como fallo. Solo se comprobó en la máquina de desarrollo (GNU Make 4.4.1 con Guile), no en la CI.
+- En los cierres de K2 y K3, C12 salió omitido (77) porque `sudo -n true` falla en la máquina de desarrollo: el comportamiento bajo pérdida, latencia y reordenamiento de `tc netem` no se midió.
+- `make verify` devuelve el código del corredor (77 en un criterio omitido) solo si GNU Make tiene Guile. Sin Guile, make convierte el 77 en 2 y el criterio cuenta como fallo. Solo se comprobó en la máquina de desarrollo (GNU Make 4.4.1 con Guile), no en la CI: en el cierre de K3 la batería registró el 77 de C12 en esa máquina, y no consta ninguna corrida de la CI.
 - La memoria pico se mide con `memory.peak` del cgroup, que incluye caché de páginas: es una cota superior de la memoria residente, no la memoria residente exacta.
+- `memory.peak` de la batería varía entre corridas en la misma máquina: 2.22 GiB en el cierre fallido de K3 y 4.03 GiB en el aprobado. El margen bajo los 8 GiB de C29 solo está medido en esas corridas.
 - La tolerancia temporal de los reintentos ante 429 es de −25 ms a +1000 ms sobre `retry-after`, medida en el proxy de fallos.
 - Para TypeScript no existe un clasificador estándar de cambios de API; el salto semver se contrasta con la diferencia entre reportes de api-extractor, que es una aproximación.
 - C19 y C20 no pueden usar 5 de los 37 pares históricos con `operationId` completo (de `h01` a `h05`): su única operación tiene `operationId` `sendEmail`, que no tiene la forma `recurso/accion`, y el generador rechaza esa spec. Quedan 32 pares históricos, y C19 exige al menos 30.
@@ -108,6 +111,8 @@ Fuente única de lo que paridad no demuestra. Ningún otro archivo repite estos 
 - C29 corre `make battery` como un solo criterio de `make verify`, con su límite anti-cuelgue de 30 minutos, mientras que cada criterio de la batería tiene el suyo. No se midió si la batería completa cabe en 30 minutos; si no cabe, C29 falla sin leer `memory.peak`.
 - C30 suma el `Code` de todos los lenguajes que `scc` reconoce en cada lado, incluidos archivos de datos como el JSON del corpus en `verify/corpus/` y las plantillas de `generator/templates/`. No se midió cuánto pesan en cada total.
 - C26 clona el `HEAD` del repositorio: los cambios sin confirmar no llegan al clon.
+- C26 corre en la máquina de desarrollo, con el mismo usuario: `make bootstrap` del clon usa los cachés globales ya poblados (almacén de pnpm, caché de módulos de Go y de pip). No se midió un `make bootstrap` desde un clon en una máquina nueva.
+- C27 comprueba que `.github/workflows/ci.yml` declara `make check`, no que la CI pase: en el cierre de K3 no consta ninguna corrida de la CI.
 - Solo se verifica en x86-64 con Arch Linux.
 
 ## Lo que no es mecánico

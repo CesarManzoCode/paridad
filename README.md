@@ -18,7 +18,7 @@ Lo que paridad quiere demostrar se mide con herramientas externas, no con opinio
 | K0 | Fundación: contrato, investigación, interfaz de verificación | hecho |
 | K1 | Spec fijada, representación intermedia y SDKs TS, Python y Go contra los SDKs oficiales (C1, C3, C4) | Cerrada |
 | K2 | Proxy de fallos, CLI, MCP, skill y documentación; comportamiento idéntico en las cinco superficies (C2, C5 a C17, C24) | Cerrada |
-| K3 | Compatibilidad de contrato y de SDKs, servicio de releases, operación y open source (C18 a C23, C25 a C30) | pendiente |
+| K3 | Compatibilidad de contrato y de SDKs, servicio de releases, operación y open source (C18 a C23, C25 a C30) | Cerrada |
 
 ## Criterios
 
@@ -58,6 +58,28 @@ Cada criterio de aceptación se reproduce desde la raíz del repositorio, despu�
 | C30 | líneas de producto mayores que las de apoyo (`scc`) | `make verify C=c30` |
 
 ## Resultados
+
+Medidos en el cierre de K3, en la máquina de desarrollo:
+
+| Medida | Resultado |
+| --- | --- |
+| Batería completa (`make battery`) | C1 a C26 salen 0, salvo C12, que sale 77 (omitido: `sudo -n true` falla en esta máquina) |
+| C18, compatibilidad de contrato | 0 desacuerdos con `oasdiff breaking --fail-on ERR` en 117 pares: 91 históricos y 26 sintéticos |
+| C19, semver de los SDKs | ningún salto propuesto menor que el que exigen `oasdiff`, api-extractor, `griffe` y `apidiff` en 58 pares: 32 históricos y 26 sintéticos |
+| C20, actualización | 25 pares sin salto mayor: los proyectos de ejemplo de TypeScript, Python y Go pasan sin cambios contra N+1 |
+| C21, release | la versión 0.1.0 está en Verdaccio, pypiserver y el GOPROXY por archivos; las pruebas de humo de npm, Python y Go pasan |
+| C22, recuperación tras SIGKILL | los 8 puntos de corte convergen al estado de los registros de la corrida de referencia |
+| C23, métricas | `promtool check metrics` acepta las métricas, y los contadores cuadran con la tabla `jobs` en 4 trabajos |
+| C25, `paridad contract-check` | los 117 pares coinciden con `oasdiff` en código de salida y operaciones afectadas |
+| C26, contribución | un clon nuevo pasa `make bootstrap` y `make check`; tras el parche de ejemplo, `topics/check-name` aparece en las cinco superficies y en `docs/` |
+| C27, archivos para contribuidores | `LICENSE`, `CONTRIBUTING.md`, plantillas de issue y de PR, y la CI declara `make check` |
+| C28, registro de decisiones | las cuatro secciones existen; su calidad requiere juicio humano |
+| C29, memoria | `memory.peak` de la batería completa: 4.03 GiB, bajo 8 GiB |
+| C30, producto contra apoyo | 22 896 líneas de producto contra 12 347 de apoyo, sin pruebas (`scc`) |
+| C15, skill (criterio de K2) | 148 comandos salen 0, ahora con `paridad contract-check` |
+| `make check` | sale 0 en 42.0 s: 725 pruebas de Node y 172 de pytest pasan, mypy sin problemas, `go test` ok (resultado en caché de Go) |
+| Verificación de los 13 criterios de salida de K3 | 1496.6 s |
+| Criterios de K0, K1 y K2 en la rama de K3 | siguen pasando: 11, 8 (145.0 s) y 16 (674.9 s) |
 
 Medidos en el cierre de K2, en la máquina de desarrollo:
 
